@@ -1,3 +1,15 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/cairnml-logo-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="assets/cairnml-logo.svg">
+    <img src="assets/cairnml-logo.svg" alt="CairnML" width="480">
+  </picture>
+</p>
+
+<p align="center">
+  <a href="https://github.com/gianlucapargaetzi/cairnml-examples/stargazers"><img src="https://img.shields.io/github/stars/gianlucapargaetzi/cairnml-examples?style=flat-square&logo=github" alt="GitHub stars"></a>
+</p>
+
 # 🧭 CairnML Examples
 
 Guided examples of what the CairnML platform can do. Each one builds on the last.
