@@ -1,21 +1,33 @@
-# 🌍 Hello world
+# Hello world
 
-One run, tracked on your server: a parameter, a loss curve and an artifact.
+The smallest possible CairnML run: one task with parameters, a loss curve and an artifact, recorded on your server. Use it to check that the SDK is connected before you run anything bigger.
 
-## 🧰 Prerequisites
+## Features
 
-- The [SDK connected to your server](../../README.md#-prerequisites)
+- Records a run's parameters with `task.connect`.
+- Logs a metric curve with `report_scalar`.
+- Uploads a file as an artifact.
 
-## 🚀 Run
+## Prerequisites
+
+- The [SDK connected to your server](../../README.md#prerequisites)
+
+## Run
 
 ```bash
 python hello_world.py
 ```
 
-## 👀 See it
+The script finishes in a few seconds and prints the name of the run.
 
-Open the run in the web app: project **examples**, task **hello world**. You find the parameters under the task's configuration, the `loss` curve under scalars, and `hello.txt` under artifacts.
+## What to look for
 
-## ➡️ Next
+Open the web app and go to the project **examples**, task **hello world**:
 
-[Example 2: COCO Fashion detection](../02-coco-fashion-detection)
+- The parameters are listed in the task's configuration.
+- The `loss` curve, one point per step, is under scalars.
+- `hello.txt` is listed under artifacts.
+
+## Next steps
+
+Continue with [Example 2: COCO Fashion detection](../02-coco-fashion-detection).
