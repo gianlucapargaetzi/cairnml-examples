@@ -1,0 +1,7 @@
+cairnml[dataset]
+torch
+torchvision
+torchmetrics
+pycocotools
+pyarrow
+pillow

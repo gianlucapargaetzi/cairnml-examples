@@ -1,0 +1,7 @@
+cairnml
+torch
+torchvision
+torchmetrics
+pycocotools
+pyarrow
+pillow
