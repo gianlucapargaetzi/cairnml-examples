@@ -11,11 +11,12 @@ import io
 import urllib.request
 from pathlib import Path
 
+import albumentations as A
 import pyarrow.parquet as pq
 import torch
 from PIL import Image
 from torch import nn
-from torch.utils.data import DataLoader, TensorDataset, random_split
+from torch.utils.data import DataLoader, Dataset, TensorDataset, random_split
 from torchvision.transforms.functional import pil_to_tensor
 
 from cairnml import Task
@@ -42,6 +43,32 @@ def load_images(path: Path) -> TensorDataset:
     table = pq.read_table(path).to_pydict()
     images = torch.stack([pil_to_tensor(Image.open(io.BytesIO(item["bytes"])).convert("RGB")) for item in table["img"]])
     return TensorDataset(images.float() / 255, torch.tensor(table["label"]))
+
+
+def augmentation(seed: int) -> A.Compose:
+    """Changes to each training image: a flip, a shift, scale and rotation, brightness and contrast, and a cut-out patch."""
+    return A.Compose([
+        A.HorizontalFlip(p=0.5),
+        A.Affine(translate_percent=0.1, scale=(0.9, 1.1), rotate=(-10, 10), p=0.6),
+        A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.5),
+        A.CoarseDropout(num_holes_range=(1, 1), hole_height_range=(8, 8), hole_width_range=(8, 8), fill=0, p=0.3),
+    ], seed=seed)
+
+
+class Augmented(Dataset):
+    """A dataset whose images get the transform every time they are read, so each epoch sees new variations."""
+
+    def __init__(self, dataset: Dataset, transform: A.Compose):
+        self.dataset = dataset
+        self.transform = transform
+
+    def __len__(self) -> int:
+        return len(self.dataset)
+
+    def __getitem__(self, index: int) -> tuple:
+        image, label = self.dataset[index]
+        image = self.transform(image=image.permute(1, 2, 0).contiguous().numpy())["image"]
+        return torch.from_numpy(image).permute(2, 0, 1), label
 
 
 def build_model(depth: int, dropout: float) -> nn.Module:
@@ -77,8 +104,9 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, loss_fu
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--epochs", type=int, default=40)
-    parser.add_argument("--depth", type=int, default=2, choices=range(1, 6), help="number of convolution blocks, 1 to 5")
+    parser.add_argument("--depth", type=int, default=4, choices=range(1, 6), help="number of convolution blocks, 1 to 5")
     parser.add_argument("--dropout", type=float, default=0.3, help="dropout rate in the convolution blocks and the classifier")
+    parser.add_argument("--augment", action=argparse.BooleanOptionalAction, default=True, help="augment the training images")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--val-split", type=float, default=0.1, help="fraction of the training images kept for validation")
@@ -92,6 +120,7 @@ def main() -> None:
         "epochs": args.epochs,
         "depth": args.depth,
         "dropout": args.dropout,
+        "augment": args.augment,
         "batch_size": args.batch_size,
         "lr": args.lr,
         "val_split": args.val_split,
@@ -106,7 +135,8 @@ def main() -> None:
     train_set, val_set = random_split(
         full_train, [len(full_train) - val_size, val_size], generator=torch.Generator().manual_seed(args.seed),
     )
-    train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
+    train_data = Augmented(train_set, augmentation(args.seed)) if args.augment else train_set
+    train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=256)
     print(f"{len(train_set)} training images, {len(val_set)} validation images")
 

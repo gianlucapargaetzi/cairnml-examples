@@ -2,3 +2,4 @@ cairnml
 torch
 torchvision
 pyarrow
+albumentations

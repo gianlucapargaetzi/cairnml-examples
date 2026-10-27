@@ -6,6 +6,7 @@ This example trains a small convolutional network to name the object in a 32x32 
 
 - Downloads CIFAR-10 once from Hugging Face, about 120 MB.
 - Holds out 10% of the training images as a validation set, with a fixed seed, so every run uses the same split.
+- Augments the training images with a flip, a shift, scale and rotation, brightness and contrast changes, and a cut-out patch. Use `--no-augment` to turn this off. The validation images are never augmented.
 - Trains a small CNN with settings you can change on the command line.
 - Records the loss of every step, and the loss and accuracy of the training and validation sets after every epoch.
 - Uploads the trained weights as an artifact.
@@ -31,7 +32,7 @@ Install the PyTorch build for your CUDA version first if the default one does no
 python train.py
 ```
 
-The defaults train for 40 epochs with batch size 64, two convolution blocks and dropout 0.3. To change them:
+The defaults train for 40 epochs with batch size 64, four convolution blocks, dropout 0.3 and augmentation on. To change them:
 
 ```bash
 python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 3 --dropout 0.4
