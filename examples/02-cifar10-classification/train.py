@@ -44,12 +44,19 @@ def load_images(path: Path) -> TensorDataset:
     return TensorDataset(images.float() / 255, torch.tensor(table["label"]))
 
 
-def build_model() -> nn.Module:
+def build_model(depth: int, dropout: float) -> nn.Module:
+    """A stack of depth convolution blocks, each halving the image, then a classifier. The channels double per block."""
+    layers = []
+    channels = 3
+    for block in range(depth):
+        out_channels = 32 * 2 ** block
+        layers += [nn.Conv2d(channels, out_channels, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2), nn.Dropout2d(dropout)]
+        channels = out_channels
+    side = 32 // 2 ** depth
     return nn.Sequential(
-        nn.Conv2d(3, 32, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(32, 64, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+        *layers,
         nn.Flatten(),
-        nn.Linear(64 * 8 * 8, 128), nn.ReLU(), nn.Dropout(0.3),
+        nn.Linear(channels * side * side, 128), nn.ReLU(), nn.Dropout(dropout),
         nn.Linear(128, len(CLASSES)),
     )
 
@@ -69,7 +76,9 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, loss_fu
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--epochs", type=int, default=40)
+    parser.add_argument("--depth", type=int, default=2, choices=range(1, 6), help="number of convolution blocks, 1 to 5")
+    parser.add_argument("--dropout", type=float, default=0.3, help="dropout rate in the convolution blocks and the classifier")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--val-split", type=float, default=0.1, help="fraction of the training images kept for validation")
@@ -81,6 +90,8 @@ def main() -> None:
     task.connect({
         "dataset": "CIFAR-10",
         "epochs": args.epochs,
+        "depth": args.depth,
+        "dropout": args.dropout,
         "batch_size": args.batch_size,
         "lr": args.lr,
         "val_split": args.val_split,
@@ -99,7 +110,7 @@ def main() -> None:
     val_loader = DataLoader(val_set, batch_size=256)
     print(f"{len(train_set)} training images, {len(val_set)} validation images")
 
-    model = build_model().to(device)
+    model = build_model(args.depth, args.dropout).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     loss_function = nn.CrossEntropyLoss()
 

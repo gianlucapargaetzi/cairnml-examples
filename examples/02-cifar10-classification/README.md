@@ -31,11 +31,13 @@ Install the PyTorch build for your CUDA version first if the default one does no
 python train.py
 ```
 
-The defaults train for 10 epochs with batch size 64. To change them:
+The defaults train for 40 epochs with batch size 64, two convolution blocks and dropout 0.3. To change them:
 
 ```bash
-python train.py --epochs 20 --batch-size 128 --lr 0.001
+python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 3 --dropout 0.4
 ```
+
+`--depth` sets the number of convolution blocks, from 1 to 5. Each block halves the image, so a depth of 5 reduces the 32x32 image to 1x1.
 
 ## What to look for
 
