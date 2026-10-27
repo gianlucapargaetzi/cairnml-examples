@@ -18,7 +18,7 @@ Guided examples of what the CairnML platform can do. Each example runs on your o
 
 - Four runnable examples, from a single tracked run to a full training run.
 - Runs appear in the web app, with their parameters, metrics, loss curves and artifacts.
-- The third example reads its data through the dataset registry, so the run records which dataset and revision it used.
+- The fourth example reads its data through the dataset registry, so the run records which dataset and revision it used.
 - Examples 3 and 4 train on the same images, so their runs can be compared side by side.
 
 ## Prerequisites
@@ -46,7 +46,7 @@ Each example has its own README with the installation steps, the command to run 
 
 ## Compare the runs
 
-Examples 3 and 4 use the same model, settings and images. After both have run, open the **COCO Fashion** project in the web app and compare the two tasks. Their validation mAP curves should be close, and the configuration of the third run shows the dataset, its revision and the registry commit.
+Examples 3 and 4 use the same model, settings and images. After both have run, open the **COCO Fashion** project in the web app and compare the two tasks. Their validation mAP curves should be close, and the configuration of the fourth run shows the dataset, its revision and the registry commit.
 
 ## Having problems
 
