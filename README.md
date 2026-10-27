@@ -28,8 +28,10 @@ Guided examples of what the CairnML platform can do. Each example runs on your o
 
 ```bash
 pip install cairnml
-cairnml-init --server http://<server-ip>:8008
+cairnml init http://<server-ip>
 ```
+
+`<server-ip>` is the address of the server, with a port only if the server does not use port 80. The command works out the rest.
 
 ## Examples
 
