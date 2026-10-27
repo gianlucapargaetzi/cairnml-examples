@@ -30,4 +30,4 @@ Open the web app and go to the project **examples**, task **hello world**:
 
 ## Next steps
 
-Continue with [Example 2: COCO Fashion detection](../02-coco-fashion-detection).
+Continue with [Example 2: CIFAR-10 classification](../02-cifar10-classification).

@@ -1,7 +1,7 @@
 """COCO Fashion without dataset management: download the web sources, read them and train.
 
 The annotations and images come straight from the project's download page, unpacked into --cache. Nothing is
-registered or versioned, and the run records no dataset. Example 3 trains the same model on the same images, read
+registered or versioned, and the run records no dataset. Example 4 trains the same model on the same images, read
 through the dataset registry.
 
 Fashionpedia is CC BY 4.0. Cite: Jia et al., "Fashionpedia: Ontology, Segmentation, and an Attribute
@@ -28,9 +28,26 @@ SOURCES = {
 
 
 def download(url: str, target: Path) -> Path:
-    if not target.exists():
-        print(f"downloading {url} ...")
-        urllib.request.urlretrieve(url, target)
+    """Fetch ``url`` into ``target``, printing progress every 5%. The file appears under its own name only when
+    complete, so an interrupted run leaves a ``.part`` file that the next run fetches again."""
+    if target.exists():
+        return target
+    partial = target.with_name(target.name + ".part")
+    last_shown = [-5]
+
+    def report(blocks: int, block_size: int, total: int) -> None:
+        if total <= 0:
+            print(f"\r  {blocks * block_size / 1e6:,.0f} MB", end="", flush=True)
+            return
+        percent = min(100, blocks * block_size * 100 // total)
+        if percent >= last_shown[0] + 5 or percent == 100:
+            last_shown[0] = percent
+            print(f"\r  {percent:3d}%  {blocks * block_size / 1e9:,.2f} of {total / 1e9:,.2f} GB", end="", flush=True)
+
+    print(f"downloading {url} ...")
+    urllib.request.urlretrieve(url, partial, reporthook=report)
+    print()
+    partial.rename(target)
     return target
 
 
@@ -41,7 +58,12 @@ def fetch(split: str, cache: Path):
     annotation_file = download(f"{BASE}/{annotations}", cache / Path(annotations).name)
     unpacked = cache / Path(archive).stem
     if not unpacked.exists():
-        zip_file = download(f"{BASE}/{archive}", cache / Path(archive).name)
+        zip_file = cache / Path(archive).name
+        # A cut-off archive from an earlier run has no end record; fetch it again rather than fail on it.
+        if zip_file.exists() and not zipfile.is_zipfile(zip_file):
+            print(f"{zip_file.name} is incomplete, downloading it again")
+            zip_file.unlink()
+        zip_file = download(f"{BASE}/{archive}", zip_file)
         with zipfile.ZipFile(zip_file) as handle:
             handle.extractall(unpacked)
         zip_file.unlink()

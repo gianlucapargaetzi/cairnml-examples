@@ -55,4 +55,4 @@ The data is [Fashionpedia](https://fashionpedia.github.io) in COCO format, licen
 
 ## Next steps
 
-Continue with [Example 3: COCO Fashion through the dataset registry](../03-coco-fashion-managed-dataset), which trains the same model on the same images.
+Continue with [Example 4: COCO Fashion through the dataset registry](../04-coco-fashion-managed-dataset), which trains the same model on the same images.

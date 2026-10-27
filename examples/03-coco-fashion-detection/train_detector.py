@@ -118,11 +118,12 @@ def train(task, train_items: List[Item], val_items: List[Item], settings: Settin
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            logger.report_scalar("loss", "train", value=loss.item(), iteration=step)
+
             step += 1
         scheduler.step()
         map_value = evaluate(model, val_items, device, settings.batch_size)
         logger.report_scalar("mAP", "val", value=map_value, iteration=epoch)
+        logger.report_scalar("loss", "train", value=loss.item(), iteration=epoch)
         print(f"epoch {epoch + 1}/{settings.epochs}: loss {loss.item():.3f}, val mAP {map_value:.4f}")
 
     torch.save(model.state_dict(), "model.pt")

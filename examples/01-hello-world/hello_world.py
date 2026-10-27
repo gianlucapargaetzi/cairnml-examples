@@ -15,3 +15,6 @@ Path("hello.txt").write_text(settings["greeting"] + "\n")
 task.upload_artifact("hello", artifact_object="hello.txt")
 task.close()
 print("done: the run is in the web app, project 'examples', task 'hello world'")
+
+
+print("Changes test 1")

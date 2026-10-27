@@ -2,7 +2,7 @@
 
 The registry, cairnml-dataset-registry, holds the entry for COCO Fashion: the web sources and the adapter that reads
 them into the CairnML dataset format. The dataset, its revision and the registry commit are recorded on the task, so
-the run shows exactly what it trained on. Example 2 trains on the same images without the registry.
+the run shows exactly what it trained on. Example 3 trains on the same images without the registry.
 
 Usage:
     python train.py                       # the latest registry commit
