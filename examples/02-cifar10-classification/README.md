@@ -32,13 +32,13 @@ Install the PyTorch build for your CUDA version first if the default one does no
 python train.py
 ```
 
-The defaults train for 40 epochs with batch size 64, four convolution blocks, dropout 0.3 and augmentation on. To change them:
+The defaults train for 80 epochs with batch size 64, three blocks, dropout 0.1 and augmentation on. To change them:
 
 ```bash
-python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 3 --dropout 0.4
+python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 4 --dropout 0.3
 ```
 
-`--depth` sets the number of convolution blocks, from 1 to 5. Each block halves the image, so a depth of 5 reduces the 32x32 image to 1x1.
+`--depth` sets the number of blocks, from 1 to 5. Each block has two convolutions with batch normalization, then halves the image, so a depth of 5 reduces the 32x32 image to 1x1.
 
 ## What to look for
 
@@ -46,7 +46,7 @@ The run is in the project **CIFAR-10**, task **multiclass classification**:
 
 - The loss per step, for the training set.
 - The loss and accuracy per epoch, for the training and validation sets.
-- The trained weights under artifacts, as `model`.
+- The trained model under artifacts, as `model`. It is a TorchScript model that takes 32x32 colour images with values from 0 to 1 and outputs the class probabilities, which sum to 1 for each image. Load it with `torch.jit.load("model.pt")`.
 
 ## Data
 

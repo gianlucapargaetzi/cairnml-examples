@@ -72,13 +72,18 @@ class Augmented(Dataset):
 
 
 def build_model(depth: int, dropout: float) -> nn.Module:
-    """A stack of depth convolution blocks, each halving the image, then a classifier. The channels double per block."""
+    """A stack of depth blocks, each with two convolutions with batch normalization, then a max-pool that halves the image.
+
+    The channels double per block, and the model outputs logits. The saved model applies the softmax to them.
+    """
     layers = []
     channels = 3
     for block in range(depth):
         out_channels = 32 * 2 ** block
-        layers += [nn.Conv2d(channels, out_channels, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2), nn.Dropout2d(dropout)]
-        channels = out_channels
+        for _ in range(2):
+            layers += [nn.Conv2d(channels, out_channels, kernel_size=3, padding=1), nn.BatchNorm2d(out_channels), nn.ReLU()]
+            channels = out_channels
+        layers += [nn.MaxPool2d(2), nn.Dropout(dropout)]
     side = 32 // 2 ** depth
     return nn.Sequential(
         *layers,
@@ -103,9 +108,9 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, loss_fu
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--epochs", type=int, default=40)
-    parser.add_argument("--depth", type=int, default=4, choices=range(1, 6), help="number of convolution blocks, 1 to 5")
-    parser.add_argument("--dropout", type=float, default=0.3, help="dropout rate in the convolution blocks and the classifier")
+    parser.add_argument("--epochs", type=int, default=80)
+    parser.add_argument("--depth", type=int, default=3, choices=range(1, 6), help="number of blocks of two convolutions, 1 to 5")
+    parser.add_argument("--dropout", type=float, default=0.1, help="dropout rate in the convolution blocks and the classifier")
     parser.add_argument("--augment", action=argparse.BooleanOptionalAction, default=True, help="augment the training images")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--lr", type=float, default=0.001)
@@ -172,7 +177,9 @@ def main() -> None:
             f"val loss {val_loss:.3f} acc {val_accuracy:.4f}"
         )
 
-    torch.save(model.state_dict(), "model.pt")
+    # The artifact is a TorchScript model that outputs class probabilities, so it loads without this file.
+    probabilities = nn.Sequential(model.cpu().eval(), nn.Softmax(dim=1))
+    torch.jit.script(probabilities).save("model.pt")
     task.upload_artifact("model", "model.pt")
     task.close()
     print("done: the run is in the web app, project 'CIFAR-10', task 'multiclass classification'")
