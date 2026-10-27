@@ -4,7 +4,7 @@ This example trains a small convolutional network to name the object in a 32x32 
 
 ## Features
 
-- Downloads CIFAR-10 once, about 170 MB.
+- Downloads CIFAR-10 once from Hugging Face, about 120 MB.
 - Holds out 10% of the training images as a validation set, with a fixed seed, so every run uses the same split.
 - Trains a small CNN with settings you can change on the command line.
 - Records the loss of every step, and the loss and accuracy of the training and validation sets after every epoch.
@@ -47,7 +47,7 @@ The run is in the project **CIFAR-10**, task **multiclass classification**:
 
 ## Data
 
-The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky, collected from the 80 Million Tiny Images dataset. Please cite it when you use it:
+The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky, collected from the 80 Million Tiny Images dataset. The training images are downloaded from its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), which is faster to download than the original archive. Please cite it when you use it:
 
 > Krizhevsky, *Learning Multiple Layers of Features from Tiny Images*, 2009. [Technical report](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf)
 

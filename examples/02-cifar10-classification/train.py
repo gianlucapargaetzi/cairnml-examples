@@ -7,16 +7,41 @@ once into --data.
 """
 
 import argparse
+import io
+import urllib.request
 from pathlib import Path
 
+import pyarrow.parquet as pq
 import torch
+from PIL import Image
 from torch import nn
-from torch.utils.data import DataLoader, random_split
-from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, TensorDataset, random_split
+from torchvision.transforms.functional import pil_to_tensor
 
 from cairnml import Task
 
 CLASSES = ["airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
+HF_BASE = "https://huggingface.co/datasets/uoft-cs/cifar10/resolve/main/plain_text"
+TRAIN_FILE = "train-00000-of-00001.parquet"
+
+
+def download(data: Path) -> Path:
+    """The training images as a parquet file in --data, downloaded from Hugging Face once."""
+    target = data / TRAIN_FILE
+    if not target.exists():
+        data.mkdir(parents=True, exist_ok=True)
+        print(f"downloading {TRAIN_FILE} ...")
+        partial = target.with_suffix(".part")
+        urllib.request.urlretrieve(f"{HF_BASE}/{TRAIN_FILE}", partial)
+        partial.rename(target)
+    return target
+
+
+def load_images(path: Path) -> TensorDataset:
+    """The PNG images and labels of a parquet file, as float tensors scaled to 0-1 like transforms.ToTensor."""
+    table = pq.read_table(path).to_pydict()
+    images = torch.stack([pil_to_tensor(Image.open(io.BytesIO(item["bytes"])).convert("RGB")) for item in table["img"]])
+    return TensorDataset(images.float() / 255, torch.tensor(table["label"]))
 
 
 def build_model() -> nn.Module:
@@ -65,7 +90,7 @@ def main() -> None:
 
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    full_train = datasets.CIFAR10(args.data, train=True, download=True, transform=transforms.ToTensor())
+    full_train = load_images(download(args.data))
     val_size = int(len(full_train) * args.val_split)
     train_set, val_set = random_split(
         full_train, [len(full_train) - val_size, val_size], generator=torch.Generator().manual_seed(args.seed),
@@ -89,7 +114,7 @@ def main() -> None:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            logger.report_scalar("loss per step", "train", value=loss.item(), iteration=step)
+            # logger.report_scalar("loss per step", "train", value=loss.item(), iteration=step)
             step += 1
             train_loss += loss.item() * len(labels)
             train_correct += (outputs.argmax(dim=1) == labels).sum().item()

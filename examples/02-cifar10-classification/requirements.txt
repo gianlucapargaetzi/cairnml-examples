@@ -1,3 +1,4 @@
 cairnml
 torch
 torchvision
+pyarrow
