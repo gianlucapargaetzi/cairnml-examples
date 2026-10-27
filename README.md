@@ -12,14 +12,14 @@
 
 # CairnML Examples
 
-Guided examples of what the CairnML platform can do. Each example runs on your own server and records its run there. The examples build on each other: start with the hello world, then read the two COCO Fashion examples, which train the same model on the same images in two different ways.
+Guided examples of what the CairnML platform can do. Each example runs on your own server and records its run there. The examples build on each other: start with the hello world, then the CIFAR-10 classification, then the two COCO Fashion examples, which train the same detector on the same images in two different ways.
 
 ## Features
 
-- Three runnable examples, from a single tracked run to a full training run.
+- Four runnable examples, from a single tracked run to a full training run.
 - Runs appear in the web app, with their parameters, metrics, loss curves and artifacts.
 - The third example reads its data through the dataset registry, so the run records which dataset and revision it used.
-- Examples 2 and 3 train on the same images, so their runs can be compared side by side.
+- Examples 3 and 4 train on the same images, so their runs can be compared side by side.
 
 ## Prerequisites
 
@@ -38,14 +38,15 @@ cairnml init http://<server-ip>
 | Example | What it shows |
 |---|---|
 | [Hello world](examples/01-hello-world) | One run with parameters, a metric curve and an artifact |
-| [COCO Fashion detection](examples/02-coco-fashion-detection) | Training a detector on downloaded data, without a registry |
-| [COCO Fashion through the dataset registry](examples/03-coco-fashion-managed-dataset) | The same training, reading the data through the dataset registry |
+| [CIFAR-10 classification](examples/02-cifar10-classification) | Multiclass classification of small photographs, with a loss curve and test accuracy |
+| [COCO Fashion detection](examples/03-coco-fashion-detection) | Training a detector on downloaded data, without a registry |
+| [COCO Fashion through the dataset registry](examples/04-coco-fashion-managed-dataset) | The same training, reading the data through the dataset registry |
 
 Each example has its own README with the installation steps, the command to run and what to look for in the web app.
 
 ## Compare the runs
 
-Examples 2 and 3 use the same model, settings and images. After both have run, open the **COCO Fashion** project in the web app and compare the two tasks. Their validation mAP curves should be close, and the configuration of the third run shows the dataset, its revision and the registry commit.
+Examples 3 and 4 use the same model, settings and images. After both have run, open the **COCO Fashion** project in the web app and compare the two tasks. Their validation mAP curves should be close, and the configuration of the third run shows the dataset, its revision and the registry commit.
 
 ## Having problems
 
