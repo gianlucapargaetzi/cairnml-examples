@@ -112,7 +112,7 @@ def main() -> None:
     parser.add_argument("--depth", type=int, default=3, choices=range(1, 6), help="number of blocks of two convolutions, 1 to 5")
     parser.add_argument("--dropout", type=float, default=0.1, help="dropout rate in the convolution blocks and the classifier")
     parser.add_argument("--augment", action=argparse.BooleanOptionalAction, default=True, help="augment the training images")
-    parser.add_argument("--batch-size", type=int, default=64)
+    parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--val-split", type=float, default=0.1, help="fraction of the training images kept for validation")
     parser.add_argument("--seed", type=int, default=0)
