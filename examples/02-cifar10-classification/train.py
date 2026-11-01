@@ -119,7 +119,7 @@ def main() -> None:
     parser.add_argument("--data", type=Path, default=Path("cifar10"))
     args = parser.parse_args()
 
-    task = Task.init(project_name="CIFAR-10", task_name="multiclass classification")
+    task = Task.init(project_name="examples", task_name="CIFAR-10 classification")
     task.connect({
         "dataset": "CIFAR-10",
         "epochs": args.epochs,
