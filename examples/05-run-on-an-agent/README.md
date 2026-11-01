@@ -19,6 +19,7 @@ The hello world run, sent to a machine running `cairnml-agent` instead of runnin
 Start the agent first (walk-through, step 3), then from this folder:
 
 ```bash
+pip install -r requirements.txt
 python run_on_agent.py
 ```
 
