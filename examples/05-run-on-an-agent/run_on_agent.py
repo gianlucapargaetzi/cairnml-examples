@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+from tqdm import tqdm
+
 from cairnml import Task
 
 task = Task.init(project_name="examples", task_name="run on an agent")
@@ -12,7 +14,7 @@ task.execute_remotely(queue_name="default")
 settings = task.connect({"greeting": "Hello from an agent!", "steps": 10})
 
 logger = task.get_logger()
-for step in range(settings["steps"]):
+for step in tqdm(range(settings["steps"]), desc="steps", unit="step"):
     logger.report_scalar(title="loss", series="train", value=1.0 / (step + 1), iteration=step)
 
 Path("hello.txt").write_text(settings["greeting"] + "\n")

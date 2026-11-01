@@ -18,6 +18,7 @@ from PIL import Image
 from torch import nn
 from torch.utils.data import DataLoader, Dataset, TensorDataset, random_split
 from torchvision.transforms.functional import pil_to_tensor
+from tqdm import tqdm
 
 from cairnml import Task
 
@@ -31,9 +32,13 @@ def download(data: Path) -> Path:
     target = data / TRAIN_FILE
     if not target.exists():
         data.mkdir(parents=True, exist_ok=True)
-        print(f"downloading {TRAIN_FILE} ...")
         partial = target.with_suffix(".part")
-        urllib.request.urlretrieve(f"{HF_BASE}/{TRAIN_FILE}", partial)
+        with tqdm(desc=f"downloading {TRAIN_FILE}", unit="B", unit_scale=True) as bar:
+            def progress(blocks: int, block_size: int, total: int) -> None:
+                bar.total = total if total > 0 else None
+                bar.update(blocks * block_size - bar.n)
+
+            urllib.request.urlretrieve(f"{HF_BASE}/{TRAIN_FILE}", partial, reporthook=progress)
         partial.rename(target)
     return target
 
@@ -41,8 +46,11 @@ def download(data: Path) -> Path:
 def load_images(path: Path) -> TensorDataset:
     """The PNG images and labels of a parquet file, as float tensors scaled to 0-1 like transforms.ToTensor."""
     table = pq.read_table(path).to_pydict()
-    images = torch.stack([pil_to_tensor(Image.open(io.BytesIO(item["bytes"])).convert("RGB")) for item in table["img"]])
-    return TensorDataset(images.float() / 255, torch.tensor(table["label"]))
+    images = [
+        pil_to_tensor(Image.open(io.BytesIO(item["bytes"])).convert("RGB"))
+        for item in tqdm(table["img"], desc="loading images", unit="img")
+    ]
+    return TensorDataset(torch.stack(images).float() / 255, torch.tensor(table["label"]))
 
 
 def augmentation(seed: int) -> A.Compose:
@@ -98,7 +106,7 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, loss_fu
     """The mean loss and the accuracy of the model on a loader."""
     model.eval()
     total_loss, correct = 0.0, 0
-    for images, labels in loader:
+    for images, labels in tqdm(loader, desc="validation", leave=False):
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         total_loss += loss_function(outputs, labels).item() * len(labels)
@@ -150,10 +158,10 @@ def main() -> None:
     loss_function = nn.CrossEntropyLoss()
 
     step = 0
-    for epoch in range(args.epochs):
+    for epoch in tqdm(range(args.epochs), desc="epochs", unit="epoch"):
         model.train()
         train_loss, train_correct = 0.0, 0
-        for images, labels in train_loader:
+        for images, labels in tqdm(train_loader, desc=f"epoch {epoch + 1}", leave=False):
             images, labels = images.to(device), labels.to(device)
             outputs = model(images)
             loss = loss_function(outputs, labels)
@@ -172,7 +180,7 @@ def main() -> None:
         logger.report_scalar("loss", "val", value=val_loss, iteration=epoch)
         logger.report_scalar("accuracy", "train", value=train_accuracy, iteration=epoch)
         logger.report_scalar("accuracy", "val", value=val_accuracy, iteration=epoch)
-        print(
+        tqdm.write(
             f"epoch {epoch + 1}/{args.epochs}: train loss {train_loss:.3f} acc {train_accuracy:.4f}, "
             f"val loss {val_loss:.3f} acc {val_accuracy:.4f}"
         )
@@ -182,7 +190,7 @@ def main() -> None:
     torch.jit.script(probabilities).save("model.pt")
     task.upload_artifact("model", "model.pt")
     task.close()
-    print("done: the run is in the web app, project 'CIFAR-10', task 'multiclass classification'")
+    print("done: the run is in the web app, project 'examples', task 'CIFAR-10 classification'")
 
 
 if __name__ == "__main__":
