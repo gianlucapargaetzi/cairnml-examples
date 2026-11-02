@@ -9,7 +9,7 @@ The problem is made up but reads like a real one. A small greenhouse uses energy
 - Generates two CSV files from a seed, so the same parameters always give the same data.
 - Reads the CSV files through `adapter.py`, a local adapter in the dataset repository. The check runs it on your machine, and it checks every sample against the CairnML dataset format.
 - Creates a **private** dataset repository on GitHub with one command, and keeps the files in the dataset storage of your server, with DVC. The git history holds only the metadata.
-- Makes the repository visible to the framework through the CairnML GitHub App, so the server can read it for jobs and list it.
+- Makes the repository visible to the framework through a GitHub App of your server's organisation, so the server can read it for jobs and list it.
 - Reads one version of the dataset in training code with `Dataset.get`, and records the repository, the commit and the content hash on the run.
 
 ## Prerequisites
@@ -17,7 +17,7 @@ The problem is made up but reads like a real one. A small greenhouse uses energy
 - Python 3.9 or newer, and [git](https://git-scm.com).
 - The [SDK connected to your server](../../README.md#prerequisites). The dataset storage is on the server, so `cairnml dataset create` needs the connection.
 - The [GitHub command line](https://cli.github.com), `gh`, logged in with `gh auth login`. The dataset repository is created with it, under your GitHub account.
-- The CairnML GitHub App link from your server operator. See step 6.
+- The GitHub App of the organisation that runs your CairnML server, installed on the dataset repository. See step 6.
 
 ## Step 1: Install the tools
 
@@ -77,23 +77,23 @@ The adapter declares two labels. `energy` is a `number` label: one finite number
 One command creates the repository on GitHub, copies the files in, checks them, commits them with their footprint, pushes, and protects the default branch:
 
 ```bash
-cairnml dataset create greenhouse-data --from ../greenhouse-export --adapter local --storage s3 --path ../greenhouse-data
+cairnml dataset create greenhouse-data --from ../greenhouse-export --adapter local --storage s3
 ```
 
 - `greenhouse-data` is the name of the new GitHub repository. It is created **private** by default; the flag `--public` would make it public, and you do not need it.
 - `--from` is the folder from step 3, and `--adapter local` says that its `adapter.py` is the adapter.
 - `--storage s3` keeps the files in the dataset storage of your server, through DVC. Use `--storage lfs` to keep them in the GitHub LFS of the repository instead. The choice cannot be changed later.
-- `--path` is the local folder that holds the repository. Only the command uses it: the examples that follow read the repository by its URL and commit, not from this folder.
+- The local copy of the repository is created in the folder you run the command from, under the name `greenhouse-data`. Run it from this example folder, so the copy is `examples/04-regression-dataset/greenhouse-data`. That folder is a git repository of its own and is ignored by the examples repository. The examples that follow read the dataset by its URL and commit, not from this folder.
 
-The command prints the address of the repository, `https://github.com/<your-user>/greenhouse-data.git`, and the first commit. If it warns that the branch is not protected, protect it by hand; `cairnml dataset doctor` shows what is missing.
+The command prints the address of the repository, `https://github.com/<your-user>/greenhouse-data.git`, the local folder `greenhouse-data`, and the first commit. If it warns that the branch is not protected, protect it by hand; `cairnml dataset doctor` shows what is missing.
 
 ## Step 5: Look at the dataset repository
 
 The dataset is a git repository with its commit. Look at the history and at the commit's files:
 
 ```bash
-git -C ../greenhouse-data log --oneline
-git -C ../greenhouse-data show --stat HEAD
+git -C greenhouse-data log --oneline
+git -C greenhouse-data show --stat HEAD
 ```
 
 You should see one commit, `Add dataset`. Its files are `adapter.py`, `dataset.yaml` (which says `adapter: local` and `storage: s3`), `dataset.lock.json` (the footprint, the record that the data was checked), `data.dvc` (which lists the files in `data/` by their hash), and the `data/` folder. The CSV files themselves are in the dataset storage, and git holds their hashes.
@@ -101,25 +101,25 @@ You should see one commit, `Add dataset`. Its files are `adapter.py`, `dataset.y
 Record the two values that identify this version. The training code needs them:
 
 ```bash
-REPO=$(git -C ../greenhouse-data remote get-url origin)
-COMMIT=$(git -C ../greenhouse-data rev-parse HEAD)
+REPO=$(git -C greenhouse-data remote get-url origin)
+COMMIT=$(git -C greenhouse-data rev-parse HEAD)
 echo "$REPO $COMMIT"
 ```
 
 Keep them. The next examples take the repository URL and the commit as parameters, and they do not read any folder on your machine.
 
-## Step 6: Install the CairnML GitHub App and check that the framework sees the dataset
+## Step 6: Install the GitHub App and check that the framework sees the dataset
 
-The server reads a private repository through the CairnML GitHub App. The server finds your datasets through the same App, so the repository is listed and can be read for jobs only once the App is installed on it.
+The organisation that runs the CairnML server creates its GitHub App once, and installs it on each repository that jobs or agents must read, including this dataset repository. The server finds your datasets through the same App, so the repository is listed and can be read for jobs only once the App is installed on it.
 
-1. Get the App link from your server operator, `<App link from your CairnML server's README>`. Your CairnML server's README describes the App; the link is the one for your server.
-2. Open the link and install the App on the GitHub account that owns the repository: the account you logged in with `gh auth login`.
+1. Ask the organisation that runs your CairnML server for its GitHub App, and for the GitHub account where it is installed.
+2. Install the App on the GitHub account that owns the repository: the account you logged in with `gh auth login`.
 3. Select the repository `greenhouse-data` and confirm.
 
 Then check, from this example folder, that the dataset tools see the repository and its GitHub settings:
 
 ```bash
-cairnml dataset doctor --path ../greenhouse-data
+cairnml dataset doctor --path greenhouse-data
 ```
 
 `doctor` lists each check as `ok`, `FAIL` or `--`. It checks the set-up of the repository and the GitHub settings that publishing relies on. It does not check the App: that is checked in the web app, below.
