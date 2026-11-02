@@ -6,3 +6,6 @@ hello.txt
 # downloaded datasets
 **/coco-fashion-web/
 **/cifar10/
+**/.venv/
+**/venv/
+
