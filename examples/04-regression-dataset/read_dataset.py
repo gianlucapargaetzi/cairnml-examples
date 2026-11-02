@@ -4,7 +4,7 @@
 
 Dataset.get downloads one version of the dataset into the cache, once, and records the repository, the commit and the
 content hash on the task. The run therefore shows which data it used. Pass a commit, not a branch, to rerun the same
-data later. The repository can be a URL or the path of a local clone.
+data later.
 
 The labels come from the adapter in the repository: the adapter runs again here, into a temporary folder, and each
 sample is read back with Sample.label. The energy is a float and the features are a dict of the five columns.
@@ -34,7 +34,7 @@ def read_samples(data: Dataset):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Read the greenhouse dataset and record it with a run.")
-    parser.add_argument("repository", help="URL of the dataset repository, or the path of a local clone")
+    parser.add_argument("repository", help="URL of the dataset repository, for example https://github.com/<you>/greenhouse-data.git")
     parser.add_argument("commit", help="commit of the dataset repository")
     args = parser.parse_args()
 
