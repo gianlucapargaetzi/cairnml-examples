@@ -16,7 +16,7 @@ Guided examples of what the CairnML platform can do. Each example runs on your o
 
 ## Features
 
-- Four runnable examples, from a single tracked run to a full training run, and a run sent to an agent.
+- Ten runnable examples: from a single tracked run to a full training run, a versioned dataset, a workflow of steps, reports, a hyperparameter search, the task lifecycle, a run imported from another project, and a run sent to an agent.
 - Runs appear in the web app, with their parameters, metrics, loss curves and artifacts.
 - The third example reads its data through the dataset registry, so the run records which dataset and revision it used.
 - Examples 2 and 3 train on the same images, so their runs can be compared side by side.
@@ -40,7 +40,13 @@ cairnml init http://<server-ip>
 | [Hello world](examples/01-hello-world) | One run with parameters, a metric curve and an artifact |
 | [CIFAR-10 classification](examples/02-cifar10-classification) | Multiclass classification of small photographs, with a loss curve and test accuracy |
 | [CIFAR-10 through the dataset registry](examples/03-cifar-10-managed-dataset) | The same training as the CIFAR-10 classification, reading the data through the dataset registry |
-| [Run on an agent](examples/05-run-on-an-agent) | The hello world run, executed on a machine running `cairnml-agent` through the `default` queue |
+| [A regression dataset in its own repository](examples/04-regression-dataset) | Generating a dataset from a seed, putting it in a dataset repository with `cairnml dataset`, and reading it through the SDK |
+| [A workflow of three steps](examples/05-workflow-pipeline) | Preparing data, training and evaluating as one pipeline, with each step as its own task |
+| [Hyperparameter optimisation with Optuna](examples/06-hyperparameter-optimisation) | A search over learning rate, layer size and batch size, with Optuna on the controller and the trials on a GPU queue |
+| [Reports and plots](examples/07-reports-and-plots) | Scatter plots, histograms, tables, confusion matrices and images recorded next to the scalars |
+| [The life of a task](examples/08-task-lifecycle) | Cloning, queueing, archiving, moving, publishing and deleting a task |
+| [Import a run from a project that does not use CairnML](examples/09-import-external-run) | Adapting a legacy training folder to CairnML's import format and uploading it |
+| [Run on an agent](examples/10-run-on-an-agent) | The hello world run, executed on a machine running `cairnml-agent` through the `default` queue |
 
 Each example has its own README with the installation steps, the command to run and what to look for in the web app.
 
@@ -86,7 +92,7 @@ cairnml-agent daemon --queue default --docker
 The agent clones the repository from GitHub, so commit and push your changes first. Then:
 
 ```bash
-cd examples/05-run-on-an-agent
+cd examples/10-run-on-an-agent
 pip install -r requirements.txt
 python run_on_agent.py
 ```
@@ -106,7 +112,7 @@ Open task **run on an agent**:
 - **Console:** the script's output as the agent ran it, ending with the `done:` line.
 - **Configuration:** the `greeting` and `steps` parameters.
 
-If the task stays **Queued**, no agent is listening on the `default` queue. Check that the `daemon` command from step 3 is running on the agent's machine. The [example 5 README](examples/05-run-on-an-agent) lists the other prerequisites.
+If the task stays **Queued**, no agent is listening on the `default` queue. Check that the `daemon` command from step 3 is running on the agent's machine. The [example 10 README](examples/10-run-on-an-agent) lists the other prerequisites.
 
 ## Compare the runs
 

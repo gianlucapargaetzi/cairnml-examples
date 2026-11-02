@@ -54,4 +54,4 @@ The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsk
 
 ## Next steps
 
-Continue with [Run on an agent](../05-run-on-an-agent), which sends a run to a machine running `cairnml-agent`.
+Continue with [Run on an agent](../10-run-on-an-agent), which sends a run to a machine running `cairnml-agent`.
