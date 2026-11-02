@@ -40,7 +40,7 @@ cairnml init http://<server-ip>
 | [Hello world](examples/01-hello-world) | One run with parameters, a metric curve and an artifact |
 | [CIFAR-10 classification](examples/02-cifar10-classification) | Multiclass classification of small photographs, with a loss curve and test accuracy |
 | [CIFAR-10 through the dataset registry](examples/03-cifar-10-managed-dataset) | The same training as the CIFAR-10 classification, reading the data through the dataset registry |
-| [A regression dataset in its own repository](examples/04-regression-dataset-dvc) | Generating a dataset from a seed, putting it in a dataset repository with `cairnml dataset`, and reading it through the SDK |
+| [A regression dataset in its own repository](examples/04-regression-dataset) | Generating a dataset from a seed, putting it in a dataset repository with `cairnml dataset`, and reading it through the SDK |
 | [A workflow of three steps](examples/05-workflow-pipeline) | Preparing data, training and evaluating as one pipeline, with each step as its own task |
 | [Hyperparameter optimisation with Optuna](examples/06-hyperparameter-optimisation) | A search over learning rate, layer size and batch size, with Optuna on the controller and the trials on a GPU queue |
 | [Reports and plots](examples/07-reports-and-plots) | Scatter plots, histograms, tables, confusion matrices and images recorded next to the scalars |

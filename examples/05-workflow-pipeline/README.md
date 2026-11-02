@@ -12,7 +12,7 @@ The steps are the same as in the earlier examples. What is new is how they are o
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset-dvc) is done. It created the dataset repository `examples/greenhouse-data`, and the first step reads the dataset from it.
+- [Example 4](../04-regression-dataset) is done. It created the dataset repository `examples/greenhouse-data`, and the first step reads the dataset from it.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
 ## Step 1: Install the packages
