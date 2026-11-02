@@ -22,7 +22,7 @@ The problem is made up but reads like a real one. A small greenhouse uses energy
 Create a virtual environment and install the requirements:
 
 ```bash
-cd examples/04-regression-dataset-dvc
+cd examples/04-regression-dataset
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
