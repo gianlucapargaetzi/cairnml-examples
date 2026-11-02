@@ -110,7 +110,7 @@ def run_workflow(dataset_repo: str, dataset_commit: str, lr: float = 0.01, hidde
     data_dir = prepare_data(dataset_repo, dataset_commit)
     model_path, val_mse = train(data_dir, lr, hidden, epochs)
     test_r2 = evaluate(data_dir, model_path)
-    print(f"workflow done: validation mse {val_mse:.4f}, test R2 {test_r2:.4f}")
+    print(f"workflow done: validation mse {float(val_mse):.4f}, test R2 {float(test_r2):.4f}")
 
 
 def main() -> None:
