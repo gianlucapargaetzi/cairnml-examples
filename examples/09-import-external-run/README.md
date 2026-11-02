@@ -1,5 +1,7 @@
 # Import a run from a project that does not use CairnML
 
+Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`, or, for the legacy trainer, its `data/` folder with `--data`.
+
 This example brings a training run into CairnML that was made without CairnML. The run comes from a small "legacy" project: a plain training script that writes its own CSV log and its own checkpoint files. You will write an adapter that rearranges those files into the layout CairnML imports, and then import the run in the web app.
 
 You do not need to change the legacy project to make this work. Everything the adapter needs is in the run folder.
@@ -12,7 +14,7 @@ You do not need to change the legacy project to make this work. Everything the a
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) has created the dataset repository `examples/greenhouse-data`. The legacy training reads the `data/` folder of its clone.
+- [Example 4](../04-regression-dataset) has created the dataset repository. The legacy training reads the CSV files from the `data/` folder of its clone, which you pass with `--data`.
 - The legacy project does not import CairnML, so it does not read the dataset through the SDK. For another version of the dataset, `cairnml dataset get <repository> <commit>` downloads it and prints the folder to pass with `--data`.
 - The SDK is installed, for the `cairnml import prepare` command. It does not need a server connection to build the ZIP, but you need one for the upload in step 7.
 
@@ -43,9 +45,11 @@ These names belong to this project only. CairnML does not know them, so it canno
 
 ```bash
 cd legacy_project
-python train_legacy.py --epochs 30
+python train_legacy.py --data <clone>/data --epochs 30
 cd ..
 ```
+
+`<clone>` is the dataset repository of Example 4, the one that holds `data/train.csv` and `data/test.csv`. Give `--data` as a path that works from `legacy_project/`, or as an absolute path.
 
 The script prints the folder it wrote, for example `run written to runs/greenhouse_mlp_20261101_120000`. Its final line gives the best validation loss and the final R².
 

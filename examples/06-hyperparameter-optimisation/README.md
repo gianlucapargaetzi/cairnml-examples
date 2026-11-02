@@ -1,5 +1,7 @@
 # Hyperparameter optimisation with Optuna
 
+Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`.
+
 This example searches the best settings for a neural network. It trains a small regression model on the greenhouse dataset from [Example 4](../04-regression-dataset), and it tries many combinations of learning rate, layer size and batch size to find the one with the lowest validation error.
 
 The search is split in two parts, and each part runs where it is cheapest:
@@ -15,7 +17,7 @@ The search is split in two parts, and each part runs where it is cheapest:
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) has created the dataset repository `examples/greenhouse-data`. This example reads it with `Dataset.get`.
+- [Example 4](../04-regression-dataset) has created the dataset repository. This example reads it with `Dataset.get`, through the `--repo` you pass.
 - The SDK is connected to your server, and the packages are installed (step 1).
 - For the full search, an agent on a queue such as `gpu` (see step 5). You can try the whole example on one machine first with `--local`.
 
@@ -33,10 +35,10 @@ pip install -r requirements.txt
 Run the training once with its default settings:
 
 ```bash
-python train_regression.py
+python train_regression.py --repo <clone>
 ```
 
-By default the script reads the clone that Example 4 created, at its HEAD commit. To read another version, pass its repository and commit: `python train_regression.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`.
+Pass the local clone that Example 4 created with `--repo`. `--commit` picks the version to read, and by default it is the HEAD of the clone. To read another version, pass its URL and commit: `python train_regression.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`.
 
 The script creates the task **regression baseline** in the project **examples**. It trains for 30 epochs and prints `done: validation mse ...`. Look at the task in the web app: the **Configuration** tab lists `lr`, `hidden`, `batch_size` and `epochs`, and the scalar `mse` is plotted for the training and validation sets.
 

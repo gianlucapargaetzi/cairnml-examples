@@ -1,5 +1,7 @@
 # A workflow of three steps
 
+Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`.
+
 This example turns a script into a workflow. The workflow has three steps that depend on each other: prepare the data, train a model, and evaluate the model. CairnML runs each step as its own task, and shows the whole workflow as one run with its steps as a graph.
 
 The steps are the same as in the earlier examples. What is new is how they are organised: each step is an ordinary function, and one more function describes the order.
@@ -12,7 +14,7 @@ The steps are the same as in the earlier examples. What is new is how they are o
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) is done. It created the dataset repository `examples/greenhouse-data`, and the first step reads the dataset from it.
+- [Example 4](../04-regression-dataset) is done. It created the dataset repository, and the first step reads the dataset from it through `--repo`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
 ## Step 1: Install the packages
@@ -37,7 +39,7 @@ Open `pipeline.py`. Each step is a function with a decorator:
 The function `run_workflow` is the pipeline. It does not train anything itself. It only calls the steps, in order:
 
 ```python
-data_dir = prepare_data(dataset_folder)
+data_dir = prepare_data(dataset_repo, dataset_commit)
 model_path, val_mse = train(data_dir, lr, hidden, epochs)
 test_r2 = evaluate(data_dir, model_path)
 ```
@@ -48,17 +50,13 @@ Two rules in the code matter. Each step imports what it needs inside its own fun
 
 ## Step 3: Run the workflow on this machine
 
-The dataset is given by its repository and commit. By default the script uses the clone that Example 4 created, at its HEAD commit. To use another version, pass the commit, or a URL of the repository:
+The dataset is given by its repository. Pass the local clone that Example 4 created with `--repo`. `--commit` picks the version to read, and by default it is the HEAD of the clone. Then run the workflow:
 
 ```bash
-python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>
+python pipeline.py --repo <clone> --local
 ```
 
-Then run the workflow:
-
-```bash
-python pipeline.py --local
-```
+To read another version, pass its URL and commit: `--repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`.
 
 With `--local`, every step runs as a separate task on this machine, one after the other. The script prints the result at the end:
 
@@ -71,7 +69,7 @@ Your numbers will differ a little, depending on your machine.
 To try different settings:
 
 ```bash
-python pipeline.py --local --lr 0.003 --hidden 64 --epochs 50
+python pipeline.py --repo <clone> --local --lr 0.003 --hidden 64 --epochs 50
 ```
 
 ## Step 4: Look at the run in the web app

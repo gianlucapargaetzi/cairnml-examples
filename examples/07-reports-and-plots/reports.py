@@ -9,10 +9,11 @@ Scalars (one number per step) are only part of a run. This script also records:
     an image             a figure saved with matplotlib: residuals against outside temperature
     a text               a short summary, shown in the Console tab
 
-    python reports.py                 # the default settings, 30 epochs
+    python reports.py --repo <clone>                # the default settings, 30 epochs
     python reports.py --repo <url> --commit <sha>   # another version of the dataset, read with the SDK
 
-By default the dataset is the clone that Example 4 created, at its HEAD commit.
+Run Example 4 first, then pass its dataset repository with --repo (a URL or the local clone).
+--commit is the version to read (default: the HEAD of the local clone).
 """
 
 import argparse
@@ -29,18 +30,18 @@ from cairnml.datasets import Dataset
 
 FEATURES = ["outside_temp", "light", "humidity", "co2", "hour"]
 TARGET = "energy"
-# The dataset repository that Example 4 created next to it.
-DEFAULT_REPO = str(Path(__file__).resolve().parent.parent / "greenhouse-data")
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--repo", default=DEFAULT_REPO, help="the dataset repository: a URL, or a local clone")
+    parser.add_argument("--repo", help="the dataset repository: a URL, or a local clone")
     parser.add_argument("--commit", help="the commit of the dataset (default: the HEAD of the local clone)")
     parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=32)
     args = parser.parse_args()
+    if args.repo is None:
+        parser.error("run examples/04-regression-dataset first, then pass its dataset repository with --repo")
     if args.commit is None:
         args.commit = subprocess.run(
             ["git", "-C", args.repo, "rev-parse", "HEAD"], capture_output=True, text=True, check=True

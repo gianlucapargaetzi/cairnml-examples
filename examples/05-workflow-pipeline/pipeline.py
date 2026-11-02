@@ -4,25 +4,23 @@ Each function marked as a component runs as its own task in CairnML, with its ow
 function that is marked as the pipeline connects them: it decides the order and passes the outputs of one step to the
 next. The steps only import what they use inside their own bodies, because CairnML runs each of them on its own.
 
-    python pipeline.py --local                # the whole workflow on this machine, each step as a sub-process task
+    python pipeline.py --repo <clone> --local # the whole workflow on this machine, each step as a sub-process task
     python pipeline.py --repo https://github.com/<you>/greenhouse-data.git --commit <sha>
                                               # each step is queued on DEFAULT_QUEUE, and an agent runs it
 
-The dataset is the greenhouse dataset of Example 4. By default it is the clone that Example 4 created, at its HEAD commit.
+The dataset is the greenhouse dataset of Example 4. Run Example 4 first, then pass its dataset repository with --repo,
+as a URL or as the local clone. --commit is the version to read (default: the HEAD of the local clone).
 An agent cannot read a folder on your machine, so for the queued run pass the repository URL and a commit.
 """
 
 import argparse
 import subprocess
-from pathlib import Path
 
 from cairnml.automation import PipelineDecorator
 
 PROJECT = "examples"
 # The queue whose agents run the steps. Use a queue with a GPU agent to train on the GPU.
 DEFAULT_QUEUE = "default"
-# The dataset repository that Example 4 created next to it: a local clone, read at its HEAD commit by default.
-DEFAULT_REPO = str(Path(__file__).resolve().parent.parent / "greenhouse-data")
 
 
 @PipelineDecorator.component(return_values=["data_dir"], execution_queue=DEFAULT_QUEUE)
@@ -116,12 +114,14 @@ def run_workflow(dataset_repo: str, dataset_commit: str, lr: float = 0.01, hidde
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--local", action="store_true", help="run every step on this machine")
-    parser.add_argument("--repo", default=DEFAULT_REPO, help="the dataset repository: a URL, or a local clone")
+    parser.add_argument("--repo", help="the dataset repository: a URL, or a local clone")
     parser.add_argument("--commit", help="the commit of the dataset (default: the HEAD of the local clone)")
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=32)
     parser.add_argument("--epochs", type=int, default=30)
     args = parser.parse_args()
+    if args.repo is None:
+        parser.error("run examples/04-regression-dataset first, then pass its dataset repository with --repo")
     commit = args.commit or subprocess.run(
         ["git", "-C", args.repo, "rev-parse", "HEAD"], capture_output=True, text=True, check=True
     ).stdout.strip()

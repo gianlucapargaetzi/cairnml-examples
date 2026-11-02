@@ -11,10 +11,11 @@ It trains a small network on the greenhouse dataset of Example 4 and writes one 
 The file names and the column names are this project's own. The export script in ../export_to_cairnml.py turns such a
 folder into the layout CairnML imports.
 
-    python train_legacy.py --epochs 20
+    python train_legacy.py --data <clone>/data --epochs 20
     python train_legacy.py --data $(cairnml dataset get <repository> <commit>)   # another version of the dataset
 
---data is the folder with train.csv and test.csv. By default it is the data/ folder of the clone that Example 4 created.
+--data is required: the folder with train.csv and test.csv, the data/ folder of the dataset repository that Example 4
+created. Run Example 4 first.
 """
 
 import argparse
@@ -27,18 +28,20 @@ from torch import nn
 
 FEATURES = ["outside_temp", "light", "humidity", "co2", "hour"]
 TARGET = "energy"
-DEFAULT_DATA = Path(__file__).resolve().parent.parent.parent / "greenhouse-data" / "data"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--data", type=Path, default=DEFAULT_DATA)
+    parser.add_argument("--data", type=Path, help="the data/ folder of the dataset repository of Example 4")
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=16)
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--out", type=Path, default=Path("runs"))
     args = parser.parse_args()
+    if args.data is None:
+        parser.error("run examples/04-regression-dataset first, then pass the data/ folder of its dataset repository "
+                     "with --data")
 
     torch.manual_seed(0)
     train = pd.read_csv(args.data / "train.csv")
