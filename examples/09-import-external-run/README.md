@@ -1,6 +1,6 @@
 # Import a run from a project that does not use CairnML
 
-Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`, or, for the legacy trainer, its `data/` folder with `--data`.
+Run Example 4 first: it creates the greenhouse dataset as a private repository. Pass its repository URL with `--repo` and its commit with `--commit`.
 
 This example brings a training run into CairnML that was made without CairnML. The run comes from a small "legacy" project: a plain training script that writes its own CSV log and its own checkpoint files. You will write an adapter that rearranges those files into the layout CairnML imports, and then import the run in the web app.
 
@@ -14,9 +14,8 @@ You do not need to change the legacy project to make this work. Everything the a
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) has created the dataset repository. The legacy training reads the CSV files from the `data/` folder of its clone, which you pass with `--data`.
-- The legacy project does not import CairnML, so it does not read the dataset through the SDK. For another version of the dataset, `cairnml dataset get <repository> <commit>` downloads it and prints the folder to pass with `--data`.
-- The SDK is installed, for the `cairnml import prepare` command. It does not need a server connection to build the ZIP, but you need one for the upload in step 7.
+- [Example 4](../04-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`.
+- The SDK is installed, for `Dataset.get` and for the `cairnml import prepare` command. Building the ZIP does not need a server connection, but reading the dataset and the upload in step 7 do.
 
 ## Step 1: Install the packages
 
@@ -45,11 +44,11 @@ These names belong to this project only. CairnML does not know them, so it canno
 
 ```bash
 cd legacy_project
-python train_legacy.py --data <clone>/data --epochs 30
+python train_legacy.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --epochs 30
 cd ..
 ```
 
-`<clone>` is the dataset repository of Example 4, the one that holds `data/train.csv` and `data/test.csv`. Give `--data` as a path that works from `legacy_project/`, or as an absolute path.
+The repository URL and the commit are the ones Example 4 recorded. The script reads `train.csv` and `test.csv` from the `data/` folder of that version, which `Dataset.get` downloads into your cache. Without `--repo` or `--commit` it stops with the message `run examples/04-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
 
 The script prints the folder it wrote, for example `run written to runs/greenhouse_mlp_20261101_120000`. Its final line gives the best validation loss and the final R².
 
@@ -61,7 +60,7 @@ CairnML imports a run folder with a fixed layout. Look at the table below, which
 
 | Legacy file or column | CairnML name | What CairnML does with it |
 |---|---|---|
-| `settings.txt`, `name = value` | `args.yaml`, with `learning_rate` and similar | stored as parameters in the **Args** section of the task |
+| `settings.txt`, `name = value` | `args.yaml`, with `learning_rate`, `data_repository`, `data_commit` and similar | stored as parameters in the **Args** section of the task |
 | `log.csv`, `Epoch` | `epoch` | the step of every scalar |
 | `log.csv`, `Train Loss` | `loss/train` | the scalar **loss**, series **train** |
 | `log.csv`, `Val Loss` | `loss/val` | the scalar **loss**, series **val** |

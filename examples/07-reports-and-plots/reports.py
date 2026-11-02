@@ -9,15 +9,13 @@ Scalars (one number per step) are only part of a run. This script also records:
     an image             a figure saved with matplotlib: residuals against outside temperature
     a text               a short summary, shown in the Console tab
 
-    python reports.py --repo <clone>                # the default settings, 30 epochs
-    python reports.py --repo <url> --commit <sha>   # another version of the dataset, read with the SDK
+    python reports.py --repo <url> --commit <sha>   # the default settings, 30 epochs
 
-Run Example 4 first, then pass its dataset repository with --repo (a URL or the local clone).
---commit is the version to read (default: the HEAD of the local clone).
+Run Example 4 first, then pass its dataset repository URL with --repo and the commit with --commit. The script reads
+that version with Dataset.get.
 """
 
 import argparse
-import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -34,18 +32,16 @@ TARGET = "energy"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--repo", help="the dataset repository: a URL, or a local clone")
-    parser.add_argument("--commit", help="the commit of the dataset (default: the HEAD of the local clone)")
+    parser.add_argument("--repo", help="URL of the dataset repository from Example 4")
+    parser.add_argument("--commit", help="the commit of the dataset repository from Example 4")
     parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=32)
     args = parser.parse_args()
     if args.repo is None:
-        parser.error("run examples/04-regression-dataset first, then pass its dataset repository with --repo")
+        parser.error("run examples/04-regression-dataset first, then pass its dataset repository URL with --repo")
     if args.commit is None:
-        args.commit = subprocess.run(
-            ["git", "-C", args.repo, "rev-parse", "HEAD"], capture_output=True, text=True, check=True
-        ).stdout.strip()
+        parser.error("run examples/04-regression-dataset first, then pass the commit of its dataset with --commit")
     return args
 
 

@@ -1,6 +1,6 @@
 # A workflow of three steps
 
-Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`.
+Run Example 4 first: it creates the greenhouse dataset as a private repository. Pass its repository URL with `--repo` and its commit with `--commit`.
 
 This example turns a script into a workflow. The workflow has three steps that depend on each other: prepare the data, train a model, and evaluate the model. CairnML runs each step as its own task, and shows the whole workflow as one run with its steps as a graph.
 
@@ -14,7 +14,7 @@ The steps are the same as in the earlier examples. What is new is how they are o
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) is done. It created the dataset repository, and the first step reads the dataset from it through `--repo`.
+- [Example 4](../04-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The first step reads that version with `Dataset.get`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
 ## Step 1: Install the packages
@@ -50,13 +50,13 @@ Two rules in the code matter. Each step imports what it needs inside its own fun
 
 ## Step 3: Run the workflow on this machine
 
-The dataset is given by its repository. Pass the local clone that Example 4 created with `--repo`. `--commit` picks the version to read, and by default it is the HEAD of the clone. Then run the workflow:
+The dataset is given by its repository URL and commit, the ones Example 4 recorded. Run the workflow:
 
 ```bash
-python pipeline.py --repo <clone> --local
+python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --local
 ```
 
-To read another version, pass its URL and commit: `--repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`.
+To read another version, pass its commit. Without `--repo` or `--commit` the script stops with the message `run examples/04-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
 
 With `--local`, every step runs as a separate task on this machine, one after the other. The script prints the result at the end:
 
@@ -69,7 +69,7 @@ Your numbers will differ a little, depending on your machine.
 To try different settings:
 
 ```bash
-python pipeline.py --repo <clone> --local --lr 0.003 --hidden 64 --epochs 50
+python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --local --lr 0.003 --hidden 64 --epochs 50
 ```
 
 ## Step 4: Look at the run in the web app
@@ -96,7 +96,7 @@ cairnml-agent daemon --queue gpu --docker --gpus 0
 
 Every step gets the same queue in this example. If you want the training on a GPU and the rest on a CPU queue, set `execution_queue` on the `train` step alone.
 
-**Data for the agents.** An agent cannot read the clone on your machine, so pass the URL of the dataset repository and a commit, as in the command above. The first step reads that commit with `Dataset.get`, the same way on your machine and on the agent. Push the dataset repository first, so the commit is on GitHub.
+**Data for the agents.** An agent reads the dataset repository by its URL and commit, the same way as your machine does. The repository is private, so the CairnML GitHub App must be installed on it (Example 4, step 6). In a job, the agent then gets a read-only token for that repository.
 
 ## What to look for
 

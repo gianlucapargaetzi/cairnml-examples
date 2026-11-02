@@ -1,6 +1,6 @@
 # Hyperparameter optimisation with Optuna
 
-Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`.
+Run Example 4 first: it creates the greenhouse dataset as a private repository. Pass its repository URL with `--repo` and its commit with `--commit`.
 
 This example searches the best settings for a neural network. It trains a small regression model on the greenhouse dataset from [Example 4](../04-regression-dataset), and it tries many combinations of learning rate, layer size and batch size to find the one with the lowest validation error.
 
@@ -17,7 +17,7 @@ The search is split in two parts, and each part runs where it is cheapest:
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) has created the dataset repository. This example reads it with `Dataset.get`, through the `--repo` you pass.
+- [Example 4](../04-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The training reads that version with `Dataset.get`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 - For the full search, an agent on a queue such as `gpu` (see step 5). You can try the whole example on one machine first with `--local`.
 
@@ -35,10 +35,10 @@ pip install -r requirements.txt
 Run the training once with its default settings:
 
 ```bash
-python train_regression.py --repo <clone>
+python train_regression.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>
 ```
 
-Pass the local clone that Example 4 created with `--repo`. `--commit` picks the version to read, and by default it is the HEAD of the clone. To read another version, pass its URL and commit: `python train_regression.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`.
+Pass the repository URL and the commit that Example 4 recorded. Without either one the script stops with the message `run examples/04-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
 
 The script creates the task **regression baseline** in the project **examples**. It trains for 30 epochs and prints `done: validation mse ...`. Look at the task in the web app: the **Configuration** tab lists `lr`, `hidden`, `batch_size` and `epochs`, and the scalar `mse` is plotted for the training and validation sets.
 
@@ -87,7 +87,7 @@ python hpo.py --base-task-id <task-id> --queue gpu --trials 20 --concurrent 2
 
 `--concurrent 2` runs two trials at the same time. Optuna waits for their results before it proposes the next settings, so more concurrent trials are faster but learn a little less from each result.
 
-**Data for the trials.** An agent cannot read the clone on your machine. Create the base task with the URL of the dataset repository and a commit, as in step 2: `python train_regression.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`. Each trial then reads that commit with `Dataset.get`, the same way the base task does, so the agent needs to reach the repository and its dataset storage.
+**Data for the trials.** An agent reads the dataset by the URL and commit that the base task holds, the same way your machine does. Each trial copies those values from the base task, and reads the commit with `Dataset.get`. The repository is private, so the CairnML GitHub App must be installed on it (Example 4, step 6), and in a job the agent gets a read-only token for that repository.
 
 ## Step 6: Compare the results
 

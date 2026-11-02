@@ -1,6 +1,6 @@
 # Reports and plots
 
-Run Example 4 first: it generates the greenhouse dataset in its own repository. Pass that repository to this example with `--repo`.
+Run Example 4 first: it creates the greenhouse dataset as a private repository. Pass its repository URL with `--repo` and its commit with `--commit`.
 
 A scalar is one number per step, such as the error after each epoch. Many questions need more than that: where does the model go wrong, is its error biased, which hours are hard? This example trains the greenhouse model of [Example 4](../04-regression-dataset) and records six kinds of report next to its scalars. You will see each one in the web app.
 
@@ -12,7 +12,7 @@ A scalar is one number per step, such as the error after each epoch. Many questi
 
 ## Before you start
 
-- [Example 4](../04-regression-dataset) has created the dataset repository. This example reads it with `Dataset.get`, through the `--repo` you pass.
+- [Example 4](../04-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The script reads that version with `Dataset.get`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
 ## Step 1: Install the packages
@@ -27,10 +27,10 @@ pip install -r requirements.txt
 ## Step 2: Run the script
 
 ```bash
-python reports.py --repo <clone>
+python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>
 ```
 
-Pass the local clone that Example 4 created with `--repo`. `--commit` picks the version to read, and by default it is the HEAD of the clone. To read another version, pass its URL and commit: `python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>`.
+Pass the repository URL and the commit that Example 4 recorded. Without either one the script stops with the message `run examples/04-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
 
 The script trains for 30 epochs, then records the reports, and finishes with `done: the reports are in the web app, project 'examples', task 'reports and plots'`. It also saves `residuals.png` next to the script, which is the figure it uploads.
 
@@ -66,7 +66,7 @@ Open the project **examples**, task **reports and plots**. Look at each place:
 Run the script again with a different setting, for example:
 
 ```bash
-python reports.py --repo <clone> --epochs 60 --hidden 64
+python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --epochs 60 --hidden 64
 ```
 
 Open both tasks, and compare their scatter plots and residual histograms side by side. A better model has points closer to the diagonal and a narrower histogram.

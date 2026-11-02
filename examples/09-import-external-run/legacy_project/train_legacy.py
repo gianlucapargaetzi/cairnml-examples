@@ -11,11 +11,12 @@ It trains a small network on the greenhouse dataset of Example 4 and writes one 
 The file names and the column names are this project's own. The export script in ../export_to_cairnml.py turns such a
 folder into the layout CairnML imports.
 
-    python train_legacy.py --data <clone>/data --epochs 20
-    python train_legacy.py --data $(cairnml dataset get <repository> <commit>)   # another version of the dataset
+    python train_legacy.py --repo <url> --commit <sha> --epochs 20
 
---data is required: the folder with train.csv and test.csv, the data/ folder of the dataset repository that Example 4
-created. Run Example 4 first.
+--repo and --commit are required: the URL of the dataset repository of Example 4 and the commit of its dataset. The
+script reads that version with Dataset.get, which returns the data/ folder with train.csv and test.csv. The legacy
+project does not record anything with CairnML: Dataset.get is called with record=False.
+Run Example 4 first.
 """
 
 import argparse
@@ -26,26 +27,33 @@ import pandas as pd
 import torch
 from torch import nn
 
+from cairnml.datasets import Dataset
+
 FEATURES = ["outside_temp", "light", "humidity", "co2", "hour"]
 TARGET = "energy"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--data", type=Path, help="the data/ folder of the dataset repository of Example 4")
+    parser.add_argument("--repo", help="URL of the dataset repository from Example 4")
+    parser.add_argument("--commit", help="the commit of the dataset repository from Example 4")
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=16)
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--out", type=Path, default=Path("runs"))
     args = parser.parse_args()
-    if args.data is None:
-        parser.error("run examples/04-regression-dataset first, then pass the data/ folder of its dataset repository "
-                     "with --data")
+    if args.repo is None:
+        parser.error("run examples/04-regression-dataset first, then pass its dataset repository URL with --repo")
+    if args.commit is None:
+        parser.error("run examples/04-regression-dataset first, then pass the commit of its dataset with --commit")
 
+    # Dataset.get downloads the version once into the cache and returns its data/ folder. record=False keeps the
+    # legacy project free of CairnML tasks.
+    data = Dataset.get(args.repo, args.commit, record=False)
     torch.manual_seed(0)
-    train = pd.read_csv(args.data / "train.csv")
-    test = pd.read_csv(args.data / "test.csv")
+    train = pd.read_csv(data.path / "train.csv")
+    test = pd.read_csv(data.path / "test.csv")
     mean, spread = train[FEATURES].mean(), train[FEATURES].std()
     x_train = torch.tensor(((train[FEATURES] - mean) / spread).values, dtype=torch.float32)
     y_train = torch.tensor(train[TARGET].values, dtype=torch.float32).unsqueeze(1)
@@ -59,7 +67,8 @@ def main() -> None:
     run = args.out / f"greenhouse_mlp_{datetime.now():%Y%m%d_%H%M%S}"
     run.mkdir(parents=True)
     (run / "settings.txt").write_text(
-        f"data folder = {args.data}\nepochs = {args.epochs}\nlearning rate = {args.lr}\nhidden units = {args.hidden}\n"
+        f"data repository = {args.repo}\ndata commit = {args.commit}\ndata content = {data.content_hash}\n"
+        f"epochs = {args.epochs}\nlearning rate = {args.lr}\nhidden units = {args.hidden}\n"
         f"batch size = {args.batch_size}\n"
     )
 

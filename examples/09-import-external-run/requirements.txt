@@ -1,4 +1,4 @@
-cairnml
+cairnml[dataset]
 torch
 pandas
 pyyaml
