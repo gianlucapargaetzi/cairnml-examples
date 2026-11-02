@@ -42,7 +42,7 @@ def main() -> None:
     optimizer = HyperParameterOptimizer(
         base_task_id=args.base_task_id,
         hyper_parameters=[
-            LogUniformParameterRange("General/lr", min_value=1e-4, max_value=1e-1),
+            LogUniformParameterRange("General/lr", min_value=-4, max_value=-1),
             UniformIntegerParameterRange("General/hidden", min_value=8, max_value=128),
             DiscreteParameterRange("General/batch_size", values=[16, 32, 64, 128]),
         ],
