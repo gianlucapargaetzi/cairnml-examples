@@ -1,21 +1,23 @@
 # A regression dataset in its own repository
 
-This example builds a small dataset on your own machine, puts it in a dataset repository, and reads it back in training code. Nothing is downloaded: a script generates the data from a seed, so anyone who runs it gets the same files.
+This example builds a small dataset on your own machine, publishes it as a private dataset repository, and reads it back in training code. Nothing is downloaded from the internet: a script generates the data from a seed, so anyone who runs it gets the same files.
 
-The problem is made up but reads like a real one. A small greenhouse uses energy to heat itself. Given the weather and the time of day, the model should predict how many kWh per hour it needs. You will use this dataset in the next examples.
+The problem is made up but reads like a real one. A small greenhouse uses energy to heat itself. Given the weather and the time of day, the model should predict how many kWh per hour it needs. You will use this dataset in the next examples. They read it from the repository and commit that this example creates.
 
 ## Features
 
 - Generates two CSV files from a seed, so the same parameters always give the same data.
 - Reads the CSV files through `adapter.py`, a local adapter in the dataset repository. The check runs it on your machine, and it checks every sample against the CairnML dataset format.
-- Keeps the files in the dataset storage of your server, with DVC. The git history holds only the metadata.
-- Reads the dataset in training code with `Dataset.get`, and records the repository, the commit and the content hash on the run.
+- Creates a **private** dataset repository on GitHub with one command, and keeps the files in the dataset storage of your server, with DVC. The git history holds only the metadata.
+- Makes the repository visible to the framework through the CairnML GitHub App, so the server can read it for jobs and list it.
+- Reads one version of the dataset in training code with `Dataset.get`, and records the repository, the commit and the content hash on the run.
 
 ## Prerequisites
 
 - Python 3.9 or newer, and [git](https://git-scm.com).
-- The [SDK connected to your server](../../README.md#prerequisites). The dataset storage is on the server, so `cairnml dataset init` needs the connection.
-- A GitHub account, for the dataset repository in step 6.
+- The [SDK connected to your server](../../README.md#prerequisites). The dataset storage is on the server, so `cairnml dataset create` needs the connection.
+- The [GitHub command line](https://cli.github.com), `gh`, logged in with `gh auth login`. The dataset repository is created with it, under your GitHub account.
+- The CairnML GitHub App link from your server operator. See step 6.
 
 ## Step 1: Install the tools
 
@@ -34,7 +36,7 @@ Check that the dataset commands are installed:
 cairnml dataset --help
 ```
 
-You should see the commands `init`, `add`, `check`, `commit` and `push`.
+You should see the commands `create`, `doctor`, `get` and `commit`, among others.
 
 ## Step 2: Look at the generator
 
@@ -57,76 +59,86 @@ n_test: 500     # rows for testing
 noise_std: 0.5  # how much random noise is added to energy
 ```
 
-## Step 3: Create the dataset repository
+## Step 3: Generate the data
 
-The dataset lives in its own git repository, next to this example. Create the folder, set up git and the dataset storage:
-
-```bash
-mkdir ../greenhouse-data
-git -C ../greenhouse-data init -b main
-git -C ../greenhouse-data remote add origin https://github.com/<your-user>/greenhouse-data.git
-cairnml dataset init --path ../greenhouse-data --adapter local
-```
-
-The remote is the repository you create on GitHub in step 6. It does not have to exist yet. `init` writes `dataset.yaml`, which says `adapter: local` (the adapter is `adapter.py` at the top of the repository) and `storage: s3`. The files are kept by DVC in the dataset storage of your server. Add `--storage lfs` to keep them in the GitHub LFS of the repository instead; the choice cannot be changed later.
-
-## Step 4: Generate the data and add it
-
-Generate the two files into the `data/` folder of the dataset repository, and copy the adapter next to `dataset.yaml`:
+The dataset repository is created from a folder of files. Generate the two CSV files into a folder next to this example, and copy the adapter next to them:
 
 ```bash
-python generate.py ../greenhouse-data/data
-cp adapter.py ../greenhouse-data/
+python generate.py ../greenhouse-export
+cp adapter.py ../greenhouse-export/
 ```
 
-`generate.py` writes 2,000 rows to `train.csv` and 500 rows to `test.csv`. Record the folder with the dataset tools, then check it:
-
-```bash
-cairnml dataset add --path ../greenhouse-data
-cairnml dataset check --path ../greenhouse-data
-```
-
-`check` runs `adapter.py` on the CSV files and reports `The data passes` with 2500 samples. It writes `dataset.lock.json`, the footprint: the record that the data was checked, with the hash of the adapter.
+`generate.py` writes 2,000 rows to `train.csv` and 500 rows to `test.csv`. The adapter has to be in the folder too: `adapter.py` is the adapter of the dataset, and the create command moves it to the top of the repository, next to `dataset.yaml`, while the CSV files go to `data/`.
 
 The adapter declares two labels. `energy` is a `number` label: one finite number per sample. The five input columns are one `tabular` label: a dict of named columns, the same in every sample. The sample format section of `docs/datasets.md` in the CairnML SDK repository has the rules.
 
-## Step 5: Commit the dataset
+## Step 4: Create the private dataset repository
+
+One command creates the repository on GitHub, copies the files in, checks them, commits them with their footprint, pushes, and protects the default branch:
 
 ```bash
-cairnml dataset commit --path ../greenhouse-data -m "Greenhouse dataset, seed 42"
+cairnml dataset create greenhouse-data --from ../greenhouse-export --adapter local --storage s3 --path ../greenhouse-data
 ```
 
-`commit` checks the data again and commits it with its footprint. The commit is the version of the dataset. Git holds `data.dvc`, which lists the files in `data/` by their hash, and the metadata. The CSV files themselves are in the dataset storage.
+- `greenhouse-data` is the name of the new GitHub repository. It is created **private** by default; the flag `--public` would make it public, and you do not need it.
+- `--from` is the folder from step 3, and `--adapter local` says that its `adapter.py` is the adapter.
+- `--storage s3` keeps the files in the dataset storage of your server, through DVC. Use `--storage lfs` to keep them in the GitHub LFS of the repository instead. The choice cannot be changed later.
+- `--path` is the local folder that holds the repository. Only the command uses it: the examples that follow read the repository by its URL and commit, not from this folder.
 
-Look at what the adapter is in the repository:
+The command prints the address of the repository, `https://github.com/<your-user>/greenhouse-data.git`, and the first commit. If it warns that the branch is not protected, protect it by hand; `cairnml dataset doctor` shows what is missing.
+
+## Step 5: Look at the dataset repository
+
+The dataset is a git repository with its commit. Look at the history and at the commit's files:
 
 ```bash
+git -C ../greenhouse-data log --oneline
 git -C ../greenhouse-data show --stat HEAD
 ```
 
-## Step 6: Publish the dataset repository
+You should see one commit, `Add dataset`. Its files are `adapter.py`, `dataset.yaml` (which says `adapter: local` and `storage: s3`), `dataset.lock.json` (the footprint, the record that the data was checked), `data.dvc` (which lists the files in `data/` by their hash), and the `data/` folder. The CSV files themselves are in the dataset storage, and git holds their hashes.
 
-This step needs GitHub and your server. First set up the GitHub command line, `gh`, and log in with `gh auth login`.
+Record the two values that identify this version. The training code needs them:
 
-Create an empty private repository named `greenhouse-data` on GitHub, without a README or a `.gitignore`. Use the same address as the remote in step 3. For the demo, the owner installs the CairnML GitHub App on the account that owns this repository. Then check the GitHub settings and publish:
+```bash
+REPO=$(git -C ../greenhouse-data remote get-url origin)
+COMMIT=$(git -C ../greenhouse-data rev-parse HEAD)
+echo "$REPO $COMMIT"
+```
+
+Keep them. The next examples take the repository URL and the commit as parameters, and they do not read any folder on your machine.
+
+## Step 6: Install the CairnML GitHub App and check that the framework sees the dataset
+
+The server reads a private repository through the CairnML GitHub App. The server finds your datasets through the same App, so the repository is listed and can be read for jobs only once the App is installed on it.
+
+1. Get the App link from your server operator, `<App link from your CairnML server's README>`. Your CairnML server's README describes the App; the link is the one for your server.
+2. Open the link and install the App on the GitHub account that owns the repository: the account you logged in with `gh auth login`.
+3. Select the repository `greenhouse-data` and confirm.
+
+Then check, from this example folder, that the dataset tools see the repository and its GitHub settings:
 
 ```bash
 cairnml dataset doctor --path ../greenhouse-data
-cairnml dataset push --path ../greenhouse-data
 ```
 
-`doctor` lists each check as `ok`, `FAIL` or `--`, and tells you what to change on the repository's settings page for each failure. It only reads the settings. `push` sends the files to the dataset storage first, then the commit to the repository. It refuses a commit whose footprint does not hold.
+`doctor` lists each check as `ok`, `FAIL` or `--`. It checks the set-up of the repository and the GitHub settings that publishing relies on. It does not check the App: that is checked in the web app, below.
+
+To see the dataset as the framework sees it, open the **Datasets** page of your CairnML web app. The list shows `greenhouse-data`. Select it: the kind says **Your own dataset**, the repository is the URL from step 5, and the revision is the first characters of the commit from step 5. If the dataset is missing, the App is not installed on the repository yet, or the account you installed it on is not the one that owns the repository. Install it again on that account, then reload the page.
 
 ## Step 7: Read the dataset in training code
 
 The training code reads one version of the dataset by its repository and commit. Pass the commit, not a branch, so you can rerun the same data later:
 
 ```bash
-COMMIT=$(git -C ../greenhouse-data rev-parse HEAD)
-python read_dataset.py https://github.com/<your-user>/greenhouse-data.git $COMMIT
+python read_dataset.py $REPO $COMMIT
 ```
 
 `read_dataset.py` calls `Dataset.get`. It downloads the version into your cache, once, and records the repository, the commit and the content hash on the run. Then it runs `adapter.py` again into a temporary folder, reads each sample back with `Sample.label`, and logs the number of rows, and the mean and standard deviation of each column, per split. The labels are read back the same way the check wrote them: `energy` as a float, and the features as a dict of the five columns.
+
+## Changing the dataset later
+
+A new version is a new commit. Change the files in `data/` of the dataset repository, then run `cairnml dataset add`, `cairnml dataset commit -m "message"` and `cairnml dataset push` in that repository. `push` sends the files and opens a pull request into the protected default branch. Pass the new commit to the next examples to use the new version.
 
 ## What to look for
 
@@ -140,4 +152,4 @@ The data is generated by `generate.py`, from the seed in `params.yaml`. It is no
 
 ## Next steps
 
-The next examples train models on this dataset. Continue with the [hyperparameter optimisation example](../06-hyperparameter-optimisation).
+The next examples train models on this dataset. Each one needs the repository URL and the commit from this example. Continue with the [workflow pipeline example](../05-workflow-pipeline).

@@ -8,7 +8,7 @@ ignore it. Everything is drawn from one seed, so the same parameters always give
 Run it from this folder. It reads params.yaml and writes train.csv and test.csv into the output folder, which is data/
 if you do not give one:
 
-    python generate.py ../greenhouse-data/data
+    python generate.py ../greenhouse-export
 """
 
 import argparse
