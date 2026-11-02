@@ -4,11 +4,13 @@ This example builds a small dataset on your own machine, publishes it as a priva
 
 The problem is made up but reads like a real one. A small greenhouse uses energy to heat itself. Given the weather and the time of day, the model should predict how many kWh per hour it needs. You will use this dataset in the next examples. They read it from the repository and commit that this example creates.
 
+The dataset repository is not a folder of this example. You create it in a temporary folder outside the examples, and that folder is the repository that is published to GitHub.
+
 ## Features
 
 - Generates two CSV files from a seed, so the same parameters always give the same data.
 - Reads the CSV files through `adapter.py`, a local adapter in the dataset repository. The check runs it on your machine, and it checks every sample against the CairnML dataset format.
-- Creates a **private** dataset repository on GitHub with one command, and keeps the files in the dataset storage of your server, with DVC. The git history holds only the metadata.
+- Creates a **private** dataset repository on GitHub with one command. The data itself is kept in the dataset storage of your server, with DVC, and git holds only the metadata and the pointer files.
 - Makes the repository visible to the framework through a GitHub App of your server's organisation, so the server can read it for jobs and list it.
 - Reads one version of the dataset in training code with `Dataset.get`, and records the repository, the commit and the content hash on the run.
 
@@ -59,16 +61,17 @@ n_test: 500     # rows for testing
 noise_std: 0.5  # how much random noise is added to energy
 ```
 
-## Step 3: Generate the data
+## Step 3: Generate the data in a temporary folder
 
-The dataset repository is created from a folder of files. Generate the two CSV files into a folder next to this example, and copy the adapter next to them:
+Create a temporary folder for the dataset. Every command below uses it, so keep the shell open, or set `WORK` again in a new shell:
 
 ```bash
-python generate.py ../greenhouse-export
-cp adapter.py ../greenhouse-export/
+WORK=$(mktemp -d)
+python generate.py "$WORK/greenhouse-export"
+cp adapter.py "$WORK/greenhouse-export/"
 ```
 
-`generate.py` writes 2,000 rows to `train.csv` and 500 rows to `test.csv`. The adapter has to be in the folder too: `adapter.py` is the adapter of the dataset, and the create command moves it to the top of the repository, next to `dataset.yaml`, while the CSV files go to `data/`.
+`generate.py` writes 2,000 rows to `train.csv` and 500 rows to `test.csv` in `$WORK/greenhouse-export`, and the copy puts the adapter next to them. That folder is only the input of the next step. The repository is a sibling folder, `$WORK/greenhouse-data`, which the create command makes: it refuses a folder that already holds files.
 
 The adapter declares two labels. `energy` is a `number` label: one finite number per sample. The five input columns are one `tabular` label: a dict of named columns, the same in every sample. The sample format section of `docs/datasets.md` in the CairnML SDK repository has the rules.
 
@@ -77,36 +80,38 @@ The adapter declares two labels. `energy` is a `number` label: one finite number
 One command creates the repository on GitHub, copies the files in, checks them, commits them with their footprint, pushes, and protects the default branch:
 
 ```bash
-cairnml dataset create greenhouse-data --from ../greenhouse-export --adapter local --storage s3
+cairnml dataset create greenhouse-data --from "$WORK/greenhouse-export" --path "$WORK/greenhouse-data" --adapter local --storage s3
 ```
 
-- `greenhouse-data` is the name of the new GitHub repository. It is created **private** by default; the flag `--public` would make it public, and you do not need it.
+- `greenhouse-data` is the name of the new GitHub repository. `create` publishes it as a **private** repository, the default. The flag `--public` would make it public, and you do not need it.
 - `--from` is the folder from step 3, and `--adapter local` says that its `adapter.py` is the adapter.
+- `--path` is the local folder of the repository. Without it, the folder is created in the folder you run the command from, so give the temporary folder here. The repository is then `$WORK/greenhouse-data`, a git repository of its own.
 - `--storage s3` keeps the files in the dataset storage of your server, through DVC. Use `--storage lfs` to keep them in the GitHub LFS of the repository instead. The choice cannot be changed later.
-- The local copy of the repository is created in the folder you run the command from, under the name `greenhouse-data`. Run it from this example folder, so the copy is `examples/04-regression-dataset/greenhouse-data`. That folder is a git repository of its own and is ignored by the examples repository. The examples that follow read the dataset by its URL and commit, not from this folder.
 
-The command prints the address of the repository, `https://github.com/<your-user>/greenhouse-data.git`, the local folder `greenhouse-data`, and the first commit. If it warns that the branch is not protected, protect it by hand; `cairnml dataset doctor` shows what is missing.
+The command prints the address of the repository, `https://github.com/<your-user>/greenhouse-data.git`, the local folder, and the first commit. If it warns that the branch is not protected, protect it by hand; `cairnml dataset doctor` shows what is missing.
 
 ## Step 5: Look at the dataset repository
 
 The dataset is a git repository with its commit. Look at the history and at the commit's files:
 
 ```bash
-git -C greenhouse-data log --oneline
-git -C greenhouse-data show --stat HEAD
+git -C "$WORK/greenhouse-data" log --oneline
+git -C "$WORK/greenhouse-data" show --stat HEAD
 ```
 
-You should see one commit, `Add dataset`. Its files are `adapter.py`, `dataset.yaml` (which says `adapter: local` and `storage: s3`), `dataset.lock.json` (the footprint, the record that the data was checked), `data.dvc` (which lists the files in `data/` by their hash), and the `data/` folder. The CSV files themselves are in the dataset storage, and git holds their hashes.
+You should see one commit, `Add dataset`. Git holds only the metadata: `adapter.py`, `dataset.yaml` (which says `adapter: local` and `storage: s3`), `dataset.lock.json` (the footprint, the record that the data was checked), `manifest.json`, `data.dvc` (the hash and size of the files in `data/`), `.gitignore` and the verify workflow. The CSV files are not in git. They are in the DVC storage of your server, and git holds only the pointer files that name them.
+
+The SDK already ignores `data/` in git: `dvc add` writes `/data` to `.gitignore`, and create commits that line, so you add no rule of your own.
 
 Record the two values that identify this version. The training code needs them:
 
 ```bash
-REPO=$(git -C greenhouse-data remote get-url origin)
-COMMIT=$(git -C greenhouse-data rev-parse HEAD)
+REPO=$(git -C "$WORK/greenhouse-data" remote get-url origin)
+COMMIT=$(git -C "$WORK/greenhouse-data" rev-parse HEAD)
 echo "$REPO $COMMIT"
 ```
 
-Keep them. The next examples take the repository URL and the commit as parameters, and they do not read any folder on your machine.
+Keep them. The next examples take the repository URL and the commit as parameters, and they do not read any folder on your machine. You can delete `$WORK` when you are done: the repository and its data stay on GitHub and in the dataset storage.
 
 ## Step 6: Install the GitHub App and check that the framework sees the dataset
 
@@ -116,10 +121,10 @@ The organisation that runs the CairnML server creates its GitHub App once, and i
 2. Install the App on the GitHub account that owns the repository: the account you logged in with `gh auth login`.
 3. Select the repository `greenhouse-data` and confirm.
 
-Then check, from this example folder, that the dataset tools see the repository and its GitHub settings:
+Then check that the dataset tools see the repository and its GitHub settings:
 
 ```bash
-cairnml dataset doctor --path greenhouse-data
+cairnml dataset doctor --path "$WORK/greenhouse-data"
 ```
 
 `doctor` lists each check as `ok`, `FAIL` or `--`. It checks the set-up of the repository and the GitHub settings that publishing relies on. It does not check the App: that is checked in the web app, below.
@@ -131,14 +136,14 @@ To see the dataset as the framework sees it, open the **Datasets** page of your 
 The training code reads one version of the dataset by its repository and commit. Pass the commit, not a branch, so you can rerun the same data later:
 
 ```bash
-python read_dataset.py $REPO $COMMIT
+python read_dataset.py "$REPO" "$COMMIT"
 ```
 
 `read_dataset.py` calls `Dataset.get`. It downloads the version into your cache, once, and records the repository, the commit and the content hash on the run. Then it runs `adapter.py` again into a temporary folder, reads each sample back with `Sample.label`, and logs the number of rows, and the mean and standard deviation of each column, per split. The labels are read back the same way the check wrote them: `energy` as a float, and the features as a dict of the five columns.
 
 ## Changing the dataset later
 
-A new version is a new commit. Change the files in `data/` of the dataset repository, then run `cairnml dataset add`, `cairnml dataset commit -m "message"` and `cairnml dataset push` in that repository. `push` sends the files and opens a pull request into the protected default branch. Pass the new commit to the next examples to use the new version.
+A new version is a new commit. Change the files in `data/` of the dataset repository, then run `cairnml dataset add`, `cairnml dataset commit -m "message"` and `cairnml dataset push` with `--path "$WORK/greenhouse-data"`. `push` sends the files and opens a pull request into the protected default branch. Pass the new commit to the next examples to use the new version.
 
 ## What to look for
 

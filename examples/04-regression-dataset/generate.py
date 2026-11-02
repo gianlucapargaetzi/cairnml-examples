@@ -5,10 +5,10 @@ means more heating), the sunlight (more light means less heating), the humidity 
 extra energy) and the time of day (nights cost more). The carbon dioxide column is pure noise: a model should learn to
 ignore it. Everything is drawn from one seed, so the same parameters always give the same files.
 
-Run it from this folder. It reads params.yaml and writes train.csv and test.csv into the output folder, which is data/
-if you do not give one:
+Run it from this folder. It reads params.yaml and writes train.csv and test.csv into the output folder, which you give
+as the argument. Keep the output outside this example, in a temporary folder, as the README describes:
 
-    python generate.py ../greenhouse-export
+    python generate.py "$WORK/greenhouse-export"
 """
 
 import argparse
@@ -49,7 +49,7 @@ def make_split(rng: np.random.Generator, rows: int, noise_std: float) -> pd.Data
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the greenhouse energy dataset as two CSV files.")
-    parser.add_argument("output", nargs="?", default="data", type=Path, help="folder for train.csv and test.csv")
+    parser.add_argument("output", type=Path, help="folder for train.csv and test.csv, outside this example")
     output = parser.parse_args().output
     params = yaml.safe_load(PARAMS.read_text())
     rng = np.random.default_rng(params["seed"])
