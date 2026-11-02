@@ -34,7 +34,7 @@ def read_samples(data: Dataset):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Read the greenhouse dataset and record it with a run.")
-    parser.add_argument("repository", help="URL of the dataset repository, for example https://github.com/<you>/greenhouse-data.git")
+    parser.add_argument("repository", help="URL of the dataset repository, for example https://github.com/<you>/<dataset>.git")
     parser.add_argument("commit", help="commit of the dataset repository")
     args = parser.parse_args()
 
