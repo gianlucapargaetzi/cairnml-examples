@@ -1,32 +1,40 @@
-# A workflow of three steps
+# 🔀 A workflow of three steps
 
-Run Example 4 first: it creates the greenhouse dataset as a private repository. Pass its repository URL with `--repo` and its commit with `--commit`.
+> 🎯 **Goal:** turn a script into a **workflow** of three dependent steps, prepare the data, train and evaluate, and see it as one run with its steps as a graph.
 
 This example turns a script into a workflow. The workflow has three steps that depend on each other: prepare the data, train a model, and evaluate the model. CairnML runs each step as its own task, and shows the whole workflow as one run with its steps as a graph.
 
 The steps are the same as in the earlier examples. What is new is how they are organised: each step is an ordinary function, and one more function describes the order.
 
-## What you will learn
+| | |
+|---|---|
+| ⏱️ **Time** | about 10 minutes |
+| 🧰 **Needs** | the SDK connected to your server, and the dataset repository and commit from [Example 6](../06-regression-dataset) |
+| 📦 **You end with** | a run **greenhouse workflow** with three step tasks |
+
+## 📚 What you will learn
 
 - How to split a script into steps with `PipelineDecorator.component`.
 - How the pipeline passes the output of one step to the next.
 - How to run the whole workflow on one machine, or let agents run each step.
 
-## Before you start
+## ✅ Before you start
 
-- [Example 4](../04-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The first step reads that version with `Dataset.get`.
+- [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The first step reads that version with `Dataset.get`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
-## Step 1: Install the packages
+## 🚀 Steps
+
+### 1. Install the packages
 
 ```bash
-cd examples/05-workflow-pipeline
+cd examples/07-workflow-pipeline
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Step 2: Read the three steps
+### 2. Read the three steps
 
 Open `pipeline.py`. Each step is a function with a decorator:
 
@@ -48,15 +56,15 @@ Each call returns a value that the next call uses. CairnML records these values,
 
 Two rules in the code matter. Each step imports what it needs inside its own function, because CairnML runs each step separately. And each step only uses its arguments, not variables from the others.
 
-## Step 3: Run the workflow on this machine
+### 3. Run the workflow on this machine
 
-The dataset is given by its repository URL and commit, the ones Example 4 recorded. Run the workflow:
+The dataset is given by its repository URL and commit, the ones Example 6 recorded. Run the workflow:
 
 ```bash
 python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --local
 ```
 
-To read another version, pass its commit. Without `--repo` or `--commit` the script stops with the message `run examples/04-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
+To read another version, pass its commit. Without `--repo` or `--commit` the script stops with the message `run examples/06-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
 
 With `--local`, every step runs as a separate task on this machine, one after the other. The script prints the result at the end:
 
@@ -72,7 +80,7 @@ To try different settings:
 python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --local --lr 0.003 --hidden 64 --epochs 50
 ```
 
-## Step 4: Look at the run in the web app
+### 4. Look at the run in the web app
 
 Open the project **examples**. The run **greenhouse workflow** is listed as a pipeline. Open it and look at:
 
@@ -80,7 +88,7 @@ Open the project **examples**. The run **greenhouse workflow** is listed as a pi
 - **Each step:** click a box to open its task. Each task has its own configuration, its log and its console output.
 - **The outputs:** `train` shows the validation error, and `evaluate` shows the R² score.
 
-## Step 5: Let agents run the steps
+### 5. Let agents run the steps
 
 To have an agent run the steps instead of your machine, remove `--local`, and pass the repository URL and the commit that the agent should read:
 
@@ -88,7 +96,7 @@ To have an agent run the steps instead of your machine, remove `--local`, and pa
 python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>
 ```
 
-The steps are queued on the queue named in `DEFAULT_QUEUE` at the top of `pipeline.py`, which is `default`. An agent on that queue runs each step in turn, as in [example 10](../10-run-on-an-agent). To run `train` on a GPU, change the constant to `DEFAULT_QUEUE = "gpu"`, and start an agent for that queue:
+The steps are queued on the queue named in `DEFAULT_QUEUE` at the top of `pipeline.py`, which is `default`. An agent on that queue runs each step in turn, as in [example 4](../04-run-on-an-agent). To run `train` on a GPU, change the constant to `DEFAULT_QUEUE = "gpu"`, and start an agent for that queue:
 
 ```bash
 cairnml-agent daemon --queue gpu --docker --gpus 0
@@ -96,14 +104,14 @@ cairnml-agent daemon --queue gpu --docker --gpus 0
 
 Every step gets the same queue in this example. If you want the training on a GPU and the rest on a CPU queue, set `execution_queue` on the `train` step alone.
 
-**Data for the agents.** An agent reads the dataset repository by its URL and commit, the same way as your machine does. The repository is private, so the CairnML GitHub App must be installed on it (Example 4, step 6). In a job, the agent then gets a read-only token for that repository.
+**Data for the agents.** An agent reads the dataset repository by its URL and commit, the same way as your machine does. The repository is private, so the CairnML GitHub App must be installed on it (Example 6, step 6). The server then gives the job read access to it.
 
-## What to look for
+## 🔍 What to look for
 
 - The steps run in order. `train` does not start before `prepare_data` has returned.
 - Running the same pipeline twice creates two runs. Change one parameter and compare the two `train` tasks.
 - The validation error of `train` and the test R² of `evaluate`. They are different measures, so compare them across runs rather than against each other: a run with a lower error should also have a higher R².
 
-## Next steps
+## ➡️ Next steps
 
-Continue with the [reports and plots example](../07-reports-and-plots), which shows what you can record next to the scalars.
+Continue with [Example 8: hyperparameter optimisation](../08-hyperparameter-optimisation), which searches the best settings with Optuna.

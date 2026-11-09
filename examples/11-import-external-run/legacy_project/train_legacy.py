@@ -1,6 +1,6 @@
 """A training script from a project that does not use CairnML: it writes its own files and knows nothing about CairnML.
 
-It trains a small network on the greenhouse dataset of Example 4 and writes one folder per run:
+It trains a small network on the greenhouse dataset of Example 6 and writes one folder per run:
 
     runs/<name>_<timestamp>/
         settings.txt        the settings, one "name = value" per line
@@ -13,10 +13,10 @@ folder into the layout CairnML imports.
 
     python train_legacy.py --repo <url> --commit <sha> --epochs 20
 
---repo and --commit are required: the URL of the dataset repository of Example 4 and the commit of its dataset. The
+--repo and --commit are required: the URL of the dataset repository of Example 6 and the commit of its dataset. The
 script reads that version with Dataset.get, which returns the data/ folder with train.csv and test.csv. The legacy
 project does not record anything with CairnML: Dataset.get is called with record=False.
-Run Example 4 first.
+Run Example 6 first.
 """
 
 import argparse
@@ -35,8 +35,8 @@ TARGET = "energy"
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--repo", help="URL of the dataset repository from Example 4")
-    parser.add_argument("--commit", help="the commit of the dataset repository from Example 4")
+    parser.add_argument("--repo", help="URL of the dataset repository from Example 6")
+    parser.add_argument("--commit", help="the commit of the dataset repository from Example 6")
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=16)
@@ -44,9 +44,9 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=Path("runs"))
     args = parser.parse_args()
     if args.repo is None:
-        parser.error("run examples/04-regression-dataset first, then pass its dataset repository URL with --repo")
+        parser.error("run examples/06-regression-dataset first, then pass its dataset repository URL with --repo")
     if args.commit is None:
-        parser.error("run examples/04-regression-dataset first, then pass the commit of its dataset with --commit")
+        parser.error("run examples/06-regression-dataset first, then pass the commit of its dataset with --commit")
 
     # Dataset.get downloads the version once into the cache and returns its data/ folder. record=False keeps the
     # legacy project free of CairnML tasks.
