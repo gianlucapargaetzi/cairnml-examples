@@ -1,42 +1,50 @@
-# Reports and plots
+# 📊 Reports and plots
 
-Run Example 4 first: it creates the greenhouse dataset as a private repository. Pass its repository URL with `--repo` and its commit with `--commit`.
+> 🎯 **Goal:** record more than scalars, scatter plots, histograms, tables, a confusion matrix and images, so you can see where the greenhouse model goes wrong.
 
-A scalar is one number per step, such as the error after each epoch. Many questions need more than that: where does the model go wrong, is its error biased, which hours are hard? This example trains the greenhouse model of [Example 4](../04-regression-dataset) and records six kinds of report next to its scalars. You will see each one in the web app.
+A scalar is one number per step, such as the error after each epoch. Many questions need more than that: where does the model go wrong, is its error biased, which hours are hard? This example trains the greenhouse model of [Example 6](../06-regression-dataset) and records six kinds of report next to its scalars. You will see each one in the web app.
 
-## What you will learn
+| | |
+|---|---|
+| ⏱️ **Time** | about 5 minutes |
+| 🧰 **Needs** | the SDK and the dataset from [Example 6](../06-regression-dataset) |
+| 📦 **You end with** | a task **reports and plots** with six kinds of report |
+
+## 📚 What you will learn
 
 - The kinds of report CairnML can record: scatter plot, histogram, table, confusion matrix, image and text.
 - How to choose the right one for a question.
 - How to make a figure with matplotlib and record it as an image.
 
-## Before you start
+## ✅ Before you start
 
-- [Example 4](../04-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The script reads that version with `Dataset.get`.
+- [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The script reads that version with `Dataset.get`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
-## Step 1: Install the packages
+## 🚀 Steps
+
+### 1. Install the packages
 
 ```bash
-cd examples/07-reports-and-plots
+cd examples/09-reports-and-plots
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Step 2: Run the script
+### 2. Run the script
 
 ```bash
 python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>
 ```
 
-Pass the repository URL and the commit that Example 4 recorded. Without either one the script stops with the message `run examples/04-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
+Pass the repository URL and the commit that Example 6 recorded. Without either one the script stops with the message `run examples/06-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
 
 The script trains for 30 epochs, then records the reports, and finishes with `done: the reports are in the web app, project 'examples', task 'reports and plots'`. It also saves `residuals.png` next to the script, which is the figure it uploads.
 
 To make it faster, add `--epochs 5`.
 
-## Step 3: Choose the right report
+### 3. Choose the right report
 
 Each report answers one question. The table below is what the script records and the question it answers:
 
@@ -51,7 +59,7 @@ Each report answers one question. The table below is what the script records and
 
 The residuals are the actual energy minus the predicted energy. A residual of 0.5 means the model predicted 0.5 kWh too little.
 
-## Step 4: Look at the reports in the web app
+### 4. Look at the reports in the web app
 
 Open the project **examples**, task **reports and plots**. Look at each place:
 
@@ -61,7 +69,7 @@ Open the project **examples**, task **reports and plots**. Look at each place:
 - **Images:** **residuals vs temperature**. Look for a pattern. A cloud of points around zero with no shape is what you want.
 - **Console:** the text summary, with the mean absolute error and the mean residual.
 
-## Step 5: Compare two runs
+### 5. Compare two runs
 
 Run the script again with a different setting, for example:
 
@@ -71,20 +79,20 @@ python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --co
 
 Open both tasks, and compare their scatter plots and residual histograms side by side. A better model has points closer to the diagonal and a narrower histogram.
 
-## How the figure is made
+### 🖼️ How the figure is made
 
 The image report is different from the others. CairnML records a picture file, not data, so `report_figure` in `reports.py` makes the plot with matplotlib, saves it as `residuals.png`, and passes the file to `report_image`. Use this for any plot that the other reports cannot draw, and keep the figure's labels readable: they are what someone sees in the web app without your code.
 
-## What to look for
+## 🔍 What to look for
 
 - The mean residual in the text summary is close to zero. A value far from zero means the model is systematically too high or too low.
 - The confusion matrix counts for the two off-diagonal cells are usually not zero. That tells you where the model's answer differs from the truth.
 - The scatter plot becomes narrower as training improves, and the hourly errors fall.
 
-## Data
+## 📄 Data
 
-The data is generated by [Example 4](../04-regression-dataset). It is synthetic and carries no license restrictions.
+The data is generated by [Example 6](../06-regression-dataset). It is synthetic and carries no license restrictions.
 
-## Next steps
+## ➡️ Next steps
 
-Continue with the [task lifecycle example](../08-task-lifecycle), which shows what you can do with a task after it has run.
+Continue with [Example 10: the life of a task](../10-task-lifecycle), which shows what you can do with a task after it has run.

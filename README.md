@@ -10,115 +10,50 @@
   <a href="https://github.com/gianlucapargaetzi/cairnml-examples/stargazers"><img src="https://img.shields.io/github/stars/gianlucapargaetzi/cairnml-examples?style=flat-square&logo=github" alt="GitHub stars"></a>
 </p>
 
-# CairnML Examples
+# 🧭 CairnML Examples
 
-Guided examples of what the CairnML platform can do. Each example runs on your own server and records its run there. The examples build on each other: start with the hello world, then the CIFAR-10 classification, then the same training through the dataset registry, and finally a run sent to an agent.
+> 🎯 **Goal:** learn what the CairnML platform does by running small, guided examples on your own server. Each one records its run there, and the examples build on each other.
 
-## Features
+Start with the setup, then the hello world, train a real model, put the code in a **private** repository, run it on an **agent**, then move on to datasets, workflows, searches, reports and imports.
 
-- Ten runnable examples: from a single tracked run to a full training run, a versioned dataset, a workflow of steps, reports, a hyperparameter search, the task lifecycle, a run imported from another project, and a run sent to an agent.
+## ✨ Features
+
+- A setup guide (example 0) and eleven runnable examples, from a single tracked run to a hyperparameter search.
+- A full path for **private code**: a private GitHub repository, a GitHub App, a credential in CairnML, and a run on an agent that reads the repository.
 - Runs appear in the web app, with their parameters, metrics, loss curves and artifacts.
-- The third example reads its data through the dataset registry, so the run records which dataset and revision it used.
-- Examples 2 and 3 train on the same images, so their runs can be compared side by side.
+- Datasets are versioned: a run records the repository, the commit and the content hash of the data it read.
+- Every README has the same shape: a **Goal**, what you will learn, what you need, numbered steps, what to look for, and what comes next.
 
-## Prerequisites
+## ✅ Prerequisites
 
-- Python 3.9 or newer
-- The [SDK](https://github.com/gianlucapargaetzi/cairnml) connected to a running [CairnML server](https://github.com/gianlucapargaetzi/cairnml-server):
+- A running [CairnML server](https://github.com/gianlucapargaetzi/cairnml-server) and Python 3.9 or newer.
+- An account, the web app, the SDK and an enrolled machine: [Example 0](examples/00-installation-and-setup) guides you through all of it.
+- A [GitHub](https://github.com) account for examples 3 to 6, and [git](https://git-scm.com). The GitHub command line `gh` is **optional**: every step that can use it also shows the way in the browser.
 
-```bash
-pip install cairnml
-cairnml init http://<server-ip>
-```
+## 🗺️ Examples
 
-`<server-ip>` is the address of the server, with a port only if the server does not use port 80. The command works out the rest.
+| | Example | What it shows |
+|---|---|---|
+| 🧰 | [Installation and setup](examples/00-installation-and-setup) | An account, the first sign-in, a tour of the web app, the terminology, the SDK and enrolling your machine |
+| 👋 | [Hello world](examples/01-hello-world) | One run with parameters, a metric curve and an artifact |
+| 🖼️ | [CIFAR-10 classification](examples/02-cifar10-classification) | Multiclass classification of small photographs, with curves and the trained model |
+| 🔐 | [Private code and credentials](examples/03-private-code-and-credentials) | A private repository, a GitHub App, and the credential that lets CairnML read it |
+| 🤖 | [Run on an agent](examples/04-run-on-an-agent) | Running the private code on an agent, from the command line and from the web app |
+| 🗂️ | [CIFAR-10 through the dataset registry](examples/05-cifar-10-managed-dataset) | The same training as example 2, reading the data through the dataset registry |
+| 🌱 | [A regression dataset in its own repository](examples/06-regression-dataset) | Generating a dataset from a seed, publishing it as a private dataset repository, and reading it through the SDK |
+| 🔀 | [A workflow of three steps](examples/07-workflow-pipeline) | Preparing data, training and evaluating as one pipeline, with each step as its own task |
+| 🎛️ | [Hyperparameter optimisation with Optuna](examples/08-hyperparameter-optimisation) | A search over learning rate, layer size and batch size, with the trials on a queue |
+| 📊 | [Reports and plots](examples/09-reports-and-plots) | Scatter plots, histograms, tables, confusion matrices and images next to the scalars |
+| ♻️ | [The life of a task](examples/10-task-lifecycle) | Cloning, queueing, archiving, moving, publishing and deleting a task |
+| 📥 | [Import a run from a project that does not use CairnML](examples/11-import-external-run) | Adapting a legacy training folder to CairnML's import format and uploading it |
 
-## Examples
+Each example has its own README with the steps, the command to run and what to look for in the web app. Examples 6 to 11 need the dataset repository that example 6 creates.
 
-| Example | What it shows |
-|---|---|
-| [Hello world](examples/01-hello-world) | One run with parameters, a metric curve and an artifact |
-| [CIFAR-10 classification](examples/02-cifar10-classification) | Multiclass classification of small photographs, with a loss curve and test accuracy |
-| [CIFAR-10 through the dataset registry](examples/03-cifar-10-managed-dataset) | The same training as the CIFAR-10 classification, reading the data through the dataset registry |
-| [A regression dataset in its own repository](examples/04-regression-dataset) | Generating a dataset from a seed, putting it in a dataset repository with `cairnml dataset`, and reading it through the SDK |
-| [A workflow of three steps](examples/05-workflow-pipeline) | Preparing data, training and evaluating as one pipeline, with each step as its own task |
-| [Hyperparameter optimisation with Optuna](examples/06-hyperparameter-optimisation) | A search over learning rate, layer size and batch size, with Optuna on the controller and the trials on a GPU queue |
-| [Reports and plots](examples/07-reports-and-plots) | Scatter plots, histograms, tables, confusion matrices and images recorded next to the scalars |
-| [The life of a task](examples/08-task-lifecycle) | Cloning, queueing, archiving, moving, publishing and deleting a task |
-| [Import a run from a project that does not use CairnML](examples/09-import-external-run) | Adapting a legacy training folder to CairnML's import format and uploading it |
-| [Run on an agent](examples/10-run-on-an-agent) | The hello world run, executed on a machine running `cairnml-agent` through the `default` queue |
+## ⚖️ Compare the runs
 
-Each example has its own README with the installation steps, the command to run and what to look for in the web app.
+Examples 2 and 5 use the same model, settings and images. After both have run, open the **examples** project in the web app and compare the two tasks. Their validation accuracy curves should be close, and the configuration of the run of example 5 shows the dataset, its revision and the registry commit.
 
-## Walk-through: from a local run to an agent
-
-This walk-through follows the core loop: track a run from your machine, send it to an agent, watch it, and inspect the results. Do the steps in order. Each step ends with what you should see. You need the address of your server, the SDK installed, and an admin account on the server for step 3.
-
-### 1. Connect this machine
-
-```bash
-pip install cairnml
-cairnml init http://<server-ip>
-```
-
-Your browser opens the sign-in page. The terminal prints `enrolled as ...` when this machine is connected.
-
-### 2. Track a run from this machine
-
-```bash
-cd examples/01-hello-world
-pip install -r requirements.txt
-python hello_world.py
-```
-
-The script prints `done: the run is in the web app, project 'examples', task 'hello world'`. The run executed on this machine and was recorded on the server. In the web app, open project **examples**, task **hello world**: the parameters, a `loss` curve and `hello.txt` under artifacts are there.
-
-### 3. Start an agent on the machine that will run the jobs
-
-On the machine that will run the jobs, which needs Docker:
-
-```bash
-python3 -m venv .venv
-. .venv/bin/activate
-pip install cairnml-agent
-cairnml-agent init http://<server-ip>
-cairnml-agent daemon --queue default --docker
-```
-
-`init` opens the sign-in page; sign in as an admin, because only admins can enrol an agent. `daemon` listens on the `default` queue and must keep running. The machine appears under **Workers & Queues** in the web app. Add `--gpus 0` to the `daemon` command to let the agent use the first GPU.
-
-### 4. Send the run to the agent
-
-The agent clones the repository from GitHub, so commit and push your changes first. Then:
-
-```bash
-cd examples/10-run-on-an-agent
-pip install -r requirements.txt
-python run_on_agent.py
-```
-
-The command returns at once. It prints two warnings: `Switching to remote execution, output log page ...` and `CairnML Terminating local execution process - continuing execution remotely`. The local process has stopped; the agent runs the script.
-
-### 5. Watch the run
-
-Open **Workers & Queues**: the job is listed on the `default` queue until the agent takes it, then the agent's machine shows it as running. In project **examples**, task **run on an agent** moves from **Queued** to **Running** to **Completed**.
-
-### 6. Inspect the results
-
-Open task **run on an agent**:
-
-- **Scalars:** the `loss` curve, one point per step.
-- **Artifacts:** `hello.txt`.
-- **Console:** the script's output as the agent ran it, ending with the `done:` line.
-- **Configuration:** the `greeting` and `steps` parameters.
-
-If the task stays **Queued**, no agent is listening on the `default` queue. Check that the `daemon` command from step 3 is running on the agent's machine. The [example 10 README](examples/10-run-on-an-agent) lists the other prerequisites.
-
-## Compare the runs
-
-Examples 2 and 3 use the same model, settings and images. After both have run, open the **examples** project in the web app and compare the two tasks. Their validation accuracy curves should be close, and the configuration of the third run shows the dataset, its revision and the registry commit.
-
-## Having problems
+## 🆘 Having problems
 
 1. Check the [open issues](https://github.com/gianlucapargaetzi/cairnml-examples/issues).
 2. If your problem is not listed, [open a new issue](https://github.com/gianlucapargaetzi/cairnml-examples/issues/new) with the example you ran, the command, and the full error message.

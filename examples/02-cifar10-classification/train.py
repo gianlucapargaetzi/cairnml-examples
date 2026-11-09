@@ -125,6 +125,8 @@ def main() -> None:
     parser.add_argument("--val-split", type=float, default=0.1, help="fraction of the training images kept for validation")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--data", type=Path, default=Path("cifar10"))
+    parser.add_argument("--queue", default=None,
+                        help="queue the run for an agent instead of training here (example 4); empty trains here")
     args = parser.parse_args()
 
     task = Task.init(project_name="examples", task_name="CIFAR-10 classification")
@@ -139,6 +141,10 @@ def main() -> None:
         "val_split": args.val_split,
         "seed": args.seed,
     })
+    if args.queue:
+        # This process exits here. An agent on the queue runs the script again from the start, from the commit
+        # the run recorded, and trains there.
+        task.execute_remotely(queue_name=args.queue)
     logger = task.get_logger()
 
     torch.manual_seed(args.seed)

@@ -101,7 +101,7 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, loss_fu
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--epochs", type=int, default=80)
+    parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--depth", type=int, default=3, choices=range(1, 6), help="number of blocks of two convolutions, 1 to 5")
     parser.add_argument("--dropout", type=float, default=0.1, help="dropout rate in the convolution blocks and the classifier")
     parser.add_argument("--augment", action=argparse.BooleanOptionalAction, default=True, help="augment the training images")

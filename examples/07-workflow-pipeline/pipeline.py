@@ -9,7 +9,7 @@ next. The steps only import what they use inside their own bodies, because Cairn
     python pipeline.py --repo https://github.com/<you>/greenhouse-data.git --commit <sha>
                                               # each step is queued on DEFAULT_QUEUE, and an agent runs it
 
-The dataset is the greenhouse dataset of Example 4. Run Example 4 first, then pass its dataset repository URL with
+The dataset is the greenhouse dataset of Example 6. Run Example 6 first, then pass its dataset repository URL with
 --repo and the commit with --commit. Each step reads that version with Dataset.get.
 """
 
@@ -113,16 +113,16 @@ def run_workflow(dataset_repo: str, dataset_commit: str, lr: float = 0.01, hidde
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--local", action="store_true", help="run every step on this machine")
-    parser.add_argument("--repo", help="URL of the dataset repository from Example 4")
-    parser.add_argument("--commit", help="the commit of the dataset repository from Example 4")
+    parser.add_argument("--repo", help="URL of the dataset repository from Example 6")
+    parser.add_argument("--commit", help="the commit of the dataset repository from Example 6")
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=32)
     parser.add_argument("--epochs", type=int, default=30)
     args = parser.parse_args()
     if args.repo is None:
-        parser.error("run examples/04-regression-dataset first, then pass its dataset repository URL with --repo")
+        parser.error("run examples/06-regression-dataset first, then pass its dataset repository URL with --repo")
     if args.commit is None:
-        parser.error("run examples/04-regression-dataset first, then pass the commit of its dataset with --commit")
+        parser.error("run examples/06-regression-dataset first, then pass the commit of its dataset with --commit")
 
     if args.local:
         PipelineDecorator.run_locally()

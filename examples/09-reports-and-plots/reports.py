@@ -1,4 +1,4 @@
-"""Train the greenhouse model of Example 4, then report what it got right and wrong in six different ways.
+"""Train the greenhouse model of Example 6, then report what it got right and wrong in six different ways.
 
 Scalars (one number per step) are only part of a run. This script also records:
 
@@ -11,7 +11,7 @@ Scalars (one number per step) are only part of a run. This script also records:
 
     python reports.py --repo <url> --commit <sha>   # the default settings, 30 epochs
 
-Run Example 4 first, then pass its dataset repository URL with --repo and the commit with --commit. The script reads
+Run Example 6 first, then pass its dataset repository URL with --repo and the commit with --commit. The script reads
 that version with Dataset.get.
 """
 
@@ -32,16 +32,16 @@ TARGET = "energy"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--repo", help="URL of the dataset repository from Example 4")
-    parser.add_argument("--commit", help="the commit of the dataset repository from Example 4")
+    parser.add_argument("--repo", help="URL of the dataset repository from Example 6")
+    parser.add_argument("--commit", help="the commit of the dataset repository from Example 6")
     parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--lr", type=float, default=0.01)
     parser.add_argument("--hidden", type=int, default=32)
     args = parser.parse_args()
     if args.repo is None:
-        parser.error("run examples/04-regression-dataset first, then pass its dataset repository URL with --repo")
+        parser.error("run examples/06-regression-dataset first, then pass its dataset repository URL with --repo")
     if args.commit is None:
-        parser.error("run examples/04-regression-dataset first, then pass the commit of its dataset with --commit")
+        parser.error("run examples/06-regression-dataset first, then pass the commit of its dataset with --commit")
     return args
 
 

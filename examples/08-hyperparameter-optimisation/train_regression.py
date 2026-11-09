@@ -1,4 +1,4 @@
-"""Train a small neural network on the greenhouse dataset of example 4: the base run for the hyperparameter search.
+"""Train a small neural network on the greenhouse dataset of example 6: the base run for the hyperparameter search.
 
 Run it once by hand to create the base task. The search (hpo.py) copies this task for every trial and changes the
 hyperparameters, so the values here are only the starting point.
@@ -7,7 +7,7 @@ hyperparameters, so the values here are only the starting point.
     python train_regression.py --lr 0.003      # another run, to try a value yourself
 
 The dataset is read with the SDK: --repo is the URL of the dataset repository and --commit its version, both from
-Example 4. The search copies this task, so every trial reads the same repository and commit.
+Example 6. The search copies this task, so every trial reads the same repository and commit.
 
 The script uses the GPU when there is one. The search does not need it: only the trials run this script.
 """
@@ -29,8 +29,8 @@ TARGET = "energy"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--repo", help="URL of the dataset repository from Example 4")
-    parser.add_argument("--commit", help="the commit of the dataset repository from Example 4")
+    parser.add_argument("--repo", help="URL of the dataset repository from Example 6")
+    parser.add_argument("--commit", help="the commit of the dataset repository from Example 6")
     parser.add_argument("--lr", type=float, default=0.01, help="learning rate of the Adam optimizer")
     parser.add_argument("--hidden", type=int, default=32, help="number of units in each hidden layer")
     parser.add_argument("--batch-size", type=int, default=64)
@@ -38,9 +38,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
     if args.repo is None:
-        parser.error("run examples/04-regression-dataset first, then pass its dataset repository URL with --repo")
+        parser.error("run examples/06-regression-dataset first, then pass its dataset repository URL with --repo")
     if args.commit is None:
-        parser.error("run examples/04-regression-dataset first, then pass the commit of its dataset with --commit")
+        parser.error("run examples/06-regression-dataset first, then pass the commit of its dataset with --commit")
     return args
 
 

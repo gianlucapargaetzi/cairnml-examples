@@ -1,33 +1,56 @@
-# Hello world
+# 👋 Hello world
 
-The smallest possible CairnML run: one task with parameters, a loss curve and an artifact, recorded on your server. Use it to check that the SDK is connected before you run anything bigger.
+> 🎯 **Goal:** record your first run on your server and check that the SDK is connected, before you run anything bigger.
 
-## Features
+The smallest possible CairnML run: one task with parameters, a loss curve and an artifact.
 
-- Records a run's parameters with `task.connect`.
-- Logs a metric curve with `report_scalar`.
-- Uploads a file as an artifact.
+| | |
+|---|---|
+| ⏱️ **Time** | under a minute |
+| 🧰 **Needs** | the SDK connected to your server ([Example 0](../00-installation-and-setup)) |
+| 📦 **You end with** | one task, **hello world**, in the project **examples** |
 
-## Prerequisites
+## 📚 What you will learn
 
-- The [SDK connected to your server](../../README.md#prerequisites)
+- How a script becomes a run: `Task.init`.
+- How to record parameters with `task.connect`.
+- How to log a metric curve with `report_scalar`, and upload a file as an artifact.
 
-## Run
+## ✅ Before you start
+
+- The [SDK connected to your server](../00-installation-and-setup).
+
+## 🚀 Steps
+
+### 1. Install
+
+```bash
+cd examples/01-hello-world
+pip install -r requirements.txt
+```
+
+### 2. Run
 
 ```bash
 python hello_world.py
 ```
 
-The script finishes in a few seconds and prints the name of the run.
+The script finishes in a few seconds and prints the seed it used and the name of the run. The seed makes the small noise on the curve: pass `--seed 7` to repeat a run exactly, or leave it out to get a different curve each time.
 
-## What to look for
+## 🔍 What to look for
 
-Open the web app and go to the project **examples**, task **hello world**:
+Open the web app, project **examples**, task **hello world**:
 
-- The parameters are listed in the task's configuration.
-- The `loss` curve, one point per step, is under scalars.
-- `hello.txt` is listed under artifacts.
+- **Configuration:** the parameters `greeting`, `steps` and `seed`.
+- **Scalars:** the `loss` curve, one point per step, and the `seed`.
+- **Artifacts:** `hello.txt`.
 
-## Next steps
+Run it twice and compare the two tasks: only the noise on the curve differs.
+
+## 🧯 Troubleshooting
+
+- **The script cannot connect:** run `cairnml init http://<server-ip>` again, and check that the web app opens at that address.
+
+## ➡️ Next steps
 
 Continue with [Example 2: CIFAR-10 classification](../02-cifar10-classification).
