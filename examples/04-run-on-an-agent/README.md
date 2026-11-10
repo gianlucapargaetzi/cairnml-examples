@@ -16,7 +16,7 @@ Training often belongs on a machine other than your laptop, one with a GPU or th
 
 ```
 your machine                      server                           agent
-python train.py --queue default   keeps the job in the queue  <--   takes the job
+python train.py --queue <queue>   keeps the job in the queue  <--   takes the job
 records repository + commit  ---> and the recorded commit          clones the repository, runs the
                                                                    script, reports back to the server
 ```
@@ -40,14 +40,14 @@ On the machine that will run the jobs, in the environment from Example 0. If tha
 source .venv/bin/activate
 pip install cairnml-agent
 cairnml-agent init http://<server-ip>
-cairnml-agent daemon --queue default --docker
+cairnml-agent daemon --docker
 ```
 
 In every new terminal on that machine, go to the repository root and run `source .venv/bin/activate` again before using `cairnml-agent`.
 
-`init` opens the sign-in page. Sign in with your own account. `daemon` takes jobs from the shared `default` queue and must keep running. `--docker` runs every job in its own container. Add `--gpus 0` to use the first GPU.
+`init` opens the sign-in page. Sign in with your own account. `daemon` must keep running. `--docker` runs every job in its own container. Add `--gpus 0` to use the first GPU.
 
-Enrolling also made a queue for this machine, named after it. `daemon` without `--queue` serves that one. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
+Enrolling also made a queue for this machine, named after it, and `daemon` without `--queue` serves it. An agent serves only its own queue, so jobs for this agent go there. Its name is under **Agents & Queues → Queues**: note it as `<queue>` for the next steps. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
 
 Check: the machine appears under **Agents & Queues** in the web app.
 
@@ -59,10 +59,10 @@ From the root of the examples repository, on your own machine:
 source .venv/bin/activate
 cd ../cairnml-private-demo
 pip install -r requirements.txt
-python train.py --epochs 3 --queue default
+python train.py --epochs 3 --queue <queue>
 ```
 
-In a new terminal, go to the root of the examples repository and run `source .venv/bin/activate` first. `--queue default` is the only difference from a local run. The command queues the run and ends:
+In a new terminal, go to the root of the examples repository and run `source .venv/bin/activate` first. `--queue <queue>` is the only difference from a local run. The command queues the run and ends:
 
 ```
 Switching to remote execution, output log page http://<server-ip>/cairnml/...
@@ -73,7 +73,7 @@ If you change the code, commit and push before you run again.
 
 ### 3. Watch the run
 
-Under **Agents & Queues** the job waits on the `default` queue until the agent takes it, then shows on the agent's machine. In the project **examples** the task **CIFAR-10 classification** goes from **Queued** to **Running** to **Completed**. On the task:
+Under **Agents & Queues** the job waits in the agent's queue until the agent takes it, then shows on the agent's machine, in the row of the agent under **Agents** together with its progress. In the project **examples** the task **CIFAR-10 classification** goes from **Queued** to **Running** to **Completed**. While it runs, it has the same progress bar as a local run, with the epochs and the batches of the current epoch in the task. On the task:
 
 - **Execution** shows the repository `cairnml-private-demo` and the commit it ran from.
 - **Console** starts with the clone of the private repository, then the training output.
@@ -85,7 +85,7 @@ A task can be copied and started with other settings without touching your machi
 
 1. Open the task and click **Clone**. In the **Clone Task** dialog keep the project **examples** and click **Clone**. The copy has the status **Draft**.
 2. Open the copy and change `epochs` to `5` under **Configuration**.
-3. Click **Enqueue**, choose the queue `default` and confirm.
+3. Click **Enqueue**, choose the queue of your agent and confirm.
 
 The copy runs like the first one, from the same repository and commit, with your new settings. Because the commit is kept, a clone is also how you rerun exactly the same code later.
 
@@ -97,7 +97,7 @@ The copy runs like the first one, from the same repository and commit, with your
 
 ## Troubleshooting
 
-- **The task stays Queued:** no agent serves the `default` queue. Check that `daemon` is still running.
+- **The task stays Queued:** no agent serves that queue. An agent serves only the queue that was made for it when it was enrolled, so use that name under **Agents & Queues → Queues**, and check that `daemon` is still running.
 - **The task fails at the start with a repository error:** the credential is missing, or the App is no longer installed on the repository. Check the badge on **Datasets → Repositories** and the message of the failed task.
 - **The agent cannot find the commit:** it was not pushed. Run `git push`, then run again.
 - **`unrecognized arguments: --queue`:** the folder was made from an older `train.py`. Make it again with Example 3.

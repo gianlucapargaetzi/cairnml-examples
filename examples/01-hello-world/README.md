@@ -52,7 +52,7 @@ The script finishes in a few seconds. It adds a small random noise to the curve,
 
 ### 3. Look at the run
 
-In the web app open the project **examples**, task **hello world**:
+While the script runs, the task is listed as **Running** with a small progress bar: the `tqdm` bar `steps` is found automatically, nothing is logged for it. In the web app open the project **examples**, task **hello world**:
 
 - **Configuration:** the settings `greeting`, `steps` and `seed`.
 - **Scalars:** the `loss` curve, one point per step.

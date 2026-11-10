@@ -86,7 +86,7 @@ At the bottom are **Search all**, **Help** and the **Account** menu, which leads
 
 How they fit together: you write a task and run it, which makes an experiment. If you queue it instead of running it here, it becomes a job that waits in a **queue** until an agent takes it and runs it. The result is recorded as an experiment in the web app, like a local run.
 
-Two more words come up often. A **project** is a folder for related tasks, models and reports. A **queue** is a waiting line for jobs: every agent has its own, made when the agent is enrolled, and the server has a shared `default` queue.
+Two more words come up often. A **project** is a folder for related tasks, models and reports. A **queue** is a waiting line for jobs: every agent has its own, made when the agent is enrolled, and an agent serves only that one.
 
 ### 5. Know what the credentials are for
 

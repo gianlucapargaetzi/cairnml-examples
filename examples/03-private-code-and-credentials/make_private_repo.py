@@ -22,7 +22,7 @@ The CIFAR-10 training of the CairnML examples, in a private repository. A CairnM
 
     pip install -r requirements.txt
     python train.py --epochs 3                 # train on this machine
-    python train.py --epochs 3 --queue default # queue the run for an agent
+    python train.py --epochs 3 --queue <queue> # queue the run for an agent
 """
 
 GITIGNORE = """__pycache__/

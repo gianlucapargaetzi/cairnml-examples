@@ -129,7 +129,8 @@ def main() -> None:
                         help="queue the run for an agent instead of training here (example 4); empty trains here")
     args = parser.parse_args()
 
-    task = Task.init(project_name="examples", task_name="CIFAR-10 classification")
+    # the "epochs" bar below is the progress of the run, not the download and the loading of the images
+    task = Task.init(project_name="examples", task_name="CIFAR-10 classification", progress_bar="epochs")
     task.connect({
         "dataset": "CIFAR-10",
         "epochs": args.epochs,

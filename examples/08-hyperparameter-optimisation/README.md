@@ -76,7 +76,7 @@ python hpo.py --base-task-id <task-id> --local --trials 4
 
 ### 5. Run the trials on an agent
 
-Send the trials to a queue served by an agent with a GPU. Start that agent as in Example 4, with `--gpus 0`, and name its queue: `default`, or the queue made for that machine, which **Agents & Queues** lists. Then start the search from any machine:
+Send the trials to a queue served by an agent with a GPU. Start that agent as in Example 4, with `--gpus 0`, and name its queue, the one made for that machine, which **Agents & Queues → Queues** lists. Then start the search from any machine:
 
 ```bash
 python hpo.py --base-task-id <task-id> --queue <queue> --trials 20 --concurrent 2
