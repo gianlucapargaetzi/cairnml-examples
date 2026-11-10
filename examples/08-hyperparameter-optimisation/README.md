@@ -33,13 +33,12 @@ The copy works because the base task records its settings with `task.connect`: t
 ### 1. Install
 
 ```bash
-cd examples/08-hyperparameter-optimisation
-python3 -m venv .venv
-source .venv/bin/activate
+cd ~/cairnml-examples/examples/08-hyperparameter-optimisation
+source ~/cairnml-examples/.venv/bin/activate
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source .venv/bin/activate` again in this folder.
+In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
 
 ### 2. Create the base task
 

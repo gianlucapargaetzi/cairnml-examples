@@ -34,17 +34,16 @@ The agent runs the **commit the run recorded**, not what is on your disk, so the
 
 ### 1. Start an agent
 
-On the machine that will run the jobs:
+On the machine that will run the jobs, in the environment from Example 0. If that is another machine, create the environment there as in Example 0:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+source ~/cairnml-examples/.venv/bin/activate
 pip install cairnml-agent
 cairnml-agent init http://<server-ip>
 cairnml-agent daemon --queue default --docker
 ```
 
-In every new terminal on that machine, run `source .venv/bin/activate` again in this folder before using `cairnml-agent`.
+In every new terminal on that machine, run `source ~/cairnml-examples/.venv/bin/activate` again before using `cairnml-agent`.
 
 `init` opens the sign-in page. Sign in with your own account. `daemon` takes jobs from the shared `default` queue and must keep running. `--docker` runs every job in its own container. Add `--gpus 0` to use the first GPU.
 
@@ -58,13 +57,12 @@ In the folder of the private repository on your own machine:
 
 ```bash
 cd ~/cairnml-private-demo
-python3 -m venv .venv
-source .venv/bin/activate
+source ~/cairnml-examples/.venv/bin/activate
 pip install -r requirements.txt
 python train.py --epochs 3 --queue default
 ```
 
-In a new terminal, run `source .venv/bin/activate` in `~/cairnml-private-demo` first. `--queue default` is the only difference from a local run. The command queues the run and ends:
+In a new terminal, run `source ~/cairnml-examples/.venv/bin/activate` first. `--queue default` is the only difference from a local run. The command queues the run and ends:
 
 ```
 Switching to remote execution, output log page http://<server-ip>/cairnml/...

@@ -47,13 +47,12 @@ These names belong to that project, and CairnML cannot read them as they are. Th
 ### 1. Install
 
 ```bash
-cd examples/11-import-external-run
-python3 -m venv .venv
-source .venv/bin/activate
+cd ~/cairnml-examples/examples/11-import-external-run
+source ~/cairnml-examples/.venv/bin/activate
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source .venv/bin/activate` again in this folder.
+In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
 
 ### 2. Run the legacy training
 

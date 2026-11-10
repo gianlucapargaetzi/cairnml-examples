@@ -100,17 +100,17 @@ You do not need one yet: the first two examples run on your machine and read not
 
 ### 6. Install the SDK
 
-Get these examples and create a Python environment at the top of the repository, on the machine where you write and run your code:
+Get these examples and create one Python environment at the top of the repository, on the machine where you write and run your code. Every later example uses this same environment:
 
 ```bash
-git clone https://github.com/gianlucapargaetzi/cairnml-examples.git
-cd cairnml-examples
+git clone https://github.com/gianlucapargaetzi/cairnml-examples.git ~/cairnml-examples
+cd ~/cairnml-examples
 python3 -m venv .venv
 source .venv/bin/activate
 pip install cairnml
 ```
 
-The environment keeps the packages of the examples apart from the rest of your machine. In every new terminal, run `source .venv/bin/activate` again in this folder before you use `cairnml`.
+The environment keeps the packages of the examples apart from the rest of your machine, and each example adds its own requirements to it. In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` before you use `cairnml` or run an example. If you cloned the repository elsewhere, use that path.
 
 ### 7. Enrol your machine
 

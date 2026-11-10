@@ -35,7 +35,7 @@ You will make a private repository from the code of [Example 2](../02-cifar10-cl
 ### 1. Make the repository folder
 
 ```bash
-cd examples/03-private-code-and-credentials
+cd ~/cairnml-examples/examples/03-private-code-and-credentials
 python make_private_repo.py ~/cairnml-private-demo
 ```
 
@@ -95,7 +95,7 @@ A repository that is not selected stays unreadable, even for CairnML.
 
 CairnML checks the key with GitHub before it saves anything. If you are an admin, the dialog also asks who may use the credential: choose **Only me**.
 
-Check: the credential is listed with a working status. In the terminal, `cairnml credential list` shows it too, in the environment from Example 0: run `source .venv/bin/activate` in the `cairnml-examples` folder first.
+Check: the credential is listed with a working status. In the terminal, `cairnml credential list` shows it too, in the environment from Example 0: run `source ~/cairnml-examples/.venv/bin/activate` first.
 
 ### 6. Add the repository and assign the credential
 

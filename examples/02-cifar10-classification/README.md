@@ -31,13 +31,12 @@ This is the code that [Example 3](../03-private-code-and-credentials) moves into
 ### 1. Install
 
 ```bash
-cd examples/02-cifar10-classification
-python3 -m venv .venv
-source .venv/bin/activate
+cd ~/cairnml-examples/examples/02-cifar10-classification
+source ~/cairnml-examples/.venv/bin/activate
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source .venv/bin/activate` again in this folder.
+In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
 
 ### 2. Run
 
