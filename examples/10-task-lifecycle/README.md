@@ -1,29 +1,28 @@
-# ♻️ The life of a task
+# The life of a task
 
-> 🎯 **Goal:** go through everything a task can do after it has run: clone, queue, reset, archive, move, publish and delete.
+## Goals
 
-A task in CairnML is more than a finished run. It can be copied, queued, archived, moved to another project, published and deleted. This example walks through each of these actions in order, with one command per step, so you can see what each one changes in the web app.
+Go through everything a task can do after it has run: clone, queue, reset, archive, move, publish and delete.
 
-Every action in this example is also in the web app's menus. The script does the same things from the command line, which makes each step easy to repeat.
-
-| | |
-|---|---|
-| ⏱️ **Time** | about 10 minutes |
-| 🧰 **Needs** | the SDK connected to your server |
-| 📦 **You end with** | a base task, a clone, and a feel for every action a task allows |
-
-## 📚 What you will learn
+What you will learn:
 
 - The states a task goes through: draft, queued, running, completed, published.
 - How to copy a task and change its settings before it runs.
 - What archiving, moving and publishing change, and which of them can be undone.
 
-## ✅ Before you start
+## Background
 
+A task in CairnML is more than a finished run. It can be copied, queued, archived, moved to another project, published and deleted. This example walks through each of these actions in order, with one command per step, so you can see what each one changes in the web app.
+
+Every action in this example is also in the web app's menus. The script does the same things from the command line, which makes each step easy to repeat.
+
+## Before you start
+
+- Time: about 10 minutes.
 - The SDK is connected to your server, and the package is installed (step 1).
 - Keep an eye on the web app while you go through the steps. Each step tells you what to look for.
 
-## 🚀 Steps
+## Steps
 
 ### 1. Install the package
 
@@ -128,7 +127,9 @@ python lifecycle.py status
 
 Prints the status of the base task and of the clone. After step 9, the clone is listed as not created.
 
-## 🔍 What to look for
+## What to look for
+
+You end with a base task, a clone, and a feel for every action a task allows.
 
 | Action | Status before | Status after | Can it be undone? |
 |---|---|---|---|
@@ -143,6 +144,6 @@ Prints the status of the base task and of the clone. After step 9, the clone is 
 
 Only the steps marked "no" need `--yes`. The others are reversible, so the script runs them directly.
 
-## ➡️ Next steps
+## Next steps
 
 Continue with [Example 11: import a run](../11-import-external-run), which brings a run from a project that does not use CairnML into the web app.

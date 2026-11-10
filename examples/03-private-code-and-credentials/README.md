@@ -1,28 +1,27 @@
-# 🔐 Private code and credentials
+# Private code and credentials
 
-> 🎯 **Goal:** put your training code in a **private** GitHub repository and give CairnML a key that can read it, so that an agent can run the code in [Example 4](../04-run-on-an-agent).
+## Goals
 
-You will make a private repository from the training code of [Example 2](../02-cifar10-classification), create a **GitHub App** that may read only that repository, add the App to CairnML as a **credential**, and assign it to the repository. Nothing runs in this example. It ends when CairnML shows the repository as readable.
+Put your training code in a **private** GitHub repository and give CairnML a key that can read it, so that an agent can run the code in [Example 4](../04-run-on-an-agent).
 
-| | |
-|---|---|
-| ⏱️ **Time** | about 15 minutes |
-| 🧰 **Needs** | a GitHub account, [git](https://git-scm.com), the web app signed in |
-| 📦 **You end with** | a private repository, a GitHub App, and a credential that reads the repository |
-
-## 📚 What you will learn
+What you will learn:
 
 - Why CairnML reads private code through a **GitHub App** and not through a password or a token of yours.
 - How to create the App, install it on one repository only, and add its key to CairnML.
 - How a repository gets its credential: the **Repositories** page, and the badge that tells you how it is read.
 
-## ✅ Before you start
+## Background
 
+You will make a private repository from the training code of [Example 2](../02-cifar10-classification), create a **GitHub App** that may read only that repository, add the App to CairnML as a **credential**, and assign it to the repository. Nothing runs in this example. It ends when CairnML shows the repository as readable.
+
+## Before you start
+
+- Time: about 15 minutes.
 - The [SDK connected to your server](../00-installation-and-setup) and **Example 1** run once, so the project **examples** exists.
 - An account in the web app. Any user can add a credential of their own; only an admin can add one for the whole company.
 - The GitHub command line `gh` is **optional**. Every step that can use it also has a way to do it in the browser.
 
-## 🚀 Steps
+## Steps
 
 ### 1. Make the repository folder
 
@@ -33,7 +32,7 @@ python make_private_repo.py ~/cairnml-private-demo
 
 The script copies `train.py` and `requirements.txt` from Example 2 into a new folder, outside this repository, and makes the first commit. It needs git and nothing else. The new folder is the repository you publish next.
 
-> 💡 The copy of `train.py` can queue itself for an agent with `--queue`. That is what Example 4 uses.
+> Note: The copy of `train.py` can queue itself for an agent with `--queue`. That is what Example 4 uses.
 
 ### 2. Publish it as a private repository
 
@@ -61,7 +60,7 @@ git push -u origin main
 
 Git asks you to sign in. Use your browser login through the credential helper of your system, or use the SSH address `git@github.com:<your-user>/cairnml-private-demo.git` if you have an SSH key on GitHub.
 
-✔️ **Check:** open the repository in a private browser window where you are not signed in. GitHub shows *404 Not Found*. That is what a private repository looks like to everyone else, and to CairnML until you finish this example.
+**Check:** open the repository in a private browser window where you are not signed in. GitHub shows *404 Not Found*. That is what a private repository looks like to everyone else, and to CairnML until you finish this example.
 
 ### 3. Create the GitHub App
 
@@ -82,7 +81,7 @@ CairnML never uses your own login. It reads a repository through a **GitHub App*
 1. On the App's page, open **Install App** and choose your account.
 2. Choose **Only select repositories**, pick `cairnml-private-demo`, and click **Install**.
 
-> 🔒 Least privilege: this App can read one repository and nothing else. A repository that is not selected here stays unreadable, even for CairnML.
+>  Least privilege: this App can read one repository and nothing else. A repository that is not selected here stays unreadable, even for CairnML.
 
 ### 5. Add the App to CairnML as a credential
 
@@ -93,7 +92,7 @@ CairnML never uses your own login. It reads a repository through a **GitHub App*
 
 CairnML checks the key with GitHub before it saves anything, then keeps it encrypted on the server. The key is never shown again.
 
-✔️ **Check:** the credential is listed with a working status. The same list is available in the terminal:
+**Check:** the credential is listed with a working status. The same list is available in the terminal:
 
 ```bash
 cairnml credential list
@@ -110,11 +109,13 @@ An admin also sees **Valid for**. Choose **Only me** here: the credential is the
 
 CairnML asks GitHub for a read token for this repository with your App, so the step only succeeds when the App is installed on it.
 
-✔️ **Check:** the badge now says **Read with my github app** (the name you gave the credential).
+**Check:** the badge now says **Read with my github app** (the name you gave the credential).
 
 The same thing is available in the project: **project settings → Repositories**, for the project **examples**.
 
-## 🔍 What to look for
+## What to look for
+
+You end with a private repository, a GitHub App, and a credential that reads the repository.
 
 | Where | What you see | What it means |
 |---|---|---|
@@ -122,7 +123,7 @@ The same thing is available in the project: **project settings → Repositories*
 | **Datasets → Repositories** | `cairnml-private-demo`, badge **Read with …** | the repository is read with that credential |
 | Private browser window | 404 on GitHub | the repository really is private |
 
-## 🧯 Troubleshooting
+## Troubleshooting
 
 - **`the GitHub App … is not installed on …`** when you click **Set credential**: step 4 is missing, or the App was installed on another account. Install it on the account that owns the repository and select the repository.
 - **`You have no credentials to choose from`** in the dialog: step 5 is missing. Add the credential in **Settings → Access**.
@@ -130,6 +131,6 @@ The same thing is available in the project: **project settings → Repositories*
 - **The project `examples` is not in the list** in step 6: run [Example 1](../01-hello-world) first, or choose **No project**.
 - **There is no lock button:** only the project's owner, the user who first used the repository there, or an admin can assign a credential.
 
-## ➡️ Next steps
+## Next steps
 
 Continue with [Example 4: run on an agent](../04-run-on-an-agent). It runs the code from your private repository on an agent, with the credential you just made.

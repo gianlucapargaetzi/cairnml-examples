@@ -1,16 +1,10 @@
-# 🧰 Installation and setup
+# Installation and setup
 
-> 🎯 **Goal:** get from "a server is running" to "I can sign in, I know my way around the web app, I know the words CairnML uses, and my machine is enrolled with the SDK", so that every other example works.
+## Goals
 
-Nothing is recorded in this example. It prepares your account, your machine and your head.
+Get from a running server to a signed-in account and a machine enrolled with the SDK, with the vocabulary every other example uses.
 
-| | |
-|---|---|
-| ⏱️ **Time** | about 15 minutes |
-| 🧰 **Needs** | a running [CairnML server](https://github.com/gianlucapargaetzi/cairnml-server) and its address, Python 3.9 or newer |
-| 📦 **You end with** | an account, a first sign-in, a tour of the web app, the terminology, and an enrolled machine |
-
-## 📚 What you will learn
+What you will learn:
 
 - How an account is made and how you sign in for the first time.
 - What the pages of the web app are for.
@@ -18,12 +12,17 @@ Nothing is recorded in this example. It prepares your account, your machine and 
 - What the **credentials** in the web app are for, and where the examples use them.
 - How to install the SDK and enrol your machine with your own user.
 
-## ✅ Before you start
+## Background
 
+Nothing is recorded in this example. It prepares your account, your machine and your head.
+
+## Before you start
+
+- Time: about 15 minutes.
 - The address of your server, called `<server-ip>` below. Add a port only if the server does not use port 80, for example `<server-ip>:8081`.
 - Someone who can create accounts: an **admin** of the server. If you run the server yourself, that is you.
 
-## 🚀 Steps
+## Steps
 
 ### 1. Get an account
 
@@ -41,7 +40,7 @@ CairnML has no self-registration. An admin creates every account, in the sign-in
 
 The details are in the [server README](https://github.com/gianlucapargaetzi/cairnml-server#users-and-admins).
 
-> 💡 The admin of a fresh server signs in to the web app with the user `KC_ADMIN` and the password `CAIRNML_ADMIN_PASSWORD`, both from `deploy/.env`.
+> Note: The admin of a fresh server signs in to the web app with the user `KC_ADMIN` and the password `CAIRNML_ADMIN_PASSWORD`, both from `deploy/.env`.
 
 ### 2. Sign in to the web app
 
@@ -50,7 +49,7 @@ The details are in the [server README](https://github.com/gianlucapargaetzi/cair
 
 Your CairnML account is created at your first sign-in. Nothing else is needed.
 
-✔️ **Check:** you see the **Projects** page. It is empty on a new server.
+**Check:** you see the **Projects** page. It is empty on a new server.
 
 ### 3. Take the tour of the web app
 
@@ -143,21 +142,23 @@ CairnML gives the machine a key of its own, so nothing is shared between machine
 
 **On a machine without a browser**, such as a remote shell or a container, the command shows a short code and an address instead. Open the address on any device, sign in, and enter the code. Add `--device` to use this sign-in on any machine.
 
-✔️ **Check:** in the web app, open **Settings → Devices**. Your machine is listed, with the name of the machine and the kind **Client**. You can revoke it there at any time.
+**Check:** in the web app, open **Settings → Devices**. Your machine is listed, with the name of the machine and the kind **Client**. You can revoke it there at any time.
 
-## 🔍 What to look for
+## What to look for
+
+You end with an account, a first sign-in, a tour of the web app, the terminology, and an enrolled machine.
 
 - You can sign in, and the **Projects** page opens.
 - **Settings → Devices** lists your machine.
 - You can say, in one sentence each, what a task, an experiment, an agent and a job are.
 
-## 🧯 Troubleshooting
+## Troubleshooting
 
 - **The sign-in is refused:** the username or the password is wrong, or the admin has disabled the account. Ask the admin.
 - **`cairnml init` cannot reach the server:** check the address, and the port if the server does not use port 80. The web app must open at `http://<server-ip>/cairnml/` from this machine.
 - **No browser opens:** copy the address the command prints, or use `--device`.
 - **The machine is not listed under Devices:** run `cairnml init http://<server-ip>` again.
 
-## ➡️ Next steps
+## Next steps
 
 Continue with [Example 1: hello world](../01-hello-world), your first run.

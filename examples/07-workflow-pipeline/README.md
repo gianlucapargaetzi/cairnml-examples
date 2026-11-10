@@ -1,29 +1,28 @@
-# 🔀 A workflow of three steps
+# A workflow of three steps
 
-> 🎯 **Goal:** turn a script into a **workflow** of three dependent steps, prepare the data, train and evaluate, and see it as one run with its steps as a graph.
+## Goals
 
-This example turns a script into a workflow. The workflow has three steps that depend on each other: prepare the data, train a model, and evaluate the model. CairnML runs each step as its own task, and shows the whole workflow as one run with its steps as a graph.
+Turn a script into a **workflow** of three dependent steps, prepare the data, train and evaluate, and see it as one run with its steps as a graph.
 
-The steps are the same as in the earlier examples. What is new is how they are organised: each step is an ordinary function, and one more function describes the order.
-
-| | |
-|---|---|
-| ⏱️ **Time** | about 10 minutes |
-| 🧰 **Needs** | the SDK connected to your server, and the dataset repository and commit from [Example 6](../06-regression-dataset) |
-| 📦 **You end with** | a run **greenhouse workflow** with three step tasks |
-
-## 📚 What you will learn
+What you will learn:
 
 - How to split a script into steps with `PipelineDecorator.component`.
 - How the pipeline passes the output of one step to the next.
 - How to run the whole workflow on one machine, or let agents run each step.
 
-## ✅ Before you start
+## Background
 
+This example turns a script into a workflow. The workflow has three steps that depend on each other: prepare the data, train a model, and evaluate the model. CairnML runs each step as its own task, and shows the whole workflow as one run with its steps as a graph.
+
+The steps are the same as in the earlier examples. What is new is how they are organised: each step is an ordinary function, and one more function describes the order.
+
+## Before you start
+
+- Time: about 10 minutes.
 - [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The first step reads that version with `Dataset.get`.
 - The SDK is connected to your server, and the packages are installed (step 1).
 
-## 🚀 Steps
+## Steps
 
 ### 1. Install the packages
 
@@ -106,12 +105,14 @@ Every step gets the same queue in this example. If you want the training on a GP
 
 **Data for the agents.** An agent reads the dataset repository by its URL and commit, the same way as your machine does. The repository is private, so the CairnML GitHub App must be installed on it (Example 6, step 6). The server then gives the job read access to it.
 
-## 🔍 What to look for
+## What to look for
+
+You end with a run **greenhouse workflow** with three step tasks.
 
 - The steps run in order. `train` does not start before `prepare_data` has returned.
 - Running the same pipeline twice creates two runs. Change one parameter and compare the two `train` tasks.
 - The validation error of `train` and the test R² of `evaluate`. They are different measures, so compare them across runs rather than against each other: a run with a lower error should also have a higher R².
 
-## ➡️ Next steps
+## Next steps
 
 Continue with [Example 8: hyperparameter optimisation](../08-hyperparameter-optimisation), which searches the best settings with Optuna.

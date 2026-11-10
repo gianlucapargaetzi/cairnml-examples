@@ -1,24 +1,22 @@
-# 🌱 A regression dataset in its own repository
+# A regression dataset in its own repository
 
-> 🎯 **Goal:** build a small dataset on your machine, publish it as a **private dataset repository**, and read one exact version of it in training code. The next examples train on it.
+## Goals
 
-The problem is made up but reads like a real one. A small greenhouse uses energy to heat itself. Given the weather and the time of day, the model should predict how many kWh per hour it needs. A script generates the data from a seed, so anyone who runs it gets the same files and nothing is downloaded.
+Build a small dataset on your machine, publish it as a **private dataset repository**, and read one exact version of it in training code.
 
-The dataset repository is not a folder of this example. You create it in a temporary folder outside the examples, and that folder is the repository that is published to GitHub.
-
-| | |
-|---|---|
-| ⏱️ **Time** | about 20 minutes |
-| 🧰 **Needs** | Python 3.9 or newer, [git](https://git-scm.com), the SDK connected to your server, and the GitHub App from [Example 3](../03-private-code-and-credentials) |
-| 📦 **You end with** | a private dataset repository, its commit, and a task that read it |
-
-## 📚 What you will learn
+What you will learn:
 
 - How a dataset is a git repository: git holds the metadata, and the files are held in the dataset storage of your server.
 - How a **credential** lets the server read the private repository, as in Example 3.
 - How a run records the repository, the commit and the content hash of the data it read.
 
-## ✨ Features
+## Background
+
+The problem is made up but reads like a real one. A small greenhouse uses energy to heat itself. Given the weather and the time of day, the model should predict how many kWh per hour it needs. A script generates the data from a seed, so anyone who runs it gets the same files and nothing is downloaded.
+
+The dataset repository is not a folder of this example. You create it in a temporary folder outside the examples, and that folder is the repository that is published to GitHub.
+
+What the example does:
 
 - Generates two CSV files from a seed, so the same parameters always give the same data.
 - Reads the CSV files through `adapter.py`, a local adapter in the dataset repository. The check runs it on your machine and checks every sample against the CairnML dataset format.
@@ -26,14 +24,15 @@ The dataset repository is not a folder of this example. You create it in a tempo
 - Makes the repository visible to the framework through your GitHub App, so the server can read it for jobs and list it.
 - Reads one version with `Dataset.get`, and records the repository, the commit and the content hash on the run.
 
-## ✅ Before you start
+## Before you start
 
+- Time: about 20 minutes.
 - Python 3.9 or newer, and [git](https://git-scm.com).
 - The [SDK connected to your server](../00-installation-and-setup). `cairnml dataset remote add` registers the repository with the server and sets up its dataset storage, so it needs the connection. The local commands do not.
 - The **GitHub App credential** of [Example 3](../03-private-code-and-credentials), working in **Settings → Access**. Step 6 installs it on the new repository.
 - The [GitHub command line](https://cli.github.com), `gh`, is **optional**. Where a step uses it, the same step also shows how to do it in the browser.
 
-## 🚀 Steps
+## Steps
 
 ### 1. Install the tools
 
@@ -201,20 +200,22 @@ python read_dataset.py "$REPO" "$COMMIT"
 
 `read_dataset.py` calls `Dataset.get`. It downloads the version into your cache, once, and records the repository, the commit and the content hash on the run. Then it runs `adapter.py` again into a temporary folder, reads each sample back with `Sample.label`, and logs the number of rows, and the mean and standard deviation of each column, per split. The labels are read back the same way the check wrote them: `energy` as a float, and the features as a dict of the five columns.
 
-### 🔄 Changing the dataset later
+### Changing the dataset later
 
 A new version is a new commit. Change the files in `data/` of the dataset repository, then run `cairnml dataset add`, `cairnml dataset commit -m "message"` and `cairnml dataset push` with `--path "$WORK/greenhouse-data"`. `push` sends the files and opens a pull request into the protected default branch. Pass the new commit to the next examples to use the new version.
 
-## 🔍 What to look for
+## What to look for
+
+You end with a private dataset repository, its commit, and a task that read it.
 
 - `dataset.yaml` says `adapter: local`, and `adapter.py` is at the top of the dataset repository, next to the `data/` folder.
 - The run is in the project **examples**, task **greenhouse dataset read**. Its configuration lists the repository, the commit, the content hash and the storage of the dataset. The content hash is the hash in `data.dvc`.
 - The `co2` column has no effect. In the next examples, a model that uses it will be no better than one that does not.
 
-## 📄 Data
+## Data
 
 The data is generated by `generate.py`, from the seed in `params.yaml`. It is not based on any real measurements and carries no license restrictions.
 
-## ➡️ Next steps
+## Next steps
 
 The next examples train models on this dataset. Each one needs the repository URL and the commit from this example. Continue with the [workflow pipeline example](../07-workflow-pipeline).

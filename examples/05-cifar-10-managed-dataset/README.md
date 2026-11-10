@@ -1,33 +1,32 @@
-# 🗂️ CIFAR-10 through the dataset registry
+# CIFAR-10 through the dataset registry
 
-> 🎯 **Goal:** train the model of [Example 2](../02-cifar10-classification) on the same images, but read the data through the **dataset registry**, so the run records exactly which dataset version it used.
+## Goals
 
-The [dataset registry](https://github.com/gianlucapargaetzi/cairnml-dataset-registry) has an entry for CIFAR-10 that points to its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), pinned to a commit, and an adapter that reads its Parquet files into the CairnML dataset format.
+Train the model of [Example 2](../02-cifar10-classification) on the same images, but read the data through the **dataset registry**, so the run records exactly which dataset version it used.
 
-| | |
-|---|---|
-| ⏱️ **Time** | several minutes on a CPU |
-| 🧰 **Needs** | the SDK with the dataset tools, connected to your server |
-| 📦 **You end with** | a task whose configuration names the dataset, its revision and the registry commit |
-
-## 📚 What you will learn
+What you will learn:
 
 - How a public dataset is read with `RegistryDataset.get_external`, and what a run records about it.
 - How to rerun an earlier run on exactly the same data, with `--commit`.
 - How to compare this run with the run of Example 2.
 
-## ✨ Features
+## Background
+
+The [dataset registry](https://github.com/gianlucapargaetzi/cairnml-dataset-registry) has an entry for CIFAR-10 that points to its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), pinned to a commit, and an adapter that reads its Parquet files into the CairnML dataset format.
+
+What the example does:
 
 - The training code sees standard samples, whatever the source format.
 - The run records the dataset, its revision, the adapter and the registry commit.
 - The defaults match Example 2: 40 epochs, batch size 32, three blocks, dropout 0.1, augmentation on and a 10% validation split.
 
-## ✅ Before you start
+## Before you start
 
+- Time: several minutes on a CPU.
 - The [SDK connected to your server](../00-installation-and-setup), with the dataset tools: `pip install "cairnml[dataset]"`.
-- The prerequisites of [Example 2](../02-cifar10-classification/README.md#-before-you-start).
+- The prerequisites of [Example 2](../02-cifar10-classification/README.md#before-you-start).
 
-## 🚀 Steps
+## Steps
 
 ### 1. Install
 
@@ -54,7 +53,9 @@ Pass the registry commit that an earlier run recorded:
 python train.py --commit <commit>
 ```
 
-## 🔍 What to look for
+## What to look for
+
+You end with a task whose configuration names the dataset, its revision and the registry commit.
 
 The run is in the project **examples**, task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists:
 
@@ -65,10 +66,10 @@ The run is in the project **examples**, task **CIFAR-10 classification with the 
 
 Select this task and the task of Example 2 in the list and **compare** them: the validation accuracy curves should be close.
 
-## 📄 Data
+## Data
 
-The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky. See [Example 2](../02-cifar10-classification/README.md#-data) for the citation.
+The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky. See [Example 2](../02-cifar10-classification/README.md#data) for the citation.
 
-## ➡️ Next steps
+## Next steps
 
 Continue with [Example 6: a regression dataset in its own repository](../06-regression-dataset).

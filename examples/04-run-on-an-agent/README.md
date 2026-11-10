@@ -1,31 +1,30 @@
-# 🤖 Run on an agent
+# Run on an agent
 
-> 🎯 **Goal:** run the code of your **private** repository on another machine, an **agent**, and watch the run appear in the web app. You start it from the command line, and a second time from the web app by cloning the task and enqueuing it.
+## Goals
 
-The agent clones your private repository with the GitHub App credential from [Example 3](../03-private-code-and-credentials), runs `train.py` from the commit the run recorded, and sends the results back to your server.
+Run the code of your **private** repository on an **agent**, started from the command line and again from the web app by cloning the task and enqueuing it.
 
-| | |
-|---|---|
-| ⏱️ **Time** | about 10 minutes, plus the training time |
-| 🧰 **Needs** | Example 3 done, a machine with Docker for the agent, any account on the server to enrol it |
-| 📦 **You end with** | two completed runs of your private code, made on an agent |
-
-## 📚 What you will learn
+What you will learn:
 
 - How an agent is started, and how it takes work from a **queue**.
 - How one script runs either on your machine or on an agent, with `--queue`.
 - How to **clone** a task and **enqueue** it in the web app, with no command line.
 - What happens when the credential of the repository is missing.
 
-## ✅ Before you start
+## Background
 
+The agent clones your private repository with the GitHub App credential from [Example 3](../03-private-code-and-credentials), runs `train.py` from the commit the run recorded, and sends the results back to your server.
+
+## Before you start
+
+- Time: about 10 minutes, plus the training time.
 - [Example 3](../03-private-code-and-credentials) is done: the private repository `cairnml-private-demo` exists, is pushed, and shows **Read with …** on the **Datasets → Repositories** page.
 - The [SDK is connected to your server](../00-installation-and-setup) on your own machine.
 - A machine with Docker for the agent. It can be your own.
 
-> 💡 The agent needs **no Git credentials of its own**. It gets a short-lived read token for the repository from the server, for each job, through the credential you assigned.
+> Note: The agent needs **no Git credentials of its own**. It gets a short-lived read token for the repository from the server, for each job, through the credential you assigned.
 
-## 🚀 Steps
+## Steps
 
 ### 1. Start an agent
 
@@ -41,7 +40,7 @@ cairnml-agent daemon --queue default --docker
 
 `init` opens the sign-in page. Sign in with your own account: any signed-in user can enrol an agent, and it then runs with the rights of that user, never as an admin. `daemon --queue default` takes jobs from the shared queue `default`, which is public, and must keep running. Enrolling also made a private queue for this machine, named after it; `daemon` without `--queue` serves that one instead. Add `--gpus 0` to use the first GPU.
 
-✔️ **Check:** the machine appears under **Agents & Queues** in the web app.
+**Check:** the machine appears under **Agents & Queues** in the web app.
 
 ### 2. Start a run from the command line
 
@@ -86,7 +85,7 @@ A task in the web app can be copied and started again with other settings, witho
 
 The copy goes from **Draft** to **Queued** to **Running** to **Completed**, like the first run. It reads the same repository and the same commit, with your new settings.
 
-> 💡 If a repository of the task has no credential, the web app does not enqueue it quietly. It opens **Credentials not assigned**, where you can **Assign credentials** at once.
+> Note: If a repository of the task has no credential, the web app does not enqueue it quietly. It opens **Credentials not assigned**, where you can **Assign credentials** at once.
 
 ### 5. See what a missing credential does (optional)
 
@@ -94,19 +93,21 @@ The copy goes from **Draft** to **Queued** to **Running** to **Completed**, like
 2. Clone the task again and enqueue it. The web app stops you with **Credentials not assigned**, because the repository is private and no credential reaches it.
 3. Click **Assign credentials**, choose your credential and click **Set credential**. Enqueue again: it now runs.
 
-## 🔍 What to look for
+## What to look for
+
+You end with two completed runs of your private code, made on an agent.
 
 - The agent ran code that is **not public**: the repository is private, and the run still started.
 - The run records the **repository and the commit**. To rerun exactly the same code later, clone the task: the clone keeps the commit.
 - Both runs are in the **examples** project. Compare their curves; with the same settings they should be close.
 
-## 🧯 Troubleshooting
+## Troubleshooting
 
 - **The task stays Queued:** no agent listens on the `default` queue. Check that `cairnml-agent daemon --queue default --docker` is still running.
 - **The task fails at the start with a repository error:** the credential is missing, or the GitHub App is no longer installed on the repository. Look at the badge on **Datasets → Repositories** and the message of the failed task.
 - **The agent cannot find the commit:** the commit was not pushed. Run `git push` in the repository, then run again.
 - **`train.py: error: unrecognized arguments: --queue`:** you are running the `train.py` of the public examples repository from an older checkout. Make the folder again with Example 3.
 
-## ➡️ Next steps
+## Next steps
 
 Continue with [Example 5: CIFAR-10 through the dataset registry](../05-cifar-10-managed-dataset), or go to the [task lifecycle](../10-task-lifecycle) to see what else a task can do.
