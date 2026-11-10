@@ -2,29 +2,35 @@
 
 ## Goals
 
-Train the model of [Example 2](../02-cifar10-classification) on the same images, but read the data through the **dataset registry**, so the run records exactly which dataset version it used.
+Train the model of [Example 2](../02-cifar10-classification) again, reading the images through the dataset registry instead of downloading them yourself.
 
 What you will learn:
 
-- How a public dataset is read with `RegistryDataset.get_external`, and what a run records about it.
-- How to rerun an earlier run on exactly the same data, with `--commit`.
-- How to compare this run with the run of Example 2.
+- What the dataset registry is, and when it is the easy choice.
+- What a run records about a registry dataset.
+- How to rerun on exactly the same data with `--commit`.
 
 ## Background
 
-The [dataset registry](https://github.com/gianlucapargaetzi/cairnml-dataset-registry) has an entry for CIFAR-10 that points to its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), pinned to a commit, and an adapter that reads its Parquet files into the CairnML dataset format.
+The [dataset registry](https://github.com/gianlucapargaetzi/cairnml-dataset-registry) is a library of established public datasets. Each entry is a small file that names where the data comes from, here the [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10) of CIFAR-10 at a fixed commit, and an **adapter** that reads the downloaded files into one standard sample format.
 
-What the example does:
+You ask for a dataset by name:
 
-- The training code sees standard samples, whatever the source format.
-- The run records the dataset, its revision, the adapter and the registry commit.
-- The defaults match Example 2: 40 epochs, batch size 32, three blocks, dropout 0.1, augmentation on and a 10% validation split.
+```python
+dataset = RegistryDataset.get_external("cifar10")
+```
+
+That replaces the download and parsing code of Example 2. The training code only sees standard samples, with named images and typed labels, whatever the files look like. Another dataset from the registry would read the same way.
+
+**Tracking comes with the structure.** Nothing extra is needed to know what the run used: the registry commit fixes the entry and the adapter, and the run records the dataset, its source revision, the adapter and the registry commit. Pass the commit later and the same data is read the same way.
+
+**What a registry is not.** The files stay at their source. The registry does not hold them, so a rerun needs that source to still be online. It suits public data that is easy to get again, and it is not the place for data you must be able to reproduce regardless of the internet. For that, version the data yourself, as in [Example 6](../06-regression-dataset).
 
 ## Prerequisites
 
-- Time: several minutes on a CPU.
+- Several minutes on a CPU.
 - The [SDK connected to your server](../00-installation-and-setup), with the dataset tools: `pip install "cairnml[dataset]"`.
-- The prerequisites of [Example 2](../02-cifar10-classification/README.md#prerequisites).
+- The prerequisites of [Example 2](../02-cifar10-classification/README.md#prerequisites). The defaults match Example 2, so the two runs can be compared.
 
 ## Steps
 
@@ -43,30 +49,25 @@ pip install -r requirements.txt
 python train.py
 ```
 
-The script reads the latest commit of the registry. For a quick try, add `--epochs 3`.
+This reads the latest commit of the registry. For a quick try add `--epochs 3`.
 
-### 3. Rerun on the same data (optional)
+### 3. Look at the run and compare
 
-Pass the registry commit that an earlier run recorded:
+In the project **examples**, open the task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists the dataset `cifar10`, the dataset revision (the exact archive), the adapter and the registry commit.
+
+Select this task and the task of Example 2 in the task list and compare them. The validation accuracy curves should be close, because only the way the data is read differs.
+
+### 4. Rerun on the same data (optional)
+
+Pass the registry commit from step 3:
 
 ```bash
 python train.py --commit <commit>
 ```
 
-### 4. Look at the run
-
-The run is in the project **examples**, task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists:
-
-- the dataset, `cifar10`
-- the dataset revision, which identifies the exact archive
-- the adapter that read it
-- the registry commit
-
-Select this task and the task of Example 2 in the list and **compare** them: the validation accuracy curves should be close.
-
 ## Data
 
-The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky. See [Example 2](../02-cifar10-classification/README.md#data) for the citation.
+[CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky. See [Example 2](../02-cifar10-classification/README.md#data) for the citation.
 
 ## Next steps
 
