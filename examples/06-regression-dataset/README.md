@@ -51,14 +51,16 @@ This is the right tool for data you own and must be able to reproduce. For publi
 
 ### 1. Install the tools
 
+From the root of the repository:
+
 ```bash
-cd ~/cairnml-examples/examples/06-regression-dataset
-source ~/cairnml-examples/.venv/bin/activate
+source .venv/bin/activate
+cd examples/06-regression-dataset
 pip install -r requirements.txt
 cairnml dataset --help
 ```
 
-In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 The last command lists the dataset commands, among them `init`, `remote`, `add`, `commit`, `push` and `doctor`.
 
@@ -74,7 +76,7 @@ The last command lists the dataset commands, among them `init`, `remote`, `add`,
 | `co2` | carbon dioxide in ppm | none: it is noise, and a good model learns to ignore it |
 | `hour` | hour of the day, 0 to 23 | nights cost more |
 
-Use a temporary folder for everything below. `WORK` and the environment belong to one terminal. In a new terminal, run `cd ~/cairnml-examples/examples/06-regression-dataset` and `source ~/cairnml-examples/.venv/bin/activate`, and set `WORK` again:
+Use a temporary folder for everything below. `WORK` and the environment belong to one terminal. In a new terminal, go to the repository root, run `source .venv/bin/activate` and `cd examples/06-regression-dataset`, and set `WORK` again:
 
 ```bash
 WORK=$(mktemp -d)

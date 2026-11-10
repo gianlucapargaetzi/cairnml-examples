@@ -40,13 +40,15 @@ The pipeline function trains nothing itself. Each return value is recorded and h
 
 ### 1. Install
 
+From the root of the repository:
+
 ```bash
-cd ~/cairnml-examples/examples/07-workflow-pipeline
-source ~/cairnml-examples/.venv/bin/activate
+source .venv/bin/activate
+cd examples/07-workflow-pipeline
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Read the steps
 

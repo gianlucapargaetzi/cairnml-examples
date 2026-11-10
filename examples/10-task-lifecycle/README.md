@@ -37,13 +37,15 @@ Only the actions marked "no" need `--yes` in the script. Each one is also in the
 
 ### 1. Install
 
+From the root of the repository:
+
 ```bash
-cd ~/cairnml-examples/examples/10-task-lifecycle
-source ~/cairnml-examples/.venv/bin/activate
+source .venv/bin/activate
+cd examples/10-task-lifecycle
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Create a base task
 

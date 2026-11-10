@@ -34,21 +34,22 @@ You will make a private repository from the code of [Example 2](../02-cifar10-cl
 
 ### 1. Make the repository folder
 
+From the root of the examples repository:
+
 ```bash
-cd ~/cairnml-examples/examples/03-private-code-and-credentials
-python make_private_repo.py ~/cairnml-private-demo
+python examples/03-private-code-and-credentials/make_private_repo.py ../cairnml-private-demo
 ```
 
 The script copies `train.py` and `requirements.txt` from Example 2 into a new folder outside this repository and makes the first commit. That folder is the repository you publish next. It needs only git.
 
 ### 2. Publish it as a private repository
 
-Both ways end with a private repository `cairnml-private-demo` under your account, holding the commit from step 1.
+Both ways end with a private repository `cairnml-private-demo` under your account, holding the commit from step 1. The commands start from the root of the examples repository.
 
 **With the GitHub command line** (log in once with `gh auth login`):
 
 ```bash
-cd ~/cairnml-private-demo
+cd ../cairnml-private-demo
 gh repo create cairnml-private-demo --private --source . --push
 ```
 
@@ -59,7 +60,7 @@ gh repo create cairnml-private-demo --private --source . --push
 3. In the folder, push to the address GitHub shows. Git asks you to sign in: use your system's credential helper, or the SSH address if you have an SSH key on GitHub.
 
 ```bash
-cd ~/cairnml-private-demo
+cd ../cairnml-private-demo
 git remote add origin https://github.com/<your-user>/cairnml-private-demo.git
 git push -u origin main
 ```
@@ -95,7 +96,7 @@ A repository that is not selected stays unreadable, even for CairnML.
 
 CairnML checks the key with GitHub before it saves anything. If you are an admin, the dialog also asks who may use the credential: choose **Only me**.
 
-Check: the credential is listed with a working status. In the terminal, `cairnml credential list` shows it too, in the environment from Example 0: run `source ~/cairnml-examples/.venv/bin/activate` first.
+Check: the credential is listed with a working status. In the terminal, `cairnml credential list` shows it too, in the environment from Example 0: run `source .venv/bin/activate` in the root of the repository first.
 
 ### 6. Add the repository and assign the credential
 

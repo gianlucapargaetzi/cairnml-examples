@@ -32,13 +32,15 @@ Settings go through `task.connect` so that the server knows them. A copy of the 
 
 ### 1. Install
 
+From the root of the repository:
+
 ```bash
-cd ~/cairnml-examples/examples/01-hello-world
-source ~/cairnml-examples/.venv/bin/activate
+source .venv/bin/activate
+cd examples/01-hello-world
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Run
 

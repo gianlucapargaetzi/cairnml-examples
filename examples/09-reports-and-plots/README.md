@@ -34,13 +34,15 @@ The script trains the greenhouse model of [Example 6](../06-regression-dataset) 
 
 ### 1. Install
 
+From the root of the repository:
+
 ```bash
-cd ~/cairnml-examples/examples/09-reports-and-plots
-source ~/cairnml-examples/.venv/bin/activate
+source .venv/bin/activate
+cd examples/09-reports-and-plots
 pip install -r requirements.txt
 ```
 
-In every new terminal, run `source ~/cairnml-examples/.venv/bin/activate` again before you run the example.
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Run the script
 
