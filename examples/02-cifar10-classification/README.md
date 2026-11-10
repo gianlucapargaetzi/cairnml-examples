@@ -33,9 +33,11 @@ This is the code that [Example 3](../03-private-code-and-credentials) moves into
 ```bash
 cd examples/02-cifar10-classification
 python3 -m venv .venv
-. .venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, run `source .venv/bin/activate` again in this folder.
 
 ### 2. Run
 

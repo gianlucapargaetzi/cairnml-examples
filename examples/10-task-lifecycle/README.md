@@ -40,9 +40,11 @@ Only the actions marked "no" need `--yes` in the script. Each one is also in the
 ```bash
 cd examples/10-task-lifecycle
 python3 -m venv .venv
-. .venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, run `source .venv/bin/activate` again in this folder.
 
 ### 2. Create a base task
 

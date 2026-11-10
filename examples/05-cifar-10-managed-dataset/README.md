@@ -39,9 +39,11 @@ That replaces the download and parsing code of Example 2. The training code only
 ```bash
 cd examples/05-cifar-10-managed-dataset
 python3 -m venv .venv
-. .venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, run `source .venv/bin/activate` again in this folder.
 
 ### 2. Run
 

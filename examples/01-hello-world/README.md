@@ -34,8 +34,12 @@ Settings go through `task.connect` so that the server knows them. A copy of the 
 
 ```bash
 cd examples/01-hello-world
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, run `source .venv/bin/activate` again in this folder.
 
 ### 2. Run
 

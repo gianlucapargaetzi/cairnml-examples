@@ -37,9 +37,11 @@ The script trains the greenhouse model of [Example 6](../06-regression-dataset) 
 ```bash
 cd examples/09-reports-and-plots
 python3 -m venv .venv
-. .venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, run `source .venv/bin/activate` again in this folder.
 
 ### 2. Run the script
 
