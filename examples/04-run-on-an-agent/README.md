@@ -46,7 +46,7 @@ cairnml-agent daemon --queue default --docker
 
 `init` opens the sign-in page. Sign in with your own account. `daemon` takes jobs from the shared `default` queue and must keep running. `--docker` runs every job in its own container. Add `--gpus 0` to use the first GPU.
 
-Enrolling also made a queue for this machine, named after it. `daemon` without `--queue` serves that one.
+Enrolling also made a queue for this machine, named after it. `daemon` without `--queue` serves that one. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
 
 Check: the machine appears under **Agents & Queues** in the web app.
 

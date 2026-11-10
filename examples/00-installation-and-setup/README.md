@@ -66,17 +66,6 @@ The side bar on the left leads to the main areas:
 
 At the bottom are **Search all**, **Help** and the **Account** menu, which leads to **Settings**.
 
-Your projects land here, ready for the detailed analysis of your experiments. A project has these tabs:
-
-| Tab | What it shows |
-|---|---|
-| **Overview** | A summary of the project |
-| **Workloads** | What is running and queued for the project |
-| **Tasks** | The tasks as folders |
-| **Task list** | The same tasks as a table, to sort, filter and compare |
-| **Models** | The models made by tasks |
-| **Project settings** | Who may use the project, its queues, datasets, credentials and repositories |
-
 **Settings** has these pages:
 
 | Page | What it is for |
@@ -129,7 +118,7 @@ cairnml init http://<server-ip>
 
 Your browser opens the sign-in page. Sign in with your user. The terminal prints `enrolled as ...` when the machine is connected.
 
-The machine gets a key of its own, tied to your user. Nothing is shared between machines, and no secret is typed into a script.
+The machine gets a key of its own, tied to your user. Nothing is shared between machines, and no secret is typed into a script. The key is stored in `~/.cairnml/device.key`, the folder where CairnML keeps what is specific to this machine. Keep it private and do not copy it to another machine: enrol each machine on its own.
 
 On a machine without a browser, such as a remote shell or a container, the command shows a short code and an address instead. Open the address on any device, sign in, and enter the code. Add `--device` to use this sign-in on any machine.
 
