@@ -19,7 +19,7 @@ The search is split in two parts, and each part runs where it is cheapest:
 - **Optuna** decides which settings to try next. It only does arithmetic, so it runs on the machine where you start `hpo.py`, which can be a CPU-only laptop.
 - **Each trial** trains the model. Trials are sent to a queue, and an agent on that queue runs them, so they can use a GPU.
 
-## Before you start
+## Prerequisites
 
 - Time: about 15 minutes on one machine, more for a full search.
 - [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The training reads that version with `Dataset.get`.
@@ -110,14 +110,6 @@ Open one of them and look at:
 - **Scalars:** the `mse` curves for the training and validation sets
 
 Compare the learning rates of the best and the worst trials. A very high learning rate makes the curve jump around, and a very small one may not finish learning within 30 epochs. Check this in your own results.
-
-## What to look for
-
-You end with a search task and one task per trial, ranked by validation error.
-
-- The objective of the trials improves over time, then flattens. More trials cost more time for less gain.
-- The noise in the dataset (standard deviation 0.5) sets a floor of about `0.5 * 0.5 = 0.25` for the validation `mse`, because no model can predict random noise. Trials close to that floor fit the signal well, and further search gains little.
-- The `co2` column has no effect, so no setting of this model can depend on it.
 
 ## Data
 

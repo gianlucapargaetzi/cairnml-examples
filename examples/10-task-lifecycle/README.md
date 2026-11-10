@@ -16,7 +16,7 @@ A task in CairnML is more than a finished run. It can be copied, queued, archive
 
 Every action in this example is also in the web app's menus. The script does the same things from the command line, which makes each step easy to repeat.
 
-## Before you start
+## Prerequisites
 
 - Time: about 10 minutes.
 - The SDK is connected to your server, and the package is installed (step 1).
@@ -126,23 +126,6 @@ python lifecycle.py status
 ```
 
 Prints the status of the base task and of the clone. After step 9, the clone is listed as not created.
-
-## What to look for
-
-You end with a base task, a clone, and a feel for every action a task allows.
-
-| Action | Status before | Status after | Can it be undone? |
-|---|---|---|---|
-| clone | (a completed task) | a new draft | yes, delete the copy |
-| enqueue | draft | queued | yes, dequeue |
-| dequeue | queued | draft | not needed |
-| reset | completed or failed | draft | no, the results are removed |
-| archive | any | archived | yes, unarchive |
-| move | any | any, in another project | yes, move it back |
-| publish | completed | published | no |
-| delete | any | removed | no |
-
-Only the steps marked "no" need `--yes`. The others are reversible, so the script runs them directly.
 
 ## Next steps
 

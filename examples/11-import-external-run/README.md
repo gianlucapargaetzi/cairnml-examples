@@ -16,7 +16,7 @@ This example brings a training run into CairnML that was made without CairnML. T
 
 You do not need to change the legacy project to make this work. Everything the adapter needs is in the run folder.
 
-## Before you start
+## Prerequisites
 
 - Time: about 10 minutes.
 - [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`.
@@ -117,14 +117,6 @@ You can open `results.csv` and check that it has one row per epoch.
 3. Open the task in project **examples**. It has the settings under **Configuration**, the three scalar curves under **Scalars**, and the two checkpoints under **Artifacts**.
 
 Each import creates a new task. If you import the same ZIP twice, you get two tasks.
-
-## What to look for
-
-You end with an imported task with settings, curves and checkpoints.
-
-- The legacy run uses the same data as the [baseline in Example 8](../08-hyperparameter-optimisation), with a different network and training loop. Compare their validation curves: the two should land in the same range.
-- The `r2/val` curve approaches 1.0 but does not reach it, because of the noise in the data.
-- The imported task can be compared with native runs. Choose both tasks in the web app and compare their curves.
 
 ## Troubleshooting
 

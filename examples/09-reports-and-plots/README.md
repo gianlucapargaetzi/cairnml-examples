@@ -14,7 +14,7 @@ What you will learn:
 
 A scalar is one number per step, such as the error after each epoch. Many questions need more than that: where does the model go wrong, is its error biased, which hours are hard? This example trains the greenhouse model of [Example 6](../06-regression-dataset) and records six kinds of report next to its scalars. You will see each one in the web app.
 
-## Before you start
+## Prerequisites
 
 - Time: about 5 minutes.
 - [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The script reads that version with `Dataset.get`.
@@ -81,14 +81,6 @@ Open both tasks, and compare their scatter plots and residual histograms side by
 ### How the figure is made
 
 The image report is different from the others. CairnML records a picture file, not data, so `report_figure` in `reports.py` makes the plot with matplotlib, saves it as `residuals.png`, and passes the file to `report_image`. Use this for any plot that the other reports cannot draw, and keep the figure's labels readable: they are what someone sees in the web app without your code.
-
-## What to look for
-
-You end with a task **reports and plots** with six kinds of report.
-
-- The mean residual in the text summary is close to zero. A value far from zero means the model is systematically too high or too low.
-- The confusion matrix counts for the two off-diagonal cells are usually not zero. That tells you where the model's answer differs from the truth.
-- The scatter plot becomes narrower as training improves, and the hourly errors fall.
 
 ## Data
 

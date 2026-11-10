@@ -24,7 +24,7 @@ What the example does:
 - Makes the repository visible to the framework through your GitHub App, so the server can read it for jobs and list it.
 - Reads one version with `Dataset.get`, and records the repository, the commit and the content hash on the run.
 
-## Before you start
+## Prerequisites
 
 - Time: about 20 minutes.
 - Python 3.9 or newer, and [git](https://git-scm.com).
@@ -203,14 +203,6 @@ python read_dataset.py "$REPO" "$COMMIT"
 ### Changing the dataset later
 
 A new version is a new commit. Change the files in `data/` of the dataset repository, then run `cairnml dataset add`, `cairnml dataset commit -m "message"` and `cairnml dataset push` with `--path "$WORK/greenhouse-data"`. `push` sends the files and opens a pull request into the protected default branch. Pass the new commit to the next examples to use the new version.
-
-## What to look for
-
-You end with a private dataset repository, its commit, and a task that read it.
-
-- `dataset.yaml` says `adapter: local`, and `adapter.py` is at the top of the dataset repository, next to the `data/` folder.
-- The run is in the project **examples**, task **greenhouse dataset read**. Its configuration lists the repository, the commit, the content hash and the storage of the dataset. The content hash is the hash in `data.dvc`.
-- The `co2` column has no effect. In the next examples, a model that uses it will be no better than one that does not.
 
 ## Data
 

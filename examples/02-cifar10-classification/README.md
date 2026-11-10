@@ -22,7 +22,7 @@ What the example does:
 - Records the loss and accuracy of the training and validation sets after every epoch, and uploads the trained weights as an artifact.
 - Shows progress bars for the download, the image loading, the epochs and the batches.
 
-## Before you start
+## Prerequisites
 
 - Time: several minutes on a CPU, much less on a GPU.
 - The [SDK connected to your server](../00-installation-and-setup).
@@ -59,9 +59,7 @@ python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 4 --dropout 0.3
 
 For a quick try, add `--epochs 3`.
 
-## What to look for
-
-You end with one task, **CIFAR-10 classification**, with curves and the trained model.
+### 3. Look at the run
 
 The run is in the project **examples**, task **CIFAR-10 classification**:
 

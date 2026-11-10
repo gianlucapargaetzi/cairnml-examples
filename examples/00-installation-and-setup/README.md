@@ -14,9 +14,18 @@ What you will learn:
 
 ## Background
 
-Nothing is recorded in this example. It prepares your account, your machine and your head.
+CairnML is a self-hosted platform for machine learning work. It records every run of your code with its settings, curves and results, so that runs can be compared and repeated. It can also run your code on other machines, and it versions the data your runs use.
 
-## Before you start
+It has four parts:
+
+- **The server** stores everything and serves the web app. It runs once, for everyone.
+- **The web app** is where you look at your runs, models, datasets and machines.
+- **The SDK** (`cairnml`) is a Python package you install next to your code. A few lines in a script record the run on the server.
+- **The agent** (`cairnml-agent`) runs on a machine that should execute jobs. It takes work from a queue.
+
+Code and datasets live in GitHub repositories. CairnML reads them when a job needs them.
+
+## Prerequisites
 
 - Time: about 15 minutes.
 - The address of your server, called `<server-ip>` below. Add a port only if the server does not use port 80, for example `<server-ip>:8081`.
@@ -58,13 +67,13 @@ The **side bar** on the left leads to the main areas:
 | Entry | What it is for |
 |---|---|
 | **Projects** | Your work, in folders called projects. A project holds tasks, models and reports. Most of what you do happens here |
-| **Pipelines** | Workflows made of several steps, each step its own task (Example 7) |
-| **Datasets** | Versioned data, and the code repositories CairnML reads (Examples 3 and 6) |
-| **Agents & Queues** | The machines that run your jobs, and the queues they take jobs from (Example 4) |
+| **Pipelines** | Workflows made of several steps, each step its own task |
+| **Datasets** | Versioned data, and the code repositories CairnML reads |
+| **Agents & Queues** | The machines that run your jobs, and the queues they take jobs from |
 
 At the bottom of the side bar are **Search all**, **Help** and the **Account** menu. The account menu leads to **Settings**.
 
-Open a project, for example **examples** once Example 1 has run. It has tabs:
+Your projects land here, ready for the detailed analysis of your experiments. A project has these tabs:
 
 | Tab | What it shows |
 |---|---|
@@ -101,7 +110,7 @@ Three more words come up often:
 
 | Word | Meaning |
 |---|---|
-| **Project** | A folder for related tasks, models and reports. The examples use the project **examples** |
+| **Project** | A folder for related tasks, models and reports. |
 | **Queue** | A waiting line for jobs. Every agent has its own queue, made when the agent is enrolled; the server also has a shared `default` queue |
 | **Dataset** | Data kept in a git repository, versioned, with the commit as its version (Examples 5 and 6) |
 
@@ -143,14 +152,6 @@ CairnML gives the machine a key of its own, so nothing is shared between machine
 **On a machine without a browser**, such as a remote shell or a container, the command shows a short code and an address instead. Open the address on any device, sign in, and enter the code. Add `--device` to use this sign-in on any machine.
 
 **Check:** in the web app, open **Settings → Devices**. Your machine is listed, with the name of the machine and the kind **Client**. You can revoke it there at any time.
-
-## What to look for
-
-You end with an account, a first sign-in, a tour of the web app, the terminology, and an enrolled machine.
-
-- You can sign in, and the **Projects** page opens.
-- **Settings → Devices** lists your machine.
-- You can say, in one sentence each, what a task, an experiment, an agent and a job are.
 
 ## Troubleshooting
 

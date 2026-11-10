@@ -20,11 +20,11 @@ What the example does:
 - The run records the dataset, its revision, the adapter and the registry commit.
 - The defaults match Example 2: 40 epochs, batch size 32, three blocks, dropout 0.1, augmentation on and a 10% validation split.
 
-## Before you start
+## Prerequisites
 
 - Time: several minutes on a CPU.
 - The [SDK connected to your server](../00-installation-and-setup), with the dataset tools: `pip install "cairnml[dataset]"`.
-- The prerequisites of [Example 2](../02-cifar10-classification/README.md#before-you-start).
+- The prerequisites of [Example 2](../02-cifar10-classification/README.md#prerequisites).
 
 ## Steps
 
@@ -53,9 +53,7 @@ Pass the registry commit that an earlier run recorded:
 python train.py --commit <commit>
 ```
 
-## What to look for
-
-You end with a task whose configuration names the dataset, its revision and the registry commit.
+### 4. Look at the run
 
 The run is in the project **examples**, task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists:
 

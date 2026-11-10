@@ -14,7 +14,7 @@ What you will learn:
 
 The smallest possible CairnML run: one task with parameters, a loss curve and an artifact.
 
-## Before you start
+## Prerequisites
 
 - Time: under a minute.
 - The [SDK connected to your server](../00-installation-and-setup).
@@ -36,9 +36,7 @@ python hello_world.py
 
 The script finishes in a few seconds and prints the seed it used and the name of the run. The seed makes the small noise on the curve: pass `--seed 7` to repeat a run exactly, or leave it out to get a different curve each time.
 
-## What to look for
-
-You end with one task, **hello world**, in the project **examples**.
+### 3. Look at the run
 
 Open the web app, project **examples**, task **hello world**:
 

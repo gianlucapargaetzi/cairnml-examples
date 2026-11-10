@@ -15,7 +15,7 @@ What you will learn:
 
 The agent clones your private repository with the GitHub App credential from [Example 3](../03-private-code-and-credentials), runs `train.py` from the commit the run recorded, and sends the results back to your server.
 
-## Before you start
+## Prerequisites
 
 - Time: about 10 minutes, plus the training time.
 - [Example 3](../03-private-code-and-credentials) is done: the private repository `cairnml-private-demo` exists, is pushed, and shows **Read with …** on the **Datasets → Repositories** page.
@@ -38,7 +38,7 @@ cairnml-agent init http://<server-ip>
 cairnml-agent daemon --queue default --docker
 ```
 
-`init` opens the sign-in page. Sign in with your own account: any signed-in user can enrol an agent, and it then runs with the rights of that user, never as an admin. `daemon --queue default` takes jobs from the shared queue `default`, which is public, and must keep running. Enrolling also made a private queue for this machine, named after it; `daemon` without `--queue` serves that one instead. Add `--gpus 0` to use the first GPU.
+`init` opens the sign-in page. Sign in with your own account. `daemon --queue default` takes jobs from the shared queue `default`, which is public, and must keep running. Enrolling also made a private queue for this machine, named after it; `daemon` without `--queue` serves that one instead. Add `--gpus 0` to use the first GPU.
 
 **Check:** the machine appears under **Agents & Queues** in the web app.
 
@@ -92,14 +92,6 @@ The copy goes from **Draft** to **Queued** to **Running** to **Completed**, like
 1. In **Datasets → Repositories**, open the row of `cairnml-private-demo` and use the lock button to set it to **Not assigned**.
 2. Clone the task again and enqueue it. The web app stops you with **Credentials not assigned**, because the repository is private and no credential reaches it.
 3. Click **Assign credentials**, choose your credential and click **Set credential**. Enqueue again: it now runs.
-
-## What to look for
-
-You end with two completed runs of your private code, made on an agent.
-
-- The agent ran code that is **not public**: the repository is private, and the run still started.
-- The run records the **repository and the commit**. To rerun exactly the same code later, clone the task: the clone keeps the commit.
-- Both runs are in the **examples** project. Compare their curves; with the same settings they should be close.
 
 ## Troubleshooting
 

@@ -14,7 +14,7 @@ What you will learn:
 
 You will make a private repository from the training code of [Example 2](../02-cifar10-classification), create a **GitHub App** that may read only that repository, add the App to CairnML as a **credential**, and assign it to the repository. Nothing runs in this example. It ends when CairnML shows the repository as readable.
 
-## Before you start
+## Prerequisites
 
 - Time: about 15 minutes.
 - The [SDK connected to your server](../00-installation-and-setup) and **Example 1** run once, so the project **examples** exists.
@@ -112,16 +112,6 @@ CairnML asks GitHub for a read token for this repository with your App, so the s
 **Check:** the badge now says **Read with my github app** (the name you gave the credential).
 
 The same thing is available in the project: **project settings → Repositories**, for the project **examples**.
-
-## What to look for
-
-You end with a private repository, a GitHub App, and a credential that reads the repository.
-
-| Where | What you see | What it means |
-|---|---|---|
-| **Settings → Access** | one credential, working status | CairnML can use the App's key |
-| **Datasets → Repositories** | `cairnml-private-demo`, badge **Read with …** | the repository is read with that credential |
-| Private browser window | 404 on GitHub | the repository really is private |
 
 ## Troubleshooting
 
