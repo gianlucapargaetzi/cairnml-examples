@@ -4,7 +4,7 @@ Optuna only proposes values and reads the results, so this controller runs on an
 copy of the base task with new values, and it runs on the queue you name. The trials are the expensive part, so that
 queue is the one with a GPU agent on it.
 
-    python hpo.py --base-task-id <id> --queue gpu --trials 20   # trials run on the agents of the 'gpu' queue
+    python hpo.py --base-task-id <id> --queue <queue> --trials 20   # trials run on the agents of that queue
     python hpo.py --base-task-id <id> --local --trials 4         # trials run on this machine, to try it out
 
 The base task id is printed at the end of a run of train_regression.py, and shown in the web app.

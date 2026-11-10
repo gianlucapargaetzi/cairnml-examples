@@ -4,7 +4,7 @@ It copies train.py and requirements.txt of example 2 into a new folder, adds a s
 the first commit. It does not touch GitHub and needs no GitHub tools: only git. Publishing the folder as a private
 repository is the next step of the example README, with the GitHub command line or in the browser.
 
-    python make_private_repo.py ~/cairnml-private-demo
+    python examples/03-private-code-and-credentials/make_private_repo.py ../cairnml-private-demo
 """
 
 import argparse

@@ -1,44 +1,44 @@
-# 🖼️ CIFAR-10 classification
+# CIFAR-10 classification
 
-> 🎯 **Goal:** train a real model, a small convolutional network that names the object in a photograph, and see its loss and accuracy curves in the web app.
+## Goals
 
-CIFAR-10 has 32x32 colour photographs of ten classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship and truck. This is a multiclass classification task. [Example 3](../03-private-code-and-credentials) takes this same code into a private repository, and [Example 4](../04-run-on-an-agent) runs it on an agent.
+Train a small convolutional network on CIFAR-10 and follow its training in the web app.
 
-| | |
-|---|---|
-| ⏱️ **Time** | several minutes on a CPU, much less on a GPU |
-| 🧰 **Needs** | the SDK connected to your server; a GPU is optional |
-| 📦 **You end with** | one task, **CIFAR-10 classification**, with curves and the trained model |
+What you will learn:
 
-## 📚 What you will learn
+- How a full training script is tracked: its settings, one curve point per epoch, and the trained model.
+- How to read the training and validation curves, and how they show overfitting.
 
-- How a full training script is tracked: settings, curves and the trained model.
-- How training and validation curves are recorded per epoch.
-- How a script can send itself to an agent with `--queue` (used in Example 4).
+## Background
 
-## ✨ Features
+CIFAR-10 is 60,000 colour photographs of 32x32 pixels in ten classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship and truck. The network learns to name the object in a photograph.
 
-- Downloads CIFAR-10 once from Hugging Face, about 120 MB, into `cifar10/`.
-- Holds out 10% of the training images as a validation set, with a fixed seed, so every run uses the same split.
-- Augments the training images with a flip, a shift, scale and rotation, brightness and contrast changes, and a cut-out patch. `--no-augment` turns this off. The validation images are never augmented.
-- Records the loss and accuracy of the training and validation sets after every epoch, and uploads the trained weights as an artifact.
-- Shows progress bars for the download, the image loading, the epochs and the batches.
+Two choices in the script matter for what you will see:
 
-## ✅ Before you start
+- **A validation set.** 10% of the training images are held out, with a fixed seed, so every run uses the same split. The model never trains on them. A model that keeps improving on the training images but not on these is memorising, not learning.
+- **Augmentation.** The training images are randomly flipped, shifted, scaled, rotated, brightened and partly covered, so the model sees a slightly different picture each epoch and generalises better. The validation images are never altered. `--no-augment` turns it off.
 
+This is the code that [Example 3](../03-private-code-and-credentials) moves into a private repository and [Example 4](../04-run-on-an-agent) runs on an agent.
+
+## Prerequisites
+
+- Several minutes on a CPU, much less on a GPU.
 - The [SDK connected to your server](../00-installation-and-setup).
 - Optional: a GPU. Install the PyTorch build for your CUDA version first if the default one does not match it. See [pytorch.org](https://pytorch.org).
 
-## 🚀 Steps
+## Steps
 
 ### 1. Install
 
+From the root of the repository:
+
 ```bash
+source .venv/bin/activate
 cd examples/02-cifar10-classification
-python3 -m venv .venv
-. .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Run
 
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 python train.py
 ```
 
-The defaults are 40 epochs, batch size 32, three blocks, dropout 0.1, learning rate 0.001, augmentation on and a 10% validation split. To change them:
+The images, about 120 MB, are downloaded once into `cifar10/`. The defaults are 40 epochs, batch size 32, three blocks, dropout 0.1 and learning rate 0.001. For a quick try add `--epochs 3`. To change the settings:
 
 ```bash
 python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 4 --dropout 0.3
@@ -54,26 +54,24 @@ python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 4 --dropout 0.3
 
 | Option | Meaning |
 |---|---|
-| `--depth` | number of blocks, 1 to 5. Each block has two convolutions with batch normalization and halves the image, so depth 5 reduces 32x32 to 1x1 |
-| `--seed` | seed of the split, the weights and the augmentation |
-| `--queue <name>` | queue the run for an agent instead of training here. See [Example 4](../04-run-on-an-agent) |
+| `--depth` | Number of blocks, 1 to 5. Each block has two convolutions and halves the image, so depth 5 reduces 32x32 to 1x1 |
+| `--seed` | Seed of the split, the weights and the augmentation |
+| `--queue <name>` | Queue the run for an agent instead of training here ([Example 4](../04-run-on-an-agent)) |
 
-For a quick try, add `--epochs 3`.
+### 3. Look at the run
 
-## 🔍 What to look for
+In the project **examples**, open the task **CIFAR-10 classification**:
 
-The run is in the project **examples**, task **CIFAR-10 classification**:
-
-- **Scalars:** `loss` and `accuracy`, each with a `train` and a `val` series, one point per epoch. The validation curve shows whether the model overfits: a training loss that keeps falling while the validation loss rises.
+- **Scalars:** `loss` and `accuracy`, each with a `train` and a `val` series, one point per epoch. If the training loss keeps falling while the validation loss rises, the model overfits.
 - **Configuration:** the settings of the run.
-- **Artifacts:** the trained model, `model`. It is a TorchScript model that takes 32x32 colour images with values from 0 to 1 and outputs class probabilities that sum to 1. Load it with `torch.jit.load("model.pt")`.
+- **Artifacts:** the trained model, a TorchScript file that takes 32x32 colour images with values from 0 to 1 and returns class probabilities. Load it with `torch.jit.load("model.pt")`.
 
-## 📄 Data
+## Data
 
-The data is [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky, collected from the 80 Million Tiny Images dataset. The training images are downloaded from its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), which is faster than the original archive. Please cite it when you use it:
+[CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky, downloaded from its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), which is faster than the original archive. Please cite it when you use it:
 
 > Krizhevsky, *Learning Multiple Layers of Features from Tiny Images*, 2009. [Technical report](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf)
 
-## ➡️ Next steps
+## Next steps
 
-Continue with [Example 3: private code and credentials](../03-private-code-and-credentials), which moves this training into a private repository.
+Continue with [Example 3: private code and credentials](../03-private-code-and-credentials).

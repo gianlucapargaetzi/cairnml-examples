@@ -1,38 +1,51 @@
-# ♻️ The life of a task
+# The life of a task
 
-> 🎯 **Goal:** go through everything a task can do after it has run: clone, queue, reset, archive, move, publish and delete.
+## Goals
 
-A task in CairnML is more than a finished run. It can be copied, queued, archived, moved to another project, published and deleted. This example walks through each of these actions in order, with one command per step, so you can see what each one changes in the web app.
+Go through the states of a task and the actions you can take on it, and learn which of them can be undone.
 
-Every action in this example is also in the web app's menus. The script does the same things from the command line, which makes each step easy to repeat.
+What you will learn:
 
-| | |
-|---|---|
-| ⏱️ **Time** | about 10 minutes |
-| 🧰 **Needs** | the SDK connected to your server |
-| 📦 **You end with** | a base task, a clone, and a feel for every action a task allows |
+- How a task moves between **Draft**, **Queued**, **Running**, **Completed** and **Published**.
+- How to clone a task and change its settings before it runs.
+- Which actions are reversible, and which are not.
 
-## 📚 What you will learn
+## Background
 
-- The states a task goes through: draft, queued, running, completed, published.
-- How to copy a task and change its settings before it runs.
-- What archiving, moving and publishing change, and which of them can be undone.
+A finished run is not the end of a task. You can copy it to run again with other settings, hide it, move it, or freeze it as final. Knowing what each action does, and whether it can be undone, keeps you from losing results by accident.
 
-## ✅ Before you start
+| Action | Status before | Status after | Can it be undone? |
+|---|---|---|---|
+| clone | any task | a new draft | yes, delete the copy |
+| enqueue | draft | queued | yes, dequeue |
+| dequeue | queued | draft | not needed |
+| reset | completed or failed | draft | no, the results are removed |
+| archive | any | archived | yes, unarchive |
+| move | any | unchanged, in another project | yes, move it back |
+| publish | completed | published | no |
+| delete | any | removed | no |
 
-- The SDK is connected to your server, and the package is installed (step 1).
-- Keep an eye on the web app while you go through the steps. Each step tells you what to look for.
+Only the actions marked "no" need `--yes` in the script. Each one is also in the menus of the web app. The script does them from the command line so that every step is easy to repeat.
 
-## 🚀 Steps
+## Prerequisites
 
-### 1. Install the package
+- About 10 minutes.
+- The [SDK connected to your server](../00-installation-and-setup).
+- The web app open next to the terminal: each step changes something you can see there.
+
+## Steps
+
+### 1. Install
+
+From the root of the repository:
 
 ```bash
+source .venv/bin/activate
 cd examples/10-task-lifecycle
-python3 -m venv .venv
-. .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Create a base task
 
@@ -40,9 +53,7 @@ pip install -r requirements.txt
 python lifecycle.py base
 ```
 
-The script creates a task named **lifecycle base** in the project **examples**, logs a short curve, and closes the task. The task's status is **Completed**. It is the starting point for the rest of the steps, and the script saves its ID in `state.json`.
-
-Look at it in the web app. Its status is **Completed**, and its settings are `lr` and `hidden` under **Configuration**.
+This creates the task **lifecycle base** in the project **examples**, logs a short curve and closes it. Its status is **Completed**, and `lr` and `hidden` are listed under **Configuration**. The script keeps its ID in `state.json`.
 
 ### 3. Clone it as a draft
 
@@ -50,9 +61,7 @@ Look at it in the web app. Its status is **Completed**, and its settings are `lr
 python lifecycle.py clone --lr 0.1
 ```
 
-A clone is a copy of the base task: the same code and the same settings, except the ones you change. The script sets the learning rate of the copy to `0.1`. The copy is named **lifecycle clone**, and its status is **Draft**.
-
-A draft can still be changed. Its settings can be edited in the web app or with the script, and it does not run until you queue it.
+A clone has the same code and settings as the original, except the ones you change, here the learning rate. It is named **lifecycle clone** and its status is **Draft**: it does not run until you queue it, and until then its settings can still be edited, in the web app or with the script.
 
 ### 4. Queue the clone
 
@@ -60,25 +69,21 @@ A draft can still be changed. Its settings can be edited in the web app or with 
 python lifecycle.py enqueue
 ```
 
-The status changes to **Queued**. The task waits in the `default` queue until an agent takes it. To run it, start an agent for that queue, as in [example 4](../04-run-on-an-agent). Without an agent, the task stays queued.
-
-Take it off the queue again if you change your mind:
+The status becomes **Queued**. The task waits in the `default` queue until an agent takes it, as in [Example 4](../04-run-on-an-agent). Without an agent it stays queued. Take it off the queue again with:
 
 ```bash
 python lifecycle.py dequeue
 ```
 
-The status returns to **Draft**. Queue it once more before step 5 if you want it to run.
+The status returns to **Draft**.
 
 ### 5. Reset it
-
-A reset removes the results of a task (its scalars, its logs and its artifacts) and returns it to a draft. Use it when a run has failed or you want to run the same task again from scratch.
 
 ```bash
 python lifecycle.py reset --yes
 ```
 
-The script refuses to run without `--yes`. The reset removes the results of the clone only, not the base task.
+A reset removes the results of the clone, its scalars, logs and artifacts, and returns it to a draft. Use it to run the same task again from scratch. The base task is not touched.
 
 ### 6. Archive it
 
@@ -86,13 +91,11 @@ The script refuses to run without `--yes`. The reset removes the results of the 
 python lifecycle.py archive
 ```
 
-The clone disappears from the task list. Archiving is a way to hide tasks you no longer need, without deleting them. Click **Open archive** in the web app to see archived tasks.
+The clone disappears from the task list. Archiving hides tasks you no longer need without deleting them: click **Open archive** in the web app to see them. Bring it back with:
 
 ```bash
 python lifecycle.py unarchive
 ```
-
-The task is back in the list, with its status unchanged.
 
 ### 7. Move it to another project
 
@@ -100,7 +103,7 @@ The task is back in the list, with its status unchanged.
 python lifecycle.py move --project "examples scratch"
 ```
 
-The clone moves to the project **examples scratch**. Moving is for organising work: the task keeps its results and its settings.
+The clone moves to the project **examples scratch**, keeping its results and settings. Moving is for organising work.
 
 ### 8. Publish the base task
 
@@ -108,9 +111,7 @@ The clone moves to the project **examples scratch**. Moving is for organising wo
 python lifecycle.py publish --yes
 ```
 
-Publishing marks a finished task as final. Its outputs become read-only, so nothing can change them, and other tasks can use its models. The status changes to **Published**.
-
-Treat publishing as final: this example has no step that reverses it, so the script asks for `--yes`. Only publish a task you are sure you want to keep unchanged. This example publishes the base task, not the clone, so the clone can still be deleted in the next step.
+Publishing marks a finished task as final. Its outputs become read-only and other tasks can use its models. Nothing reverses it, so publish only what you want to keep unchanged. The script publishes the base task, so the clone can still be deleted in the next step.
 
 ### 9. Delete the clone
 
@@ -118,7 +119,7 @@ Treat publishing as final: this example has no step that reverses it, so the scr
 python lifecycle.py delete --yes
 ```
 
-The clone is deleted, together with its outputs. The base task is not touched, and neither is any published task.
+The clone is deleted with its outputs. The base task and any published task are not touched.
 
 ### 10. Check the state
 
@@ -126,23 +127,8 @@ The clone is deleted, together with its outputs. The base task is not touched, a
 python lifecycle.py status
 ```
 
-Prints the status of the base task and of the clone. After step 9, the clone is listed as not created.
+This prints the status of the base task and of the clone. After step 9 the clone is listed as not created.
 
-## 🔍 What to look for
+## Next steps
 
-| Action | Status before | Status after | Can it be undone? |
-|---|---|---|---|
-| clone | (a completed task) | a new draft | yes, delete the copy |
-| enqueue | draft | queued | yes, dequeue |
-| dequeue | queued | draft | not needed |
-| reset | completed or failed | draft | no, the results are removed |
-| archive | any | archived | yes, unarchive |
-| move | any | any, in another project | yes, move it back |
-| publish | completed | published | no |
-| delete | any | removed | no |
-
-Only the steps marked "no" need `--yes`. The others are reversible, so the script runs them directly.
-
-## ➡️ Next steps
-
-Continue with [Example 11: import a run](../11-import-external-run), which brings a run from a project that does not use CairnML into the web app.
+Continue with [Example 11: import a run](../11-import-external-run).

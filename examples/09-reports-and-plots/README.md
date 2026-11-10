@@ -1,36 +1,48 @@
-# 📊 Reports and plots
+# Reports and plots
 
-> 🎯 **Goal:** record more than scalars, scatter plots, histograms, tables, a confusion matrix and images, so you can see where the greenhouse model goes wrong.
+## Goals
 
-A scalar is one number per step, such as the error after each epoch. Many questions need more than that: where does the model go wrong, is its error biased, which hours are hard? This example trains the greenhouse model of [Example 6](../06-regression-dataset) and records six kinds of report next to its scalars. You will see each one in the web app.
+Record plots, tables and images next to the scalars of a run, to see where the greenhouse model goes wrong.
 
-| | |
-|---|---|
-| ⏱️ **Time** | about 5 minutes |
-| 🧰 **Needs** | the SDK and the dataset from [Example 6](../06-regression-dataset) |
-| 📦 **You end with** | a task **reports and plots** with six kinds of report |
+What you will learn:
 
-## 📚 What you will learn
+- Which kinds of report CairnML records, and which question each one answers.
+- How to record a figure made with matplotlib.
 
-- The kinds of report CairnML can record: scatter plot, histogram, table, confusion matrix, image and text.
-- How to choose the right one for a question.
-- How to make a figure with matplotlib and record it as an image.
+## Background
 
-## ✅ Before you start
+A scalar is one number per step, such as the error after each epoch. It says how well the model does overall, but not where it fails, whether it leans one way, or at which hours it is weak. Those questions need a different picture each, and the run is the place to keep them, next to the curves, so anyone who opens the run sees them.
 
-- [Example 6](../06-regression-dataset) is required. It created the dataset repository. Pass its repository URL and commit to this example: `--repo` and `--commit`. The script reads that version with `Dataset.get`.
-- The SDK is connected to your server, and the packages are installed (step 1).
+The script trains the greenhouse model of [Example 6](../06-regression-dataset) and records one report per question. The residuals are the actual energy minus the predicted energy: a residual of 0.5 means the model predicted 0.5 kWh too little.
 
-## 🚀 Steps
+| Report | Question | Where it appears |
+|---|---|---|
+| Scatter plot **predictions** | Do the predictions follow the actual values? Points on the diagonal are perfect | Plots, one point per test row |
+| Histogram **residuals** | Are the errors centred on zero, or do they lean one way? | Plots |
+| Table **error by hour** | At which hours is the model weakest? | Tables, one row per hour |
+| Confusion matrix **expensive hour** | Asked "is this hour above the median energy?", how often is the answer right? | Plots, a 2 by 2 grid |
+| Image **residuals vs temperature** | Does the error depend on the outside temperature? | Images |
+| Text summary | What is the short summary of the run? | Console |
 
-### 1. Install the packages
+## Prerequisites
+
+- About 5 minutes.
+- [Example 6](../06-regression-dataset) done. Its repository URL and commit are passed as `--repo` and `--commit`.
+- The [SDK connected to your server](../00-installation-and-setup).
+
+## Steps
+
+### 1. Install
+
+From the root of the repository:
 
 ```bash
+source .venv/bin/activate
 cd examples/09-reports-and-plots
-python3 -m venv .venv
-. .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+In every new terminal, go to the repository root and run `source .venv/bin/activate` again.
 
 ### 2. Run the script
 
@@ -38,61 +50,35 @@ pip install -r requirements.txt
 python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha>
 ```
 
-Pass the repository URL and the commit that Example 6 recorded. Without either one the script stops with the message `run examples/06-regression-dataset first, then pass its dataset repository URL with --repo`, or the same for `--commit`.
+It trains for 30 epochs and then records the reports. Add `--epochs 5` to make it faster.
 
-The script trains for 30 epochs, then records the reports, and finishes with `done: the reports are in the web app, project 'examples', task 'reports and plots'`. It also saves `residuals.png` next to the script, which is the figure it uploads.
+### 3. Look at the reports
 
-To make it faster, add `--epochs 5`.
+In the project **examples**, open the task **reports and plots**:
 
-### 3. Choose the right report
+- **Plots:** the scatter plot should lie close to a line from bottom left to top right, and the residual histogram should peak near zero. In the confusion matrix, the diagonal counts the right answers. The median splits the test rows in half, so a random guess would put about half of its answers on the diagonal.
+- **Tables:** sort **error by hour** by its error column to see the worst hours first.
+- **Images:** in **residuals vs temperature**, a shapeless cloud around zero is what you want. A pattern means the model misses an effect of the temperature.
+- **Console:** the text summary, with the mean absolute error and the mean residual. A mean residual far from zero means the model is systematically too high or too low.
 
-Each report answers one question. The table below is what the script records and the question it answers:
+### 4. Compare two runs
 
-| Report | Question | Where it appears |
-|---|---|---|
-| Scatter plot **predictions** | Do predictions follow the actual values? Points on the diagonal are perfect | plots, one point per test row |
-| Histogram **residuals** | Are the errors centred on zero, or do they lean one way? | plots, the distribution of residuals |
-| Table **error by hour** | At which hours of the day is the model weakest? | tables, one row per hour |
-| Confusion matrix **expensive hour** | If we ask "is this hour expensive?", how often is the answer right? | plots, a 2 by 2 grid |
-| Image **residuals vs temperature** | Does the error depend on the outside temperature? | images, the PNG file |
-| Text | What is the short summary of this run? | the Console tab |
-
-The residuals are the actual energy minus the predicted energy. A residual of 0.5 means the model predicted 0.5 kWh too little.
-
-### 4. Look at the reports in the web app
-
-Open the project **examples**, task **reports and plots**. Look at each place:
-
-- **Plots:** the scatter plot **predictions** and the histogram **residuals**. The scatter plot should lie close to a straight line from bottom left to top right. The histogram should peak near zero.
-- **Tables:** **error by hour**. Sort it by the error column to see the worst hours first.
-- **Plots, confusion matrix:** **expensive hour**. The diagonal counts the right answers. The question is "above the median energy". The median splits the test rows in half, so a random guess would have about half of its answers on the diagonal.
-- **Images:** **residuals vs temperature**. Look for a pattern. A cloud of points around zero with no shape is what you want.
-- **Console:** the text summary, with the mean absolute error and the mean residual.
-
-### 5. Compare two runs
-
-Run the script again with a different setting, for example:
+Run the script again with other settings and compare the two tasks:
 
 ```bash
 python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --epochs 60 --hidden 64
 ```
 
-Open both tasks, and compare their scatter plots and residual histograms side by side. A better model has points closer to the diagonal and a narrower histogram.
+A better model has points closer to the diagonal, a narrower histogram and smaller hourly errors.
 
-### 🖼️ How the figure is made
+## How the figure is made
 
-The image report is different from the others. CairnML records a picture file, not data, so `report_figure` in `reports.py` makes the plot with matplotlib, saves it as `residuals.png`, and passes the file to `report_image`. Use this for any plot that the other reports cannot draw, and keep the figure's labels readable: they are what someone sees in the web app without your code.
+An image report records a picture, not data. `report_figure` in `reports.py` draws the plot with matplotlib, saves it as `residuals.png` and passes the file to `report_image`. Use this for any plot the other reports cannot draw. Keep the labels readable: they are what a reader sees in the web app without your code.
 
-## 🔍 What to look for
+## Data
 
-- The mean residual in the text summary is close to zero. A value far from zero means the model is systematically too high or too low.
-- The confusion matrix counts for the two off-diagonal cells are usually not zero. That tells you where the model's answer differs from the truth.
-- The scatter plot becomes narrower as training improves, and the hourly errors fall.
+Generated by [Example 6](../06-regression-dataset). It is synthetic and has no license restrictions.
 
-## 📄 Data
+## Next steps
 
-The data is generated by [Example 6](../06-regression-dataset). It is synthetic and carries no license restrictions.
-
-## ➡️ Next steps
-
-Continue with [Example 10: the life of a task](../10-task-lifecycle), which shows what you can do with a task after it has run.
+Continue with [Example 10: the life of a task](../10-task-lifecycle).
