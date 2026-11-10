@@ -113,7 +113,8 @@ def main() -> None:
     parser.add_argument("--commit", default=None, help="a commit of the registry (default: the latest)")
     args = parser.parse_args()
 
-    task = Task.init(project_name="examples", task_name="CIFAR-10 classification with the dataset registry")
+    # the "epochs" bar below is the progress of the run, not the loading of the images
+    task = Task.init(project_name="examples", task_name="CIFAR-10 classification with the dataset registry", progress_bar="epochs")
     # Reads through the adapter. This also records the dataset, its revision and the registry commit on the task.
     dataset = RegistryDataset.get_external(DATASET, commit=args.commit, repo=args.registry, alias=DATASET)
     task.connect({

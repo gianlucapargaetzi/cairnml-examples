@@ -8,6 +8,7 @@ What you will learn:
 
 - How a full training script is tracked: its settings, one curve point per epoch, and the trained model.
 - How to read the training and validation curves, and how they show overfitting.
+- How the web app shows how far a running training is, without any logging in the script.
 
 ## Background
 
@@ -17,6 +18,8 @@ Two choices in the script matter for what you will see:
 
 - **A validation set.** 10% of the training images are held out, with a fixed seed, so every run uses the same split. The model never trains on them. A model that keeps improving on the training images but not on these is memorising, not learning.
 - **Augmentation.** The training images are randomly flipped, shifted, scaled, rotated, brightened and partly covered, so the model sees a slightly different picture each epoch and generalises better. The validation images are never altered. `--no-augment` turns it off.
+
+- **Progress.** The script logs no progress. It uses `tqdm` bars for the download, the loading of the images and the epochs, and for the batches of each epoch. The SDK finds them, so the web app shows a running task with a bar. The bar of the epochs is the progress of the run, with the batches of the current epoch below it. `Task.init(..., progress_bar="epochs")` names that bar, so that the download and the loading of the images do not count as training. A loop without `tqdm` can use `Task.progress(iterable, label="epochs")` instead.
 
 This is the code that [Example 3](../03-private-code-and-credentials) moves into a private repository and [Example 4](../04-run-on-an-agent) runs on an agent.
 
@@ -60,7 +63,9 @@ python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 4 --dropout 0.3
 
 ### 3. Look at the run
 
-In the project **examples**, open the task **CIFAR-10 classification**:
+While it trains, the project **examples** lists the task **CIFAR-10 classification** as **Running** with a small bar and the percentage. While the images load, the bar moves along without a percentage, because that is not the epochs. Open the task to see the bar of the epochs with the batches of the current epoch below it.
+
+When it has finished, look at the task:
 
 - **Scalars:** `loss` and `accuracy`, each with a `train` and a `val` series, one point per epoch. If the training loss keeps falling while the validation loss rises, the model overfits.
 - **Configuration:** the settings of the run.

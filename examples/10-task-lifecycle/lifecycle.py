@@ -76,7 +76,7 @@ def cmd_enqueue(args, state):
     clone = task_of(state, "clone")
     Task.enqueue(clone, queue_name=QUEUE)
     describe("clone", clone)
-    print(f"queued on '{QUEUE}': start an agent on that queue to run it (example 4).")
+    print(f"queued on '{QUEUE}'. No agent serves it (an agent serves only its own queue, example 4), so it stays queued.")
 
 
 def cmd_dequeue(args, state):

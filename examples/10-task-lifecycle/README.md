@@ -69,7 +69,7 @@ A clone has the same code and settings as the original, except the ones you chan
 python lifecycle.py enqueue
 ```
 
-The status becomes **Queued**. The task waits in the `default` queue until an agent takes it, as in [Example 4](../04-run-on-an-agent). Without an agent it stays queued. Take it off the queue again with:
+The status becomes **Queued**. The task waits in the `default` queue. No agent serves that queue, because an agent serves only its own ([Example 4](../04-run-on-an-agent)), so it stays queued, which is what this walk through needs. Take it off the queue again with:
 
 ```bash
 python lifecycle.py dequeue

@@ -56,7 +56,9 @@ This reads the latest commit of the registry. For a quick try add `--epochs 3`.
 
 ### 3. Look at the run and compare
 
-In the project **examples**, open the task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists the dataset `cifar10`, the dataset revision (the exact archive), the adapter and the registry commit.
+While it trains, the task shows a progress bar as in [Example 2](../02-cifar10-classification): the epochs are the progress of the run, the loading of the images is not.
+
+When it has finished, open in the project **examples**, open the task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists the dataset `cifar10`, the dataset revision (the exact archive), the adapter and the registry commit.
 
 Select this task and the task of Example 2 in the task list and compare them. The validation accuracy curves should be close, because only the way the data is read differs.
 
