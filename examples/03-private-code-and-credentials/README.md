@@ -98,7 +98,7 @@ A repository that is not selected stays unreadable, even for CairnML.
 
 ### 5. Add the App to CairnML
 
-1. In the web app open **Settings → Access** and click **Add credential**.
+1. In the CairnML web app open **Settings → Access** and click **Add credential**.
 2. Enter a **Name**, for example `my github app`, and the **App ID**. Leave **API address** empty for github.com.
 3. Choose the `.pem` file and click **Add credential**.
 
@@ -112,7 +112,7 @@ The App is installed on the repository, but CairnML does not yet know which cred
 
 1. Open **Datasets**, then the **Repositories** tab, and click **Add repository**.
 2. Enter `https://github.com/<your-user>/cairnml-private-demo`, choose the project **examples** and click **Add repository**.
-3. The repository is listed with the badge **No credential assigned**. Open its row with the arrow, and click the lock button **Assign credentials**.
+3. The repository is listed with the badge **Access refues**, because there is no way yet for CairnML to read its contents. Open its row with the arrow, and click the lock button **Assign credentials**.
 4. Choose your credential and click **Set credential**.
 
 CairnML asks GitHub for a read token for the repository with your App. This only works if the App is installed on it, so the dialog also confirms steps 3 and 4.
