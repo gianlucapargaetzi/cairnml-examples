@@ -76,11 +76,14 @@ python hpo.py --base-task-id <task-id> --local --trials 4
 
 ### 5. Run the trials on an agent
 
-Send the trials to a queue served by an agent with a GPU. Start that agent as in Example 4, with `--gpus 0`, and name its queue, the one made for that machine, which **Agents & Queues → Queues** lists. Then start the search from any machine:
+Send the trials to a queue served by an agent with a GPU. Start that agent as in Example 4, with `--gpus 0`, and name its queue, the one made for that machine, written exactly as **Agents & Queues → Queues** lists it (the machine name plus a short suffix). Then start the search from any machine:
 
 ```bash
 python hpo.py --base-task-id <task-id> --queue <queue> --trials 20 --concurrent 2
 ```
+
+> [!NOTE]
+> Agent execution is containerized and takes longer than a local run, at least the first time an agent is used: the base image has to be pulled and the environment installed in it before the first step starts. See [Example 4](../04-run-on-an-agent).
 
 `--concurrent 2` runs two trials at a time. Optuna waits for results before it proposes new values, so more concurrent trials are faster but learn a little less from each result. The agents read the private dataset repository with the credential from Example 6.
 
