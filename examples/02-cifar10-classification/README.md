@@ -60,6 +60,7 @@ python train.py --epochs 20 --batch-size 128 --lr 0.001 --depth 4 --dropout 0.3
 | `--depth` | Number of blocks, 1 to 5. Each block has two convolutions and halves the image, so depth 5 reduces 32x32 to 1x1 |
 | `--seed` | Seed of the split, the weights and the augmentation |
 | `--queue <name>` | Queue the run for an agent instead of training here, by the exact queue name from the web app ([Example 4](../04-run-on-an-agent)) |
+| `--image <image>` | With `--queue`: the container image the agent runs the job in, instead of its default ([Example 4](../04-run-on-an-agent)) |
 
 ### 3. Look at the run
 

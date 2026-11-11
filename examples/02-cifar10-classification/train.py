@@ -127,7 +127,11 @@ def main() -> None:
     parser.add_argument("--data", type=Path, default=Path("cifar10"))
     parser.add_argument("--queue", default=None,
                         help="queue the run for an agent instead of training here (example 4); empty trains here")
+    parser.add_argument("--image", default=None,
+                        help="container image the agent runs the job in, with --queue (example 4); empty uses the agent's default")
     args = parser.parse_args()
+    if args.image and not args.queue:
+        parser.error("--image is the image of an agent's container: give --queue as well")
 
     # the "epochs" bar below is the progress of the run, not the download and the loading of the images
     task = Task.init(project_name="examples", task_name="CIFAR-10 classification", progress_bar="epochs")
@@ -144,7 +148,9 @@ def main() -> None:
     })
     if args.queue:
         # This process exits here. An agent on the queue runs the script again from the start, from the commit
-        # the run recorded, and trains there.
+        # the run recorded, and trains there. Without an image it uses its own default container image.
+        if args.image:
+            task.set_base_docker(docker_image=args.image)
         task.execute_remotely(queue_name=args.queue)
     logger = task.get_logger()
 
