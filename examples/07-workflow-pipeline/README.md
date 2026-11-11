@@ -90,7 +90,10 @@ python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --c
 The steps go to the queue named by `DEFAULT_QUEUE` at the top of `pipeline.py`, `default`. The agent reads the private dataset repository the same way your machine does, with the credential and the App installed in Example 6, and the server gives each job read access to it.
 
 > [!NOTE]
-> To train on a GPU and prepare the data on a CPU, set `execution_queue` on the `train` step alone, to the queue of the agent that has the GPU. Each agent has a queue named after its machine, listed under **Agents & Queues**.
+> Agent execution is containerized and takes longer than a local run, at least the first time an agent is used: the base image has to be pulled and the environment installed in it before the first step starts. See [Example 4](../04-run-on-an-agent).
+
+> [!NOTE]
+> To train on a GPU and prepare the data on a CPU, set `execution_queue` on the `train` step alone, to the queue of the agent that has the GPU. Each agent has a queue named after its machine plus a short suffix, written exactly as **Agents & Queues → Queues** lists it.
 
 ## Next steps
 

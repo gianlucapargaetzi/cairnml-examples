@@ -55,7 +55,7 @@ In every new terminal on that machine, go to the repository root and run `source
 
 `init` opens the sign-in page. Sign in with your own account. `daemon` must keep running. `--docker` runs every job in its own container. Add `--gpus 0` to use the first GPU.
 
-Enrolling also made a queue for this machine, named after it, and `daemon` without `--queue` serves it. An agent serves only its own queue, so jobs for this agent go there. Its name is under **Agents & Queues → Queues**: note it as `<queue>` for the next steps. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
+Enrolling also made a queue for this machine, and `daemon` without `--queue` serves it. An agent serves only its own queue, so jobs for this agent go there. The queue is named after the machine **plus a short suffix**, for example `parg-nb-b59488` for the machine `parg-nb`. `init` prints it (`queue of this machine: ...`) and **Agents & Queues → Queues** lists it. Note that exact name as `<queue>` for the next steps: the bare machine name does not work. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
 
 Check: the machine appears under **Agents & Queues** in the web app.
 
@@ -70,7 +70,7 @@ From the root of the examples repository, on your own machine:
 source .venv/bin/activate
 cd ../cairnml-private-demo
 pip install -r requirements.txt
-python train.py --epochs 3 --queue <queue>
+python train.py --epochs 3 --queue <queue>   # for example --queue parg-nb-b59488
 ```
 
 In a new terminal, go to the root of the examples repository and run `source .venv/bin/activate` first. `--queue <queue>` is the only difference from a local run. The command queues the run and ends:
@@ -86,6 +86,9 @@ If you change the code, commit and push before you run again.
 > Committing and pushing is needed here only because the agent runs a recorded commit. Every commit you push to `cairnml-private-demo` is part of the example and goes away when you delete the repository.
 
 ### 3. Watch the run
+
+> [!NOTE]
+> The agent runs every job in a container (`--docker`), so a run on an agent takes longer than a local one. The first time an agent is used, the base image has to be pulled and the environment installed in it, which can take several minutes before the first line of training output. Later runs reuse the image and the caches and start faster.
 
 Under **Agents & Queues** the job waits in the agent's queue until the agent takes it, then shows on the agent's machine, in the row of the agent under **Agents** together with its progress. In the project **examples** the task **CIFAR-10 classification** goes from **Queued** to **Running** to **Completed**. While it runs, it has the same progress bar as a local run, with the epochs and the batches of the current epoch in the task. On the task:
 
@@ -111,6 +114,7 @@ The copy runs like the first one, from the same repository and commit, with your
 
 ## Troubleshooting
 
+- **`Could not find queue named "..."`:** the name is not the exact name of a queue. The message lists the queues you can use and the closest one. An agent's queue is its machine name plus a suffix. The task is shown as **Failed**, with that message as the reason, and is not queued.
 - **The task stays Queued:** no agent serves that queue. An agent serves only the queue that was made for it when it was enrolled, so use that name under **Agents & Queues → Queues**, and check that `daemon` is still running.
 - **The task fails at the start with a repository error:** the credential is missing, or the App is no longer installed on the repository. Check the badge on **Datasets → Repositories** and the message of the failed task.
 - **The agent cannot find the commit:** it was not pushed. Run `git push`, then run again.
