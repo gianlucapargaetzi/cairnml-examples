@@ -9,3 +9,6 @@ hello.txt
 **/.venv/
 **/venv/
 
+
+# graphify
+graphify-out/

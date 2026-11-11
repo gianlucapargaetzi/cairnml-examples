@@ -21,7 +21,7 @@ seed = settings["seed"]
 
 rng = random.Random(seed)
 logger = task.get_logger()
-logger.report_scalar(title="seed", series="seed", value=seed, iteration=0)
+# logger.report_scalar(title="seed", series="seed", value=seed, iteration=0)
 
 for step in tqdm(range(settings["steps"]), desc="steps", unit="step"):
     loss = 1.0 / (step + 1) + rng.gauss(0.0, 0.01)  # slight noise so runs differ
