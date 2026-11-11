@@ -54,6 +54,9 @@ python train.py
 
 This reads the latest commit of the registry. For a quick try add `--epochs 3`.
 
+> [!NOTE]
+> The registry used here is public, so nothing has to be set up: the server hands out no token for it and the SDK reads it anonymously. For a **private** registry the access has to be added beforehand. Under **Datasets**, click **Add dataset**, enter the address of the registry and choose the credential that can read it (add one first under **Settings → Access** if you have none). Then pass its address with `--registry <url>`. Without that the server answers `no such dataset`, because it issues a token only for a repository you hold access to.
+
 ### 3. Look at the run and compare
 
 While it trains, the task shows a progress bar as in [Example 2](../02-cifar10-classification): the epochs are the progress of the run, the loading of the images is not.
