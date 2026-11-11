@@ -9,6 +9,7 @@ What you will learn:
 - That `Task.init` is what turns a script into a task on the server.
 - How to record settings with `task.connect`, and why they are kept apart from the code.
 - How to log a curve with `report_scalar` and upload a file as an artifact.
+- How to compare runs in the web app, and how to tell a changed setting from a changed line of code.
 
 ## Background
 
@@ -25,7 +26,7 @@ Settings go through `task.connect` so that the server knows them. A copy of the 
 
 ## Prerequisites
 
-- Under a minute.
+- About 3 minutes.
 - The [SDK connected to your server](../00-installation-and-setup).
 
 ## Steps
@@ -59,6 +60,34 @@ While the script runs, the task is listed as **Running** with a small progress b
 - **Artifacts:** `hello.txt`.
 
 Run the script again and compare the two experiments: only the noise differs.
+
+### 4. Change the seed and the code
+
+One more run shows the difference between a setting and a line of code. In `hello_world.py`, make the noise ten times larger by changing `0.01` to `0.1`:
+
+```python
+loss = 1.0 / (step + 1) + rng.gauss(0.0, 0.1)
+```
+
+Do not commit the change. Run the script with any seed you like:
+
+```bash
+python hello_world.py --seed 7
+```
+
+Select the new task and the first run in the task list, click **Compare** and look for the differences:
+
+- **Scalars:** the new curve is much more jagged.
+- **Configuration:** the `seed` is now `7`. It explains a different noise, but not a jagged one.
+- **Execution:** open the new task and find **Uncommitted changes**. It shows your edit to `hello_world.py` as a diff, with `0.01` replaced by `0.1`. The first run has no such diff.
+
+This is what a recorded run is for. The settings explain what you chose to expose, and **Execution** keeps the code that ran, including changes you never committed. Try another change, such as `steps` or the `greeting`, and find it again in **Configuration**, **Scalars** or **Artifacts**.
+
+When you are done, undo the edit so that the next examples start from the original script:
+
+```bash
+git checkout hello_world.py
+```
 
 ## Troubleshooting
 
