@@ -112,16 +112,18 @@ Check: the credential is listed with a working status. In the terminal, `cairnml
 
 The App is installed on the repository, but CairnML does not yet know which credential to read it with. That is the assignment.
 
-1. Open **Datasets**, then the **Repositories** tab, and click **Add repository**.
-2. Enter `https://github.com/<your-user>/cairnml-private-demo`, choose the project **examples** and click **Add repository**.
-3. The repository is listed with the badge **Access refues**, because there is no way yet for CairnML to read its contents. Open its row with the arrow, and click the lock button **Assign credentials**.
+1. Open **Repositories & Datasets** and click **Add repository or dataset**.
+2. Choose the type **Code**, enter `https://github.com/<your-user>/cairnml-private-demo`, choose the project **examples**, and choose your credential (or assign it in the next steps). Click **Add**.
+3. If no credential is assigned, the repository is listed as not readable. Open its row and, in the side panel, click the lock button **Assign credentials**.
 4. Choose your credential and click **Set credential**.
+
+The credential is yours: it is assigned to you, not to the project. In the side panel, other users' assignments are shown read-only, and only your own can be changed. In the terminal: `cairnml repository add https://github.com/<your-user>/cairnml-private-demo --type code --project <project-id> --credential <credential-id>`.
 
 CairnML asks GitHub for a read token for the repository with your App. This only works if the App is installed on it, so the dialog also confirms steps 3 and 4.
 
-Check: the badge now says **Read with my github app**.
+Check: the side panel shows your assignment, and **Check now** (the refresh button) reports the repository as readable.
 
-The same is possible in **project settings → Repositories** of the project.
+The same is possible in **project settings → Repositories** of the project, and with `cairnml repository list` in the terminal.
 
 ## Troubleshooting
 

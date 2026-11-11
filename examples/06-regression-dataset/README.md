@@ -172,7 +172,7 @@ Keep them: the next examples take them as parameters. You can delete `$WORK` aft
 > [!IMPORTANT]
 > `REPO` and `COMMIT` live only in this terminal, and Examples 7 to 11 need both. Write them down now. If you lose them, the URL is the one of your repository and the commit is at the top of its commit list on GitHub.
 
-In the web app, the **Datasets** page now lists `greenhouse-data` as **Your own dataset**, with the repository and the first characters of the commit. If it is missing, the App is not installed on the repository (step 4).
+In the web app, the **Repositories & Datasets** page now lists `greenhouse-data` with the type **Dataset**, with the repository and the first characters of the commit. If it is missing, the App is not installed on the repository (step 4).
 
 ### 7. Read the dataset in training code
 

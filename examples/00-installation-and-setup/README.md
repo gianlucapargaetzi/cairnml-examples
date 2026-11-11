@@ -64,7 +64,7 @@ The side bar on the left leads to the main areas:
 |---|---|
 | **Projects** | Your work, in folders called projects. A project holds tasks, models and reports. Most of what you do happens here |
 | **Pipelines** | Workflows made of several steps, each step its own task |
-| **Datasets** | Versioned data, and the code repositories CairnML reads |
+| **Repositories & Datasets** | The code repositories, datasets and registries of datasets CairnML reads, and how each is read |
 | **Agents & Queues** | The machines that run your jobs, and the queues they take jobs from |
 
 At the bottom are **Search all**, **Help** and the **Account** menu, which leads to **Settings**.

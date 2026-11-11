@@ -55,7 +55,7 @@ python train.py
 This reads the latest commit of the registry. For a quick try add `--epochs 3`.
 
 > [!NOTE]
-> The registry used here is public, so nothing has to be set up: the server hands out no token for it and the SDK reads it anonymously. For a **private** registry the access has to be added beforehand. Under **Datasets**, click **Add dataset**, enter the address of the registry and choose the credential that can read it (add one first under **Settings → Access** if you have none). Then pass its address with `--registry <url>`. Without that the server answers `no such dataset`, because it issues a token only for a repository you hold access to.
+> The registry used here is public, so nothing has to be set up: the server hands out no token for it and the SDK reads it anonymously. For a **private** registry the access has to be added beforehand. Under **Repositories & Datasets**, click **Add repository or dataset**, choose the type **Registry**, enter the address of the registry and choose the credential that can read it (add one first under **Settings → Access** if you have none). Then pass its address with `--registry <url>`. Without that the server answers `no such dataset`, because it issues a token only for a repository you hold access to.
 
 ### 3. Look at the run and compare
 

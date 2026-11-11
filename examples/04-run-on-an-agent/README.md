@@ -34,7 +34,7 @@ The agent runs the **commit the run recorded**, not what is on your disk, so the
 ## Prerequisites
 
 - About 10 minutes, plus the training time.
-- [Example 3](../03-private-code-and-credentials) done: the repository `cairnml-private-demo` is pushed and shows **Read with …** on **Datasets → Repositories**.
+- [Example 3](../03-private-code-and-credentials) done: the repository `cairnml-private-demo` is pushed and is readable with your credential in **Repositories & Datasets**.
 - The [SDK connected to your server](../00-installation-and-setup).
 - A machine with Docker for the agent. It can be your own.
 
@@ -123,7 +123,7 @@ The copy runs like the first one, from the same repository and commit, with your
 
 ### 5. See what a missing credential does (optional)
 
-1. In **Datasets → Repositories**, open the row of `cairnml-private-demo` and set its credential to **Not assigned**.
+1. In **Repositories & Datasets**, open the row of `cairnml-private-demo` and delete your own assignment (the trash button on your row in the side panel), or run `cairnml repository unassign https://github.com/<your-user>/cairnml-private-demo`.
 2. Clone the task and enqueue it. The web app stops you with **Credentials not assigned**: the repository is private and no credential reaches it.
 3. Click **Assign credentials**, choose your credential and click **Set credential**. Enqueue again, and it runs.
 
@@ -132,7 +132,7 @@ The copy runs like the first one, from the same repository and commit, with your
 - **`Could not find queue named "..."`:** the name is not the exact name of a queue. The message lists the queues you can use and the closest one. An agent's queue is its machine name plus a suffix. The task is shown as **Failed**, with that message as the reason, and is not queued.
 - **`requires a different Python` while the job starts:** the image has a Python older than 3.9. Use an image with a newer Python, with `--image`.
 - **The task stays Queued:** no agent serves that queue. An agent serves only the queue that was made for it when it was enrolled, so use that name under **Agents & Queues → Queues**, and check that `daemon` is still running.
-- **The task fails at the start with a repository error:** the credential is missing, or the App is no longer installed on the repository. Check the badge on **Datasets → Repositories** and the message of the failed task.
+- **The task fails at the start with a repository error:** the credential is missing, or the App is no longer installed on the repository. Check the status in **Repositories & Datasets** and the message of the failed task.
 - **The agent cannot find the commit:** it was not pushed. Run `git push`, then run again.
 - **`unrecognized arguments: --queue`:** the folder was made from an older `train.py`. Make it again with Example 3.
 
