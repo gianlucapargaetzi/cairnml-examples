@@ -79,7 +79,7 @@ Check: open the repository in a private browser window where you are not signed 
 
 This is done on GitHub, in the browser.
 
-1. Open **Settings → Developer settings → GitHub Apps → New GitHub App**. For an organisation, use the same page under the organisation's settings.
+1. Open **User → Settings → Developer settings → GitHub Apps → New GitHub App**. For an organisation, use the same page under the organisation's settings.
 2. Fill in:
    - **GitHub App name:** for example `cairnml-<your-name>`. It must be unique on GitHub.
    - **Homepage URL:** any address, for example the address of your repository.
