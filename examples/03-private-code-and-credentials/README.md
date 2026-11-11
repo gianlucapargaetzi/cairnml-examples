@@ -87,7 +87,7 @@ This is done on GitHub, in the browser.
    - **Repository permissions → Contents:** **Read-only**. Leave everything else at **No access**.
    - **Where can this GitHub App be installed?** **Only on this account**.
 3. Click **Create GitHub App**. Note the **App ID** at the top of the page.
-4. Under **Private keys**, click **Generate a private key**. Your browser saves a `.pem` file. It is the secret half of the App: keep it, and do not commit it.
+4. Under **Credentials → Key pairs**, click **"New key"**. Your browser saves a `.pem` file. It is the secret half of the App: keep it, and do not commit it.
 
 ### 4. Install the App on the repository, and only on it
 
