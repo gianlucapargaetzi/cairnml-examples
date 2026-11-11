@@ -16,10 +16,15 @@ An agent is another machine. To run your code it has to clone the repository, an
 
 A GitHub App is the narrower way. It is an identity of its own that you create on GitHub, with read-only access to code, and install on exactly the repositories it may read. You can remove it from a repository at any time. This is how the pieces connect:
 
-```
-GitHub App           private key (.pem)       CairnML credential        repository          job
-read-only, installed -------------------> stored encrypted, ---------> assigned to the -----> gets a short-lived
-on one repository                          never shown again           repository                read token for it
+```mermaid
+flowchart LR
+    app["<b>GitHub App</b><br/>read-only, installed<br/>on one repository"]
+    cred["<b>CairnML credential</b><br/>stored encrypted,<br/>never shown again"]
+    repo["<b>Repository</b>"]
+    job["<b>Job</b><br/>gets a short-lived<br/>read token for it"]
+    app -->|"private key (.pem)"| cred
+    cred -->|"assigned to the"| repo
+    repo --> job
 ```
 
 You will make a private repository from the code of [Example 2](../02-cifar10-classification), create the App, add it to CairnML, and assign it to the repository. Nothing runs in this example.
@@ -45,6 +50,9 @@ The script copies `train.py` and `requirements.txt` from Example 2 into a new fo
 ### 2. Publish it as a private repository
 
 Both ways end with a private repository `cairnml-private-demo` under your account, holding the commit from step 1. The commands start from the root of the examples repository.
+
+> [!CAUTION]
+> This repository, its commits and the push exist only to get through the examples. When you are done you can delete `cairnml-private-demo` on GitHub and the folder next to this repository.
 
 **With the GitHub command line** (log in once with `gh auth login`):
 

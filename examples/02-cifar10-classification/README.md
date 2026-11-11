@@ -71,6 +71,9 @@ When it has finished, look at the task:
 - **Configuration:** the settings of the run.
 - **Artifacts:** the trained model, a TorchScript file that takes 32x32 colour images with values from 0 to 1 and returns class probabilities. Load it with `torch.jit.load("model.pt")`.
 
+> [!NOTE]
+> Worth a try once the first run is done: `python train.py --no-augment`. Compare the two runs and see how augmentation changes the gap between the training and the validation curves.
+
 ## Data
 
 [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) by Krizhevsky, downloaded from its [Hugging Face copy](https://huggingface.co/datasets/uoft-cs/cifar10), which is faster than the original archive. Please cite it when you use it:

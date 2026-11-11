@@ -14,11 +14,19 @@ What you will learn:
 
 Training often belongs on a machine other than your laptop, one with a GPU or that stays on. An **agent** is such a machine. You send it work through a **queue**, and it reports everything back to your server, so a run on an agent looks like a local one.
 
-```
-your machine                      server                           agent
-python train.py --queue <queue>   keeps the job in the queue  <--   takes the job
-records repository + commit  ---> and the recorded commit          clones the repository, runs the
-                                                                   script, reports back to the server
+```mermaid
+flowchart LR
+    subgraph local["Your machine"]
+        run["python train.py --queue #lt;queue#gt;<br/>records repository + commit"]
+    end
+    subgraph server["Server"]
+        queue["keeps the job in the queue<br/>and the recorded commit"]
+    end
+    subgraph agent["Agent"]
+        work["clones the repository,<br/>runs the script,<br/>reports back to the server"]
+    end
+    run --> queue
+    work -->|"takes the job"| queue
 ```
 
 The agent runs the **commit the run recorded**, not what is on your disk, so the code must be pushed. It clones the private repository with the credential from [Example 3](../03-private-code-and-credentials). The agent holds no Git credentials of its own: for each job the server gives it a short-lived read token for that repository.
@@ -51,6 +59,9 @@ Enrolling also made a queue for this machine, named after it, and `daemon` witho
 
 Check: the machine appears under **Agents & Queues** in the web app.
 
+> [!TIP]
+> Run `daemon` in its own terminal and leave it open, so you can watch its output while you queue runs.
+
 ### 2. Start a run from the command line
 
 From the root of the examples repository, on your own machine:
@@ -70,6 +81,9 @@ CairnML Terminating local execution process - continuing execution remotely
 ```
 
 If you change the code, commit and push before you run again.
+
+> [!CAUTION]
+> Committing and pushing is needed here only because the agent runs a recorded commit. Every commit you push to `cairnml-private-demo` is part of the example and goes away when you delete the repository.
 
 ### 3. Watch the run
 

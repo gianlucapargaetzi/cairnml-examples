@@ -71,6 +71,9 @@ python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --co
 
 A better model has points closer to the diagonal, a narrower histogram and smaller hourly errors.
 
+> [!NOTE]
+> Try the opposite too: a much weaker model, for example `--epochs 3 --hidden 8`. See which reports show it first.
+
 ## How the figure is made
 
 An image report records a picture, not data. `report_figure` in `reports.py` draws the plot with matplotlib, saves it as `residuals.png` and passes the file to `report_image`. Use this for any plot the other reports cannot draw. Keep the labels readable: they are what a reader sees in the web app without your code.

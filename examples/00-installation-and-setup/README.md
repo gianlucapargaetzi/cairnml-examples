@@ -53,6 +53,9 @@ Open `http://<server-ip>/cairnml/` and sign in. Your CairnML account is created 
 
 Check: the **Projects** page opens. It is empty on a new server.
 
+> [!TIP]
+> Keep the web app open in a second window next to your terminal. Every example changes something there that you can look at.
+
 ### 3. Take the tour of the web app
 
 The side bar on the left leads to the main areas:

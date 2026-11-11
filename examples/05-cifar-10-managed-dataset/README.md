@@ -62,6 +62,9 @@ When it has finished, open in the project **examples**, open the task **CIFAR-10
 
 Select this task and the task of Example 2 in the task list and compare them. The validation accuracy curves should be close, because only the way the data is read differs.
 
+> [!NOTE]
+> Worth a look: the [dataset registry](https://github.com/gianlucapargaetzi/cairnml-dataset-registry) holds the entry for `cifar10` and its adapter as plain files. Another dataset from the registry is read with another name in `get_external`.
+
 ### 4. Rerun on the same data (optional)
 
 Pass the registry commit from step 3:

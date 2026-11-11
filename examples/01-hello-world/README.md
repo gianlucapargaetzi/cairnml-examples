@@ -81,6 +81,9 @@ Select the new task and the first run in the task list, click **Compare** and lo
 - **Configuration:** the `seed` is now `7`. It explains a different noise, but not a jagged one.
 - **Execution:** open the new task and find **Uncommitted changes**. It shows your edit to `hello_world.py` as a diff, with `0.01` replaced by `0.1`. The first run has no such diff.
 
+> [!IMPORTANT]
+> The SDK reads the changes from the git repository that the script sits in, here the one you cloned in Example 0. That is why **Uncommitted changes** shows up.
+
 This is what a recorded run is for. The settings explain what you chose to expose, and **Execution** keeps the code that ran, including changes you never committed. Try another change, such as `steps` or the `greeting`, and find it again in **Configuration**, **Scalars** or **Artifacts**.
 
 When you are done, undo the edit so that the next examples start from the original script:
@@ -88,6 +91,9 @@ When you are done, undo the edit so that the next examples start from the origin
 ```bash
 git checkout hello_world.py
 ```
+
+> [!CAUTION]
+> We use git here only to get through this example. `git checkout hello_world.py` throws away every uncommitted change in that file, which is what we want here. Do not run it on work you want to keep.
 
 ## Troubleshooting
 

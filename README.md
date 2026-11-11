@@ -30,6 +30,9 @@ What you will learn:
 - An account, the web app, the SDK and an enrolled machine: [Example 0](examples/00-installation-and-setup) guides you through all of it.
 - A [GitHub](https://github.com) account for examples 3 to 6, and [git](https://git-scm.com). The GitHub command line `gh` is optional: every step that can use it also shows the way in the browser.
 
+> [!CAUTION]
+> The examples create real things on GitHub: private repositories, a GitHub App and commits. We do this only to get through the examples. Everything can be cleaned up afterwards: delete the repositories `cairnml-private-demo` and `greenhouse-data` on GitHub and in your folders, delete the GitHub App, and remove its credential under **Settings → Access** in the web app.
+
 ## Examples
 
 Do them in order. Each one builds on the earlier ones.

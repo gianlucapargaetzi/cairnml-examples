@@ -91,6 +91,9 @@ Each import creates a new task, so importing the same ZIP twice gives two tasks.
 
 Compare the imported task with the baseline of [Example 8](../08-hyperparameter-optimisation): same data, a different network and training loop, so the validation curves should land in the same range. The `r2/val` curve approaches 1.0 but does not reach it, because of the noise in the data.
 
+> [!NOTE]
+> To import the runs of your own project, `COLUMNS` in `export_to_cairnml.py` is the part to change: it maps the column names of your log to CairnML's.
+
 ## Troubleshooting
 
 - **`missing columns`:** the legacy log lacks one of the four columns. Change the names in `COLUMNS` in `export_to_cairnml.py`.

@@ -76,6 +76,9 @@ In the project **examples**, open the run **greenhouse workflow**:
 - **Each box** opens the task of that step, with its own configuration and console output.
 - `train` shows the validation error and `evaluate` the R² score. They measure different things, so compare each across runs: a lower error should come with a higher R².
 
+> [!TIP]
+> Run step 3 again with another `--lr` and compare the two `train` tasks, as you compared runs in Example 1.
+
 ### 5. Let an agent run the steps
 
 Remove `--local` to queue the steps for an agent, as in [Example 4](../04-run-on-an-agent):
@@ -86,7 +89,8 @@ python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --c
 
 The steps go to the queue named by `DEFAULT_QUEUE` at the top of `pipeline.py`, `default`. The agent reads the private dataset repository the same way your machine does, with the credential and the App installed in Example 6, and the server gives each job read access to it.
 
-To train on a GPU and prepare the data on a CPU, set `execution_queue` on the `train` step alone, to the queue of the agent that has the GPU. Each agent has a queue named after its machine, listed under **Agents & Queues**.
+> [!NOTE]
+> To train on a GPU and prepare the data on a CPU, set `execution_queue` on the `train` step alone, to the queue of the agent that has the GPU. Each agent has a queue named after its machine, listed under **Agents & Queues**.
 
 ## Next steps
 

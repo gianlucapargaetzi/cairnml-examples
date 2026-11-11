@@ -16,16 +16,17 @@ The data is a made-up but realistic problem. A small greenhouse heats itself, an
 
 **How a dataset is stored.** Git is good at code and poor at data: large files bloat the repository, and every clone downloads all of them. A dataset repository therefore splits the work with **DVC** (data version control):
 
-```
-                       the files' content
-data/train.csv  ------------------------------->  the server's dataset storage (DVC)
-data/test.csv                                       files stored under their content hash
-     |
-     |  hash and size of each file
-     v
-data.dvc  --+
-adapter.py  +--------------------------------->  the GitHub repository (git)
-dataset.yaml, dataset.lock.json  (small text files only)
+```mermaid
+flowchart LR
+    data["data/train.csv<br/>data/test.csv"]
+    dvc["data.dvc"]
+    code["adapter.py<br/>dataset.yaml, dataset.lock.json"]
+    storage["<b>The server's dataset storage (DVC)</b><br/>files stored under their content hash"]
+    git["<b>The GitHub repository (git)</b><br/>small text files only"]
+    data -->|"the files' content"| storage
+    data -->|"hash and size of each file"| dvc
+    dvc --> git
+    code --> git
 ```
 
 - **Git holds only small text files.** The important one is `data.dvc`, which lists every file of `data/` with its content hash. The CSV files themselves are not in git.
@@ -110,6 +111,9 @@ Or in the browser: open [github.com/new](https://github.com/new), enter the name
 
 Then give your App from Example 3 access to it. The server reads a repository only if the App is installed on it. On GitHub open **Settings → Applications → Installed GitHub Apps**, click **Configure** next to your App, and under **Repository access** add `greenhouse-data` to the selected repositories.
 
+> [!CAUTION]
+> The repository, the commits and the pushes of this example exist only to get through the examples. You can delete `greenhouse-data` on GitHub afterwards, and the folders under `$WORK`.
+
 ### 5. Connect, commit and push
 
 Find the id of your credential:
@@ -138,7 +142,10 @@ cairnml dataset push --path "$WORK/greenhouse-data"
 - `commit` runs the adapter, checks every sample against the dataset format, and commits the result with its footprint.
 - `push` uploads the files to the storage, then publishes the commit.
 
-`cairnml dataset create` does all of this in one call and creates the repository for you. The commands are separate here so that each step is visible. After the first push, protect the default branch so that changes come in as pull requests: `cairnml dataset doctor --path "$WORK/greenhouse-data"` shows what is missing.
+> [!NOTE]
+> `cairnml dataset create` does all of this in one call and creates the repository for you. The commands are separate here so that each step is visible.
+
+After the first push, protect the default branch so that changes come in as pull requests: `cairnml dataset doctor --path "$WORK/greenhouse-data"` shows what is missing.
 
 ### 6. See what git holds and what it does not
 
@@ -161,6 +168,9 @@ echo "$REPO $COMMIT"
 ```
 
 Keep them: the next examples take them as parameters. You can delete `$WORK` afterwards; the data stays in the repository and the dataset storage.
+
+> [!IMPORTANT]
+> `REPO` and `COMMIT` live only in this terminal, and Examples 7 to 11 need both. Write them down now. If you lose them, the URL is the one of your repository and the commit is at the top of its commit list on GitHub.
 
 In the web app, the **Datasets** page now lists `greenhouse-data` as **Your own dataset**, with the repository and the first characters of the commit. If it is missing, the App is not installed on the repository (step 4).
 

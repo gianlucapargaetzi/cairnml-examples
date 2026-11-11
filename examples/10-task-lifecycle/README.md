@@ -129,6 +129,9 @@ python lifecycle.py status
 
 This prints the status of the base task and of the clone. After step 9 the clone is listed as not created.
 
+> [!NOTE]
+> To see a clone run, enqueue a new one in the web app into the queue of your agent from [Example 4](../04-run-on-an-agent), as in step 4 there.
+
 ## Next steps
 
 Continue with [Example 11: import a run](../11-import-external-run).
