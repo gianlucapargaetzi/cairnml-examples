@@ -15,3 +15,10 @@ graphify-out/
 
 # old virtualenv
 .venv.old/
+
+# products of running the examples
+*.pth
+examples/**/state.json
+examples/**/runs/
+examples/**/exports/
+examples/**/*.png
