@@ -46,6 +46,7 @@ This is the right tool for data you own and must be able to reproduce. For publi
 - Python 3.9 or newer and [git](https://git-scm.com).
 - The [SDK connected to your server](../00-installation-and-setup).
 - The GitHub App credential from [Example 3](../03-private-code-and-credentials), listed under **Settings → Access**.
+- The App installed on the new `greenhouse-data` repository (step 4). If it is not installed yet, nothing can be pushed or read.
 - The GitHub command line `gh` is optional: where a step uses it, the same step shows the browser way.
 
 ## Steps
