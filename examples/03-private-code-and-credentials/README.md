@@ -114,23 +114,23 @@ The App is installed on the repository, but CairnML does not yet know which cred
 
 1. Open **Repositories & Datasets** and click **Add repository or dataset**.
 2. Choose the type **Code**, enter `https://github.com/<your-user>/cairnml-private-demo`, choose the project **examples**, and choose your credential (or assign it in the next steps). Click **Add**.
-3. If no credential is assigned, the repository is listed as not readable. Open its row and, in the side panel, click the lock button **Assign credentials**.
+3. The new row has a red closed lock in the **Access** column while no credential is assigned: CairnML cannot read a private repository without one. Open its row and, in the **Credentials** table of the side panel, click the lock button **Assign credentials** (the **Project** column already lists `examples`).
 4. Choose your credential and click **Set credential**.
 
-The credential is yours: it is assigned to you, not to the project. In the side panel, other users' assignments are shown read-only, and only your own can be changed. In the terminal: `cairnml repository add https://github.com/<your-user>/cairnml-private-demo --type code --project <project-id> --credential <credential-id>`.
+CairnML asks GitHub for a read token for the repository with your App. This only works if the App is installed on it, so a credential that cannot read the repository is refused with the reason.
 
-CairnML asks GitHub for a read token for the repository with your App. This only works if the App is installed on it, so the dialog also confirms steps 3 and 4.
+Check: the **Access** lock is now green and open, and the **Credentials** table has one row with your credential, you as **Owner**, the project `examples` and the green lock. **Check now** (the refresh button of the row) confirms it again.
 
-Check: the side panel shows your assignment, and **Check now** (the refresh button) reports the repository as readable.
+What else the page shows: every record has a short **ID**; **Added by** names who listed it; **Visibility** shows one person (not shared: only you and the projects that use it see it) or several (shared by the admin with every user). The credential is yours: it is assigned to you, not to the project, so other users' rows in the table are read-only, and only you can change or delete yours. A repository that a project lists cannot be deleted (its trash button is disabled and says why): take it out of the project first.
 
-The same is possible in **project settings → Repositories** of the project, and with `cairnml repository list` in the terminal.
+In the terminal: `cairnml repository add https://github.com/<your-user>/cairnml-private-demo --type code --project <project-id> --credential <credential-id>`, then `cairnml repository list` shows how each repository is read. The same list is under **project settings → Repositories** of the project.
 
 ## Troubleshooting
 
 - **`the GitHub App … is not installed on …`:** step 4 is missing, or the App is installed on another account.
 - **`You have no credentials to choose from`:** step 5 is missing.
 - **The key is refused:** the App ID and the `.pem` belong to different Apps, or the App is on a GitHub Enterprise server (fill in **API address**).
-- **There is no lock button:** only the project's owner, the user who first used the repository there, or an admin can assign a credential.
+- **There is no lock button:** the lock assigns *your own* credential, so it is on your row of the Credentials table only. Other users' rows are read-only.
 
 ## Next steps
 

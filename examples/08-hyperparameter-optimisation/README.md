@@ -85,7 +85,7 @@ python hpo.py --base-task-id <task-id> --queue <queue> --trials 20 --concurrent 
 > [!NOTE]
 > Agent execution is containerized and takes longer than a local run, at least the first time an agent is used: the base image has to be pulled and the environment installed in it before the first step starts. See [Example 4](../04-run-on-an-agent).
 
-`--concurrent 2` runs two trials at a time. Optuna waits for results before it proposes new values, so more concurrent trials are faster but learn a little less from each result. The agents read the private dataset repository with the credential from Example 6.
+`--concurrent 2` runs two trials at a time. Optuna waits for results before it proposes new values, so more concurrent trials are faster but learn a little less from each result. The agents read the private dataset repository with the credential you assigned to it in Example 6.
 
 ### 6. Compare the results
 

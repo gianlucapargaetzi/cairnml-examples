@@ -55,13 +55,13 @@ python train.py
 This reads the latest commit of the registry. For a quick try add `--epochs 3`.
 
 > [!NOTE]
-> The registry used here is public, so nothing has to be set up: the server hands out no token for it and the SDK reads it anonymously. For a **private** registry the access has to be added beforehand. Under **Repositories & Datasets**, click **Add repository or dataset**, choose the type **Registry**, enter the address of the registry and choose the credential that can read it (add one first under **Settings → Access** if you have none). Then pass its address with `--registry <url>`. Without that the server answers `no such dataset`, because it issues a token only for a repository you hold access to.
+> The registry used here is public, so nothing has to be set up: the server hands out no token for it and the SDK reads it anonymously. The first run lists it for you under **Repositories & Datasets** with the type **Registry** (a green open lock, no credential needed), reads its entries over git, and links it to the project of the run. For a **private** registry the access has to be added beforehand. Under **Repositories & Datasets**, click **Add repository or dataset**, choose the type **Registry**, enter the address of the registry and choose the credential that can read it (add one first under **Settings → Access** if you have none). Then pass its address with `--registry <url>`. Without that the server answers `no such dataset`, because it issues a token only for a repository you hold access to.
 
 ### 3. Look at the run and compare
 
 While it trains, the task shows a progress bar as in [Example 2](../02-cifar10-classification): the epochs are the progress of the run, the loading of the images is not.
 
-When it has finished, open in the project **examples**, open the task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists the dataset `cifar10`, the dataset revision (the exact archive), the adapter and the registry commit.
+Open **Repositories & Datasets**: the registry has a row, and a click on it opens the datasets it lists (`cifar10` is one of them). Its **Runs** tab lists the run of this example. Then open, in the project **examples**, the task **CIFAR-10 classification with the dataset registry**. Its **Configuration** lists the dataset `cifar10`, the dataset revision (the exact archive), the adapter and the registry commit.
 
 Select this task and the task of Example 2 in the task list and compare them. The validation accuracy curves should be close, because only the way the data is read differs.
 

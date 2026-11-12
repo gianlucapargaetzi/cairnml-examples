@@ -99,6 +99,8 @@ A **credential** is a GitHub App that CairnML may use to read a repository that 
 
 CairnML never uses your own GitHub password or token. You create the App once on GitHub, install it only on the repositories it may read, and add its key here. The key is checked with GitHub, stored encrypted, and never shown again.
 
+A credential belongs to a user: you assign it to a repository, and it reads that repository for you and for the projects you own. It is never attached to a project, and other users cannot use it. The **Repositories & Datasets** page shows how each repository is read: a green open lock means CairnML can read it (a public repository too, which needs no credential), a red closed lock means it cannot, until a credential is assigned.
+
 You do not need one yet: the first two examples run on your machine and read nothing private. [Example 3](../03-private-code-and-credentials) creates one, [Example 4](../04-run-on-an-agent) uses it for code on an agent, and [Example 6](../06-regression-dataset) uses it for a private dataset.
 
 ### 6. Install the SDK

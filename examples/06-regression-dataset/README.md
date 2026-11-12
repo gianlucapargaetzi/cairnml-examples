@@ -128,7 +128,7 @@ Connect the dataset to the repository:
 cairnml dataset remote add https://github.com/<your-user>/greenhouse-data.git --credential <credential-id> --path "$WORK/greenhouse-data"
 ```
 
-`remote add` sets the repository as `origin`, sets up the dataset storage on your server, and registers the dataset with the credential, which the server then uses to read it. It checks that the repository is reachable with that credential and warns if not: then step 4 is incomplete. Without `--credential` the dataset counts as public. The storage is DVC on your server by default; `--lfs` keeps the files in GitHub LFS instead, and the choice cannot be changed later.
+`remote add` sets the repository as `origin`, sets up the dataset storage on your server, and registers the dataset with the credential, which the server then uses to read it. It checks that the repository is reachable with that credential and warns if not: then step 4 is incomplete. Without `--credential` the repository is listed with no credential: that works for a public repository (a green open lock), and a private one shows a red closed lock until you assign yours. The storage is DVC on your server by default; `--lfs` keeps the files in GitHub LFS instead, and the choice cannot be changed later.
 
 Now record, check, commit and push:
 
@@ -172,7 +172,7 @@ Keep them: the next examples take them as parameters. You can delete `$WORK` aft
 > [!IMPORTANT]
 > `REPO` and `COMMIT` live only in this terminal, and Examples 7 to 11 need both. Write them down now. If you lose them, the URL is the one of your repository and the commit is at the top of its commit list on GitHub.
 
-In the web app, the **Repositories & Datasets** page now lists `greenhouse-data` with the type **Dataset**, with the repository and the first characters of the commit. If it is missing, the App is not installed on the repository (step 4).
+In the web app, the **Repositories & Datasets** page now lists `greenhouse-data` with the type **Dataset**, your name under **Added by**, the one-person **Visibility** icon and a green open **Access** lock. The side panel shows the repository and the first characters of the commit. If the lock is red, the App is not installed on the repository (step 4).
 
 ### 7. Read the dataset in training code
 

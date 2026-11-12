@@ -29,7 +29,7 @@ flowchart LR
     work -->|"takes the job"| queue
 ```
 
-The agent runs the **commit the run recorded**, not what is on your disk, so the code must be pushed. It clones the private repository with the credential from [Example 3](../03-private-code-and-credentials). The agent holds no Git credentials of its own: for each job the server gives it a short-lived read token for that repository.
+The agent runs the **commit the run recorded**, not what is on your disk, so the code must be pushed. It clones the private repository with the credential from [Example 3](../03-private-code-and-credentials). The agent holds no Git credentials of its own: for each job the server gives it a short-lived read token for that repository, made with the credential of the project's owner (you), or with yours when you run in somebody else's project.
 
 ## Prerequisites
 
@@ -123,7 +123,7 @@ The copy runs like the first one, from the same repository and commit, with your
 
 ### 5. See what a missing credential does (optional)
 
-1. In **Repositories & Datasets**, open the row of `cairnml-private-demo` and delete your own assignment (the trash button on your row in the side panel), or run `cairnml repository unassign https://github.com/<your-user>/cairnml-private-demo`.
+1. In **Repositories & Datasets**, open the row of `cairnml-private-demo` and, in its **Credentials** table, delete your own row (the trash button), or run `cairnml repository unassign https://github.com/<your-user>/cairnml-private-demo`. The **Access** lock turns red and closed.
 2. Clone the task and enqueue it. The web app stops you with **Credentials not assigned**: the repository is private and no credential reaches it.
 3. Click **Assign credentials**, choose your credential and click **Set credential**. Enqueue again, and it runs.
 
