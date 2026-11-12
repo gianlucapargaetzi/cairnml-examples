@@ -6,15 +6,18 @@ Run the examples in order: each one builds on the state of the one before.
 
 ## Install from this checkout, not from PyPI
 
-The newest SDK and agent are not on PyPI yet. Before Example 0, step 6, install both from the local checkouts into the examples' virtual environment, instead of `pip install cairnml`:
+The newest SDK and agent are not on PyPI yet. Install both **editable from the checkouts** into the examples' virtual environment, instead of `pip install cairnml`:
 
 ```bash
 source .venv/bin/activate
-pip install -e /path/to/cairnml /path/to/cairnml-agent     # the checkouts of the branch that is being tested
+pip install -e /path/to/cairnml -e /path/to/cairnml-agent      # the checkouts of the branch that is being tested
+pip install "cairnml[dataset]"                                  # the extras; the editable install already satisfies the package
 pip show cairnml cairnml-agent | grep -E "^(Name|Version|Editable)"
 ```
 
 PASS: `Editable project location` points at the checkouts, and `cairnml repository --help` lists `list, add, assign, unassign, check, delete, unshare, share, link, unlink`.
+
+An editable (source-tree) install is also what makes **agent jobs use the same code**: the agent builds a wheel of the SDK and of itself from those source trees and installs them in every job container, never from PyPI. A copy installed into `site-packages` (a normal `pip install` of a wheel) makes the daemon fail with "is not a source tree of cairnml-agent". Check in the job's console that `/tmp/cairnml-0.0.5-py3-none-any.whl` and `/tmp/cairnml_agent-0.0.5-py3-none-any.whl` are installed (they are built from the checkouts), not downloaded.
 
 ## Looking at the database
 
@@ -40,20 +43,6 @@ The collections that matter here:
 | `device` (database `auth`) | enrolled machines: `kind` (client or agent), `revoked` |
 
 A secret must never be readable in any of them: PASS when no collection holds a PEM header (`BEGIN`), a token or a password in clear text.
-
-## Jobs on an agent must use the same SDK and agent
-
-A job runs in a container, and the container installs the SDK and the agent itself. To test an unreleased state, the agent installs them from a local package index instead of PyPI:
-
-```bash
-cd cairnml-server && scripts/build-dev-wheels.sh                 # wheels 0.0.5+dev.<commit> of ../cairnml and ../cairnml-agent
-# put the wheels in <dir>/simple/<package>/ with an index.html each, then:
-python3 -m http.server 8099 --directory <dir>
-# ~/.cairnml/agent/cairnml-agent.conf:
-agent.package_manager.extra_index_url: ["http://localhost:8099/simple"]
-```
-
-A local version sorts above the release, so `pip install cairnml` in the job takes it. The agent refuses `-v` mounts in `extra_docker_arguments` on purpose, so a mount of the checkouts does not work. PASS: the job's console shows `cairnml-0.0.5+dev.<commit>` being installed.
 
 ## The words the UI uses
 

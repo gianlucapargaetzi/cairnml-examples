@@ -23,3 +23,9 @@ The agent runs on **this machine**, installed from the local checkout (see `../C
 
 ## FAIL signs
 - The job fails to clone although a credential is assigned; the job runs with the credential of somebody else; a token or key appears in the daemon log.
+
+## Result (2026-11-12)
+- PASS: the agent (`parg-nb`, kind agent, queue `parg-nb-f4cad6`) took the run from the command line; the clone made and enqueued in the web app ran the same commit `938f51a`; both completed; `repository_assignment.last_used` updated; the job installed the SDK and agent from wheels built from the checkouts (`cairnml @ file:///tmp/cairnml-0.0.5-...whl` in the task's Python packages).
+- PASS step 5: deleting your credential row turns the lock red (`Access refused`); enqueueing a clone opens **Credentials not assigned** and stops; **Assign credentials** assigns and the enqueue continues by itself (README adjusted: no second enqueue).
+- Found: the very first enqueue (empty GitHub repository) said "GitHub could not be reached"; now it says there is no commit.
+- Note: the Enqueue dialog's queue field starts at `default`; choosing the agent's queue is part of the step (a task left in `default` stays Queued forever).

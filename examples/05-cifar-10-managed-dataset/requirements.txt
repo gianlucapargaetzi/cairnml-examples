@@ -4,3 +4,6 @@ torchvision
 albumentations
 pillow
 tqdm
+# the cifar10 adapter of the registry names the exact versions it needs (REQUIREMENTS in adapters/cifar10.py)
+huggingface_hub==1.7.1
+pyarrow==23.0.1

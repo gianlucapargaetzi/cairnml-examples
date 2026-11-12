@@ -125,7 +125,7 @@ The copy runs like the first one, from the same repository and commit, with your
 
 1. In **Repositories & Datasets**, open the row of `cairnml-private-demo` and, in its **Credentials** table, delete your own row (the trash button), or run `cairnml repository unassign https://github.com/<your-user>/cairnml-private-demo`. The **Access** lock turns red and closed.
 2. Clone the task and enqueue it. The web app stops you with **Credentials not assigned**: the repository is private and no credential reaches it.
-3. Click **Assign credentials**, choose your credential and click **Set credential**. Enqueue again, and it runs.
+3. Click **Assign credentials**, choose your credential and click **Set credential**. The enqueue then goes on by itself: the task is queued and runs.
 
 ## Troubleshooting
 
