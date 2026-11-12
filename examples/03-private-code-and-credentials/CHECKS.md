@@ -29,3 +29,9 @@ Needs your GitHub account and the GitHub App steps by hand (steps 3 and 4).
 
 ## FAIL signs
 - The App's key can be read back anywhere; the lock is green without a credential for a private repository; the trash is enabled while a project lists the repository.
+
+## Result (2026-11-12)
+- PASS: the App (id 5709920) added in Settings → Access; a wrong key is refused and nothing is saved; the repository added as Code: red closed lock and an empty credential row before the assignment, green open lock and a row with the App, you, `examples` after; `cairnml repository check` reads it; the trash is disabled.
+- Found: the add-credential dialog showed a generic message instead of the server's reason ("GitHub did not accept this App ID or key"); fixed for all repository and credential dialogs.
+- Found: `cairnml-private-demo` existed on GitHub but was **empty** (never pushed). Step 2 of the README has to be done, or the next example fails; the enqueue check then said "GitHub could not be reached" (GitHub answers 409 for an empty repository): now it reports no commit instead.
+- Found: `cairnml repository check` said "the project's owner has none assigned" outside any project; the fallback wording and warning now apply only inside a project.

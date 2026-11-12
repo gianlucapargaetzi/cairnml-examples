@@ -15,3 +15,6 @@
 
 ## FAIL signs
 - Accuracy is 0.1 on both parts (it does not learn), or the run is Completed with no validation curve.
+
+## Result (2026-11-12)
+- PASS: `python train.py --epochs 3` completed; validation accuracy 0.74, one artifact (the weights), the arguments in `hyperparams.Args`; no new repository record (still only the examples checkout).

@@ -20,3 +20,8 @@
 ## FAIL signs
 - A task is Completed but has no scalar or no artifact.
 - A repository record exists although the examples were run in a folder without any Git remote.
+
+## Result (2026-11-12)
+- PASS: two `hello world` tasks, completed; the second has the 720-character uncommitted diff (`0.01` → `0.1`) and `seed` 7; Source code shows the repository and the commit.
+- Found and fixed: the script started with noise `0.1`, so the README's "change 0.01 to 0.1" produced no diff. The script now starts at `0.01`.
+- Observed: the examples checkout has a GitHub remote (public), so a **Code** record `cairnml-examples` is listed for `examples` (owner = project owner, share `inherited: true`); its Access lock is green open ("No credential assigned"), the Credentials table has one empty row, the trash is disabled.

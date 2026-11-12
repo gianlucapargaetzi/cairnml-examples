@@ -13,10 +13,14 @@
 - [ ] **Settings → Access** is empty. **Settings → Devices** lists this machine, kind **Client**.
 
 ## Database
-- [ ] `user`: the new user exists, `role` is `user` (only the admin account has `admin`).
-- [ ] `device`: one document, `kind` client, `revoked: false`, owned by that user.
-- [ ] `task`, `project`, `repository`, `repository_assignment`, `registry_entry`, `user_access`: **0 documents**.
+- [ ] `backend.user`: the new user exists (`name` = the username).
+- [ ] `auth.device`: one document, `kind: "client"`, `revoked: false`, `user` = that user's id.
+- [ ] `backend.share`: only the public `default` queue (`resource_type: "queue"`), no repository share.
+- [ ] `task`, `project`, `repository`, `repository_assignment`, `registry_entry`, `user_access`: **0 documents**; `queue`: only `default`.
 
 ## FAIL signs
 - The SDK comes from PyPI, or `cairnml repository` does not exist.
 - A repository, task or project already exists on a fresh server.
+
+## Result (2026-11-12, user testuser01, SDK and agent from the local checkouts)
+- PASS: terminal (`cairnml init --device`, `cairnml devices list`, `cairnml repository list` empty), UI (empty Projects, empty Repositories & Datasets with the new empty state, Access empty, Devices lists the machine), DB (user, one client device, nothing else).

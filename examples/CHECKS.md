@@ -24,6 +24,8 @@ docker exec cairnml-mongo mongosh --quiet backend --eval 'db.repository.find({},
 docker exec cairnml-mongo mongosh --quiet backend --eval 'db.repository_assignment.find().toArray()'
 ```
 
+Enrolled machines (`device`) and the sign-in users are in the **`auth`** database: `docker exec cairnml-mongo mongosh --quiet auth --eval 'db.device.find().toArray()'`. The `backend` database holds the rest, including `user` (the profile of a user: `name`, `company`; the role comes from the identity provider, not from this collection).
+
 The collections that matter here:
 
 | Collection | Holds |
@@ -35,9 +37,23 @@ The collections that matter here:
 | `registry_entry` | the datasets a registry lists: `registry`, `name`, `source`, `link` |
 | `share` | links: `resource_type: "repository"` with `scope: "projects"` (a project lists it; `inherited: true` when a run listed it, with `run_id`) or `scope: "public"` (shared by the admin) |
 | `user_access` | credentials: `kind: "app"`, `app_id`, `label`, `scope` (`user` or `company`); the key is encrypted and never shown |
-| `device` | enrolled machines: `kind` (client or agent), `revoked` |
+| `device` (database `auth`) | enrolled machines: `kind` (client or agent), `revoked` |
 
 A secret must never be readable in any of them: PASS when no collection holds a PEM header (`BEGIN`), a token or a password in clear text.
+
+## Jobs on an agent must use the same SDK and agent
+
+A job runs in a container, and the container installs the SDK and the agent itself. To test an unreleased state, the agent installs them from a local package index instead of PyPI:
+
+```bash
+cd cairnml-server && scripts/build-dev-wheels.sh                 # wheels 0.0.5+dev.<commit> of ../cairnml and ../cairnml-agent
+# put the wheels in <dir>/simple/<package>/ with an index.html each, then:
+python3 -m http.server 8099 --directory <dir>
+# ~/.cairnml/agent/cairnml-agent.conf:
+agent.package_manager.extra_index_url: ["http://localhost:8099/simple"]
+```
+
+A local version sorts above the release, so `pip install cairnml` in the job takes it. The agent refuses `-v` mounts in `extra_docker_arguments` on purpose, so a mount of the checkouts does not work. PASS: the job's console shows `cairnml-0.0.5+dev.<commit>` being installed.
 
 ## The words the UI uses
 
