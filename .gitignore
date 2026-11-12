@@ -12,3 +12,6 @@ hello.txt
 
 # graphify
 graphify-out/
+
+# old virtualenv
+.venv.old/
