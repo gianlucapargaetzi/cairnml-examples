@@ -109,7 +109,7 @@ gh repo create greenhouse-data --private
 
 Or in the browser: open [github.com/new](https://github.com/new), enter the name, choose **Private**, leave **README**, **.gitignore** and **license** off, and click **Create repository**.
 
-Then give your App from Example 3 access to it. The server reads a repository only if the App is installed on it. On GitHub open **Settings → Applications → Installed GitHub Apps**, click **Configure** next to your App, and under **Repository access** add `greenhouse-data` to the selected repositories.
+Then give your App from Example 3 access to it. The server reads a repository only if the App is installed on it, and pushing the dataset also needs the App to be allowed to **write**: its permissions must be **Contents: Read and write** and **Workflows: Read and write** (Example 3, step 3). If your App is read-only, edit it under **Permissions & events** and accept the new permissions on the installation, or the push in step 5 is refused. On GitHub open **Settings → Applications → Installed GitHub Apps**, click **Configure** next to your App, and under **Repository access** add `greenhouse-data` to the selected repositories.
 
 > [!CAUTION]
 > The repository, the commits and the pushes of this example exist only to get through the examples. You can delete `greenhouse-data` on GitHub afterwards, and the folders under `$WORK`.

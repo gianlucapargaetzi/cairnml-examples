@@ -95,7 +95,7 @@ Two more words come up often. A **project** is a folder for related tasks, model
 
 Open **Settings → Access**. It is empty now, and that is fine.
 
-A **credential** is a GitHub App that CairnML may use to read a repository that is not public. It is needed when an agent has to clone your private code to run a job, and when the server has to read a private dataset repository.
+A **credential** is a GitHub App that CairnML may use to read a repository that is not public, and, for a dataset you publish, to write to it. It is needed when an agent has to clone your private code to run a job, and when the server has to read a private dataset repository.
 
 CairnML never uses your own GitHub password or token. You create the App once on GitHub, install it only on the repositories it may read, and add its key here. The key is checked with GitHub, stored encrypted, and never shown again.
 

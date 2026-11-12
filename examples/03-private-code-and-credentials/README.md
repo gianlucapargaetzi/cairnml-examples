@@ -14,11 +14,11 @@ What you will learn:
 
 An agent is another machine. To run your code it has to clone the repository, and a private repository refuses anyone who is not allowed in. Handing the agent your own GitHub login would give it everything you can reach, for as long as you have an account.
 
-A GitHub App is the narrower way. It is an identity of its own that you create on GitHub, with read-only access to code, and install on exactly the repositories it may read. You can remove it from a repository at any time. This is how the pieces connect:
+A GitHub App is the narrower way. It is an identity of its own that you create on GitHub, with only the access you give it (read for code; write as well for a dataset you publish, Example 6), and install on exactly the repositories it may use. You can remove it from a repository at any time. This is how the pieces connect:
 
 ```mermaid
 flowchart LR
-    app["<b>GitHub App</b><br/>read-only, installed<br/>on one repository"]
+    app["<b>GitHub App</b><br/>contents read and write,<br/>installed on chosen repositories"]
     cred["<b>CairnML credential</b><br/>stored encrypted,<br/>never shown again"]
     repo["<b>Repository</b>"]
     job["<b>Job</b><br/>gets a short-lived<br/>read token for it"]
@@ -86,7 +86,8 @@ This is done on GitHub, in the browser.
    - **GitHub App name:** for example `cairnml-<your-name>`. It must be unique on GitHub.
    - **Homepage URL:** any address, for example the address of your repository.
    - **Webhook:** switch **Active** off. CairnML needs none.
-   - **Repository permissions → Contents:** **Read-only**. Leave everything else at **No access**.
+   - **Repository permissions → Contents:** **Read and write**, and **Workflows:** **Read and write**. Leave everything else at **No access** (Metadata is read-only and always on).
+     Running code on an agent (Example 4) only needs **Contents: Read-only**. **Publishing a dataset** (Example 6) pushes commits and the workflow file of the dataset repository, and CairnML asks GitHub for a token with write access for that push. GitHub refuses a token that has more access than the App, so give the App both now. If you set it read-only first, change it later under **Permissions & events** and accept the new permissions on the installation (GitHub shows a request on **Settings → Applications → Installed GitHub Apps**).
    - **Where can this GitHub App be installed?** **Only on this account**.
 3. Click **Create GitHub App**. Note the **App ID** at the top of the page.
 4. Under **Credentials → Key pairs**, click **"New key"**. Your browser saves a `.pem` file. It is the secret half of the App: keep it, and do not commit it.
