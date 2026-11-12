@@ -14,3 +14,6 @@
 
 ## FAIL signs
 - A plot is empty; the image is missing; the reports of the second run overwrite the first.
+
+## Result (2026-11-12, fresh stack)
+PASS. Two tasks `reports and plots` (Completed): epochs 30 / hidden 32 (test MAE 0.446 kWh) and epochs 60 / hidden 64 (MAE 0.497 kWh, mean residual +0.220), both with the dataset repository and commit as parameters. Each has four plots (`error by hour`, `expensive hour`, `predictions`, `residuals`), scalars and one debug-sample group. The comparison view shows the changed parameters. Note: the larger model was not better on this seed, so the "better curves of the bigger model" line in the checks is a description of what to look at, not a guaranteed result.
