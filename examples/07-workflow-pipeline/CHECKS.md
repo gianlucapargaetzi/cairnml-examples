@@ -15,3 +15,12 @@
 
 ## FAIL signs
 - A step runs but cannot read the dataset (token refused); the steps run in another project.
+
+## Result (2026-11-12, fresh stack)
+PASS, with a second worker. Local run: `workflow done: validation mse 0.3095, test R2 0.9812`. Agent run (`--queue <agent queue>`): the controller runs in the terminal, the three steps run on the agent; `workflow done: validation mse 0.3413, test R2 0.9793`. All four tasks Completed; steps have the controller as parent.
+
+Needed for the agent run (found by running it):
+- The controller must not run on the same single worker as its steps (it blocks them): it runs where it is started (`pipeline_execution_queue=None`), and a second worker on the queue is useful (`CAIRNML_WORKER_ID=<machine>:1 cairnml-agent daemon --docker`).
+- A step reads the step before it (a sibling task) and downloads its artifact: the server lets a job read the data of the steps of its own pipeline (same parent), nothing else.
+- The steps pass the weights themselves, not a file path (the next step may run on another machine).
+Not verified yet: starting a pipeline from the web app (controller as a job on an agent), and the "Pipeline dead-locked" message, which has unit tests only.
