@@ -24,7 +24,7 @@ logger = task.get_logger()
 # logger.report_scalar(title="seed", series="seed", value=seed, iteration=0)
 
 for step in tqdm(range(settings["steps"]), desc="steps", unit="step"):
-    loss = 1.0 / (step + 1) + rng.gauss(0.0, 0.1)  # slight noise so runs differ
+    loss = 1.0 / (step + 1) + rng.gauss(0.0, 0.01)  # slight noise so runs differ
     logger.report_scalar(title="loss", series="train", value=loss, iteration=step)
 
 Path("hello.txt").write_text(settings["greeting"] + "\n")
