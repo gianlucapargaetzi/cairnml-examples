@@ -6,8 +6,8 @@ next. The steps only import what they use inside their own bodies, because Cairn
 
     python pipeline.py --repo https://github.com/<you>/greenhouse-data.git --commit <sha> --local
                                               # the whole workflow on this machine, each step as a sub-process task
-    python pipeline.py --repo https://github.com/<you>/greenhouse-data.git --commit <sha>
-                                              # each step is queued on DEFAULT_QUEUE, and an agent runs it
+    python pipeline.py --repo https://github.com/<you>/greenhouse-data.git --commit <sha> --queue <queue>
+                                              # each step is queued on the queue of your agent, which runs it
 
 The dataset is the greenhouse dataset of Example 6. Run Example 6 first, then pass its dataset repository URL with
 --repo and the commit with --commit. Each step reads that version with Dataset.get.
@@ -18,8 +18,12 @@ import argparse
 from cairnml.automation import PipelineDecorator
 
 PROJECT = "examples"
-# The queue whose agents run the steps. Use a queue with a GPU agent to train on the GPU.
-DEFAULT_QUEUE = "default"
+
+# The decorators below need the queue when this file is loaded, so --queue is read before the rest of the arguments.
+_early = argparse.ArgumentParser(add_help=False)
+_early.add_argument("--queue", default="default")
+# The queue whose agent runs the steps: the queue of your agent (Example 4), or one with a GPU agent to train on the GPU.
+DEFAULT_QUEUE = _early.parse_known_args()[0].queue
 
 
 @PipelineDecorator.component(return_values=["data_dir"], execution_queue=DEFAULT_QUEUE)
@@ -102,7 +106,8 @@ def evaluate(data_dir: str, model_path: str) -> float:
     return 1 - ss_res / ss_tot
 
 
-@PipelineDecorator.pipeline(name="greenhouse workflow", project=PROJECT, version="1.0", default_queue=DEFAULT_QUEUE)
+@PipelineDecorator.pipeline(name="greenhouse workflow", project=PROJECT, version="1.0", default_queue=DEFAULT_QUEUE,
+                           pipeline_execution_queue=DEFAULT_QUEUE)
 def run_workflow(dataset_repo: str, dataset_commit: str, lr: float = 0.01, hidden: int = 32, epochs: int = 30) -> None:
     data_dir = prepare_data(dataset_repo, dataset_commit)
     model_path, val_mse = train(data_dir, lr, hidden, epochs)
@@ -113,6 +118,7 @@ def run_workflow(dataset_repo: str, dataset_commit: str, lr: float = 0.01, hidde
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--local", action="store_true", help="run every step on this machine")
+    parser.add_argument("--queue", default="default", help="the queue of the agent that runs the steps (not with --local)")
     parser.add_argument("--repo", help="URL of the dataset repository from Example 6")
     parser.add_argument("--commit", help="the commit of the dataset repository from Example 6")
     parser.add_argument("--lr", type=float, default=0.01)
