@@ -15,3 +15,7 @@
 
 ## FAIL signs
 - All trials have the same parameters; an optimizer task ends with no trial; a trial cannot read the dataset.
+
+## Result (2026-11-12, fresh stack)
+PASS. Baseline `regression baseline` completed (validation mse 0.3191). Local search (`--local --trials 4`): an optimizer task `hyperparameter search` and four completed trial tasks with different `lr`, `hidden` and `batch_size`; best trial mse about 0.297. Agent search (`--queue <agent queue> --trials 4 --concurrent 2`): the optimizer ran in the terminal, four trial tasks ran on the agent (two workers on the queue) and completed; the optimizer task completed.
+Notes: the optimizer keeps waiting between progress reports (5 minutes), so the command can take several minutes after the trials are done; it was ended with the timeout in this run and the task state is `completed`. The controller (optimizer) runs where it is started, like the pipeline of Example 7: on the agent it would be refused as a job unless the project has a second agent for it.
