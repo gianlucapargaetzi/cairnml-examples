@@ -36,9 +36,9 @@ def prepare_data(dataset_repo: str, dataset_commit: str) -> str:
     return str(data.path)
 
 
-@PipelineDecorator.component(return_values=["model_path", "val_mse"], execution_queue=DEFAULT_QUEUE)
+@PipelineDecorator.component(return_values=["weights", "val_mse"], execution_queue=DEFAULT_QUEUE)
 def train(data_dir: str, lr: float, hidden: int, epochs: int):
-    """Train a small network and save its weights. The return values are the path of the file and the last validation
+    """Train a small network. The return values are its weights, which the next step receives, and the last validation
     mean squared error."""
     import torch
     import pandas as pd
@@ -74,13 +74,13 @@ def train(data_dir: str, lr: float, hidden: int, epochs: int):
     model.eval()
     with torch.no_grad():
         val_mse = loss_function(model(x_test), y_test).item()
-    model_path = "model.pth"
-    torch.save(model.state_dict(), model_path)
-    return model_path, val_mse
+    # the weights themselves go to the next step (not a file path: the next step may run on another machine)
+    weights = {name: tensor.detach().clone() for name, tensor in model.state_dict().items()}
+    return weights, val_mse
 
 
 @PipelineDecorator.component(return_values=["test_r2"], execution_queue=DEFAULT_QUEUE)
-def evaluate(data_dir: str, model_path: str) -> float:
+def evaluate(data_dir: str, weights: dict) -> float:
     """Load the saved weights and score them on the test file with the R² score: 1.0 is a perfect fit."""
     import torch
     import pandas as pd
@@ -94,10 +94,10 @@ def evaluate(data_dir: str, model_path: str) -> float:
     x = torch.tensor(((test_frame[features] - mean) / spread).values, dtype=torch.float32)
     y = torch.tensor(test_frame[target].values, dtype=torch.float32).unsqueeze(1)
 
-    hidden = torch.load(model_path, weights_only=True)["0.weight"].shape[0]
+    hidden = weights["0.weight"].shape[0]
     model = nn.Sequential(nn.Linear(len(features), hidden), nn.ReLU(), nn.Linear(hidden, hidden), nn.ReLU(),
                           nn.Linear(hidden, 1))
-    model.load_state_dict(torch.load(model_path, weights_only=True))
+    model.load_state_dict(weights)
     model.eval()
     with torch.no_grad():
         predictions = model(x)
@@ -107,11 +107,11 @@ def evaluate(data_dir: str, model_path: str) -> float:
 
 
 @PipelineDecorator.pipeline(name="greenhouse workflow", project=PROJECT, version="1.0", default_queue=DEFAULT_QUEUE,
-                           pipeline_execution_queue=DEFAULT_QUEUE)
+                           pipeline_execution_queue=None)  # the controller runs here, the steps on the agent
 def run_workflow(dataset_repo: str, dataset_commit: str, lr: float = 0.01, hidden: int = 32, epochs: int = 30) -> None:
     data_dir = prepare_data(dataset_repo, dataset_commit)
-    model_path, val_mse = train(data_dir, lr, hidden, epochs)
-    test_r2 = evaluate(data_dir, model_path)
+    weights, val_mse = train(data_dir, lr, hidden, epochs)
+    test_r2 = evaluate(data_dir, weights)
     print(f"workflow done: validation mse {float(val_mse):.4f}, test R2 {float(test_r2):.4f}")
 
 

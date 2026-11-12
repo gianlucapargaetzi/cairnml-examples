@@ -24,8 +24,8 @@ Each step is an ordinary function with a decorator, and one more function descri
 
 ```python
 data_dir = prepare_data(dataset_repo, dataset_commit)
-model_path, val_mse = train(data_dir, lr, hidden, epochs)
-test_r2 = evaluate(data_dir, model_path)
+weights, val_mse = train(data_dir, lr, hidden, epochs)
+test_r2 = evaluate(data_dir, weights)
 ```
 
 The pipeline function trains nothing itself. Each return value is recorded and handed to the next step. Because every step runs separately, possibly on another machine, a step must import what it needs inside its own function and may only use its arguments, not variables of the others.
@@ -57,7 +57,7 @@ Open `pipeline.py`:
 | Step | What it does | What it returns |
 |---|---|---|
 | `prepare_data` | reads one version of the dataset with `Dataset.get` | the folder with `train.csv` and `test.csv` |
-| `train` | trains a small network | the path of the saved weights and the validation error |
+| `train` | trains a small network | the trained weights and the validation error |
 | `evaluate` | scores the weights on the test file | the R² score, where 1.0 is a perfect fit |
 
 ### 3. Run the workflow on this machine
@@ -87,7 +87,7 @@ Remove `--local` to queue the steps for an agent, as in [Example 4](../04-run-on
 python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --commit <sha> --queue <queue>
 ```
 
-The steps, and the controller that connects them, go to `--queue`: the queue of your agent from [Example 4](../04-run-on-an-agent), for example `parg-nb-b59488`. An agent serves only its own queue, so a queue nobody listens to (such as `default`, which is the value without `--queue`) leaves the steps waiting. The agent reads the private dataset repository the same way your machine does, with the credential and the App installed in Example 6 (the one assigned to you, the owner of the project), and the server gives each job a short-lived read token for it.
+The steps go to `--queue`, while the controller that connects them keeps running in your terminal and waits for them (an agent runs one task at a time, so a controller on the same agent would block its own steps). `--queue` is the queue of your agent from [Example 4](../04-run-on-an-agent), for example `parg-nb-b59488`. An agent serves only its own queue, so a queue nobody listens to (such as `default`, which is the value without `--queue`) leaves the steps waiting. The agent reads the private dataset repository the same way your machine does, with the credential and the App installed in Example 6 (the one assigned to you, the owner of the project), and the server gives each job a short-lived read token for it.
 
 > [!NOTE]
 > Agent execution is containerized and takes longer than a local run, at least the first time an agent is used: the base image has to be pulled and the environment installed in it before the first step starts. See [Example 4](../04-run-on-an-agent).
