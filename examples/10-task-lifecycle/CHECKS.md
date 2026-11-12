@@ -19,3 +19,7 @@
 
 ## FAIL signs
 - Enqueue of a Draft leaves it Draft; delete leaves a document; publish succeeds on a task that is still running.
+
+## Result (2026-11-12)
+- PASS after one fix, step by step in the database: base completed (`system_tags: development`); clone `created` (Draft) in `examples`; enqueue → `queued` on `default`; dequeue/reset → `created`; archive → `system_tags: archived`, unarchive removes it; move → the clone's `project` is `examples scratch` (project created); publish → base `published`; delete → the clone is gone; status prints "clone: not created yet".
+- Found and fixed: `Task.clone(..., project="examples")` is refused by the server ("Invalid project id: id=examples") because the project must be an ID; the script now passes the base task's project ID.

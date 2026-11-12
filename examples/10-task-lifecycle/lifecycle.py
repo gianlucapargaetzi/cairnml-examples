@@ -66,7 +66,7 @@ def cmd_base(args, state):
 def cmd_clone(args, state):
     base = task_of(state, "base")
     # Clone creates a draft: a copy with the same code and settings, which you may still change.
-    clone = Task.clone(source_task=base, name="lifecycle clone", project=PROJECT)
+    clone = Task.clone(source_task=base, name="lifecycle clone", project=base.project)  # the ID of the base task's project
     clone.set_parameters_as_dict({"General": {"lr": args.lr}})
     state["clone"] = clone.id
     describe("clone", clone)
