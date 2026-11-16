@@ -135,7 +135,8 @@ def main() -> None:
 
     # the "epochs" bar below is the progress of the run, not the download and the loading of the images
     task = Task.init(project_name="examples", task_name="CIFAR-10 classification", progress_bar="epochs")
-    task.connect({
+    # the settings the web app holds for this task replace these when the run is queued (example 4, step 4)
+    settings = task.connect({
         "dataset": "CIFAR-10",
         "epochs": args.epochs,
         "depth": args.depth,
@@ -146,6 +147,8 @@ def main() -> None:
         "val_split": args.val_split,
         "seed": args.seed,
     })
+    for name, value in settings.items():
+        setattr(args, name, value)
     if args.queue:
         # This process exits here. An agent on the queue runs the script again from the start, from the commit
         # the run recorded, and trains there. Without an image it uses its own default container image.
