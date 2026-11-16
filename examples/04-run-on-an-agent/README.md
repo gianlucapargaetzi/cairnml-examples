@@ -115,6 +115,8 @@ Under **Agents & Queues** the job waits in the agent's queue until the agent tak
 
 A task can be copied and started with other settings without touching your machine.
 
+This works only when the script takes its settings from `task.connect`: `train.py` assigns its result to `settings` and copies it back into the arguments. The `train.py` in your `cairnml-private-demo` has to do the same. If it does not, commit the change from [Example 2](../02-cifar10-classification/train.py) to that repository and push it, as in step 2, before you clone.
+
 1. Open the task and click **Clone**. In the **Clone Task** dialog keep the project **examples** and click **Clone**. The copy has the status **Draft**.
 2. Open the copy and change `epochs` to `5` under **Configuration**. The image is under **Execution → Container**, and can be changed there too.
 3. Click **Enqueue**, choose the queue of your agent and confirm.
@@ -125,6 +127,7 @@ The copy runs like the first one, from the same repository and commit, with your
 
 1. In **Repositories & Datasets**, open the row of `cairnml-private-demo` and, in its **Credentials** table, delete your own row (the trash button), or run `cairnml repository unassign https://github.com/<your-user>/cairnml-private-demo`. The **Access** lock turns red and closed.
 2. Clone the task and enqueue it. The web app stops you with **Credentials not assigned**: the repository is private and no credential reaches it.
+   From the command line the queue command still returns normally. CairnML records the task as **Failed** at once, with the reason in its status, so look at the task in the web app rather than at the terminal.
 3. Click **Assign credentials**, choose your credential and click **Set credential**. The enqueue then goes on by itself: the task is queued and runs.
 
 ## Troubleshooting
