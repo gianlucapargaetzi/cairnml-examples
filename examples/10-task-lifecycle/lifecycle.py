@@ -54,7 +54,9 @@ def need_yes(args: argparse.Namespace, what: str) -> None:
 
 def cmd_base(args, state):
     task = Task.init(project_name=PROJECT, task_name="lifecycle base", reuse_last_task_id=False)
-    task.connect({"lr": 0.01, "hidden": 16})
+    # the settings the web app holds for this task replace these when the run is queued or cloned
+    settings = task.connect({"lr": 0.01, "hidden": 16})
+    print(f"settings in use: lr {settings['lr']}, hidden {settings['hidden']}")
     logger = task.get_logger()
     for step in range(5):
         logger.report_scalar("mse", "val", value=1.0 / (step + 1), iteration=step)

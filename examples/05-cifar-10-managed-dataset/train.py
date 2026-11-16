@@ -117,7 +117,8 @@ def main() -> None:
     task = Task.init(project_name="examples", task_name="CIFAR-10 classification with the dataset registry", progress_bar="epochs")
     # Reads through the adapter. This also records the dataset, its revision and the registry commit on the task.
     dataset = RegistryDataset.get_external(DATASET, commit=args.commit, repo=args.registry, alias=DATASET)
-    task.connect({
+    # the settings the web app holds for this task replace these when the run is queued (example 4, step 4)
+    settings = task.connect({
         "dataset": DATASET,
         "dataset_revision": dataset.info["revision"],
         "dataset_adapter": dataset.info["adapter"],
@@ -131,6 +132,8 @@ def main() -> None:
         "val_split": args.val_split,
         "seed": args.seed,
     })
+    for name, value in settings.items():
+        setattr(args, name, value)
     logger = task.get_logger()
 
     torch.manual_seed(args.seed)
