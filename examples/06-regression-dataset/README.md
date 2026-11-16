@@ -168,6 +168,9 @@ COMMIT=$(git -C "$WORK/greenhouse-data" rev-parse HEAD)
 echo "$REPO $COMMIT"
 ```
 
+> [!IMPORTANT]
+> The CSV files are not in this repository. They are stored in the dataset storage of your server, an S3 bucket, and the repository holds only pointers to them in `data.dvc`. If that storage is emptied, for example by `deploy/scripts/teardown.sh --data`, the repository still lists the files but cannot deliver them. To get them back, run `generate.py` again (the same seed gives the same files) and then `cairnml dataset add` and `cairnml dataset push` in the repository.
+
 Keep them: the next examples take them as parameters. You can delete `$WORK` afterwards; the data stays in the repository and the dataset storage.
 
 > [!IMPORTANT]
