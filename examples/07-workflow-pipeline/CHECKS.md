@@ -26,3 +26,7 @@ Needed for the agent run (found by running it):
 - A step reads the step before it (a sibling task) and downloads its artifact: the server lets a job read the data of the steps of its own pipeline (same parent), nothing else.
 - The steps pass the weights themselves, not a file path (the next step may run on another machine).
 Not verified yet: starting a pipeline from the web app (controller as a job on an agent), and the "Pipeline dead-locked" message, which has unit tests only.
+
+## Result (2026-11-22, fresh stack, agent from source with `daemon --docker python:3.12-slim`, SDK from main plus the fixes of the same day)
+- PASS with the steps naming their packages: agent run (`--queue <agent queue>`) `workflow done: validation mse 0.3095, test R2 0.9812`, also when the controller's environment has no `pigar`; `--local` run: the same line.
+- The example without `packages=` failed on the agent in BOTH environments: without `pigar` the SDK logs "Failed auto-generating package requirements" for each step and the `train` step dies with `No module named 'torch'`; with `pigar` installed the SDK recorded only `cairnml == 0.0.9` for the `train` step (no warning), and `train` died the same way. So the imports inside a step function are not detected (an SDK defect, filed separately), and the example names its packages.
