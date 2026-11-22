@@ -28,3 +28,7 @@
 - PASS: two `hello world` tasks, completed; the second has the 720-character uncommitted diff (`0.01` → `0.1`) and `seed` 7; Source code shows the repository and the commit.
 - Found and fixed: the script started with noise `0.1`, so the README's "change 0.01 to 0.1" produced no diff. The script now starts at `0.01`.
 - Observed: the examples checkout has a GitHub remote (public), so a **Code** record `cairnml-examples` is listed for `examples` (owner = project owner, share `inherited: true`); its Access lock is green open ("No credential assigned"), the Credentials table has one empty row, the trash is disabled.
+
+## Result (2026-11-22, fresh stack, SDK from main plus the fixes of the same day)
+- PASS: two runs without `--seed` recorded different seeds (517533234 and 1039215867) and different `loss` curves (sums 2.982 and 2.957); two runs with `--seed 7` recorded the same seed and identical curves (sum 2.943). `--seed 0` is honoured (checked with the stub probe).
+- Before the change every run without `--seed` used seed 1571306751, because `Task.init` seeds the global generator with 1337.
