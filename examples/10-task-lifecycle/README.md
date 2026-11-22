@@ -61,7 +61,7 @@ This creates the task **lifecycle base** in the project **examples**, logs a sho
 python lifecycle.py clone --lr 0.1
 ```
 
-A clone has the same code and settings as the original, except the ones you change, here the learning rate. It is named **lifecycle clone** and its status is **Draft**: it does not run until you queue it, and until then its settings can still be edited, in the web app or with the script.
+A clone has the same code and settings as the original, except the ones you change, here the learning rate. It is named **lifecycle clone** and its status is **Draft** in the web app (the script prints the API word `created` for it): it does not run until you queue it, and until then its settings can still be edited, in the web app or with the script.
 
 ### 4. Queue the clone
 
@@ -75,7 +75,7 @@ The status becomes **Queued**. The task waits in the `default` queue. No agent s
 python lifecycle.py dequeue
 ```
 
-The status returns to **Draft**.
+The status returns to **Draft** (`created` in the script's output).
 
 ### 5. Reset it
 
@@ -83,7 +83,7 @@ The status returns to **Draft**.
 python lifecycle.py reset --yes
 ```
 
-A reset removes the results of the clone, its scalars, logs and artifacts, and returns it to a draft. Use it to run the same task again from scratch. The base task is not touched.
+A reset removes the results of the clone, its scalars, logs and artifacts, and returns it to a draft (`created` in the script's output). Use it to run the same task again from scratch. The base task is not touched.
 
 ### 6. Archive it
 
@@ -127,7 +127,7 @@ The clone is deleted with its outputs. The base task and any published task are 
 python lifecycle.py status
 ```
 
-This prints the status of the base task and of the clone. After step 9 the clone is listed as not created.
+This prints the status of the base task and of the clone. After step 9 the script prints `not created yet` for the clone, because the copy has been deleted.
 
 > [!NOTE]
 > To see a clone run, enqueue a new one in the web app into the queue of your agent from [Example 4](../04-run-on-an-agent), as in step 4 there.

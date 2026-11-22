@@ -51,21 +51,23 @@ To sign in to the web app as the admin yourself, use `KC_ADMIN` with `CAIRNML_AD
 
 Open `http://<server-ip>/cairnml/` and sign in. Your CairnML account is created at your first sign-in.
 
-Check: the **Projects** page opens. It is empty on a new server.
+Check: the web app opens on the **Dashboard**, under the heading **Projects**. It has three lists: **Recent projects** (with **View all** and **New project**), **Recent reports** and **Recent tasks**. On a new server they are empty.
+
+The first sign-in also opens the **Welcome to CairnML** dialog. Its **Get started** button shows the two commands that install the SDK and connect it to your server, and the **X** closes the dialog. A **What's new** dialog with the current release notes of the server, the web app and the SDK closes with **Dismiss**.
 
 > [!TIP]
 > Keep the web app open in a second window next to your terminal. Every example changes something there that you can look at.
 
 ### 3. Take the tour of the web app
 
-The side bar on the left leads to the main areas:
+The side bar on the left has icons only. Hover over an icon to see its name. From the top, the icons are **Agents & Queues**, **Datasets**, **Projects** and **Pipelines**. The page of the **Datasets** icon is titled **Repositories & Datasets**, and the **Projects** icon opens the Dashboard.
 
 | Entry | What it is for |
 |---|---|
+| **Agents & Queues** | The machines that run your jobs, and the queues they take jobs from |
+| **Datasets** (page **Repositories & Datasets**) | The code repositories, datasets and registries of datasets CairnML reads, and how each is read |
 | **Projects** | Your work, in folders called projects. A project holds tasks, models and reports. Most of what you do happens here |
 | **Pipelines** | Workflows made of several steps, each step its own task |
-| **Repositories & Datasets** | The code repositories, datasets and registries of datasets CairnML reads, and how each is read |
-| **Agents & Queues** | The machines that run your jobs, and the queues they take jobs from |
 
 At the bottom are **Search all**, **Help** and the **Account** menu, which leads to **Settings**.
 
