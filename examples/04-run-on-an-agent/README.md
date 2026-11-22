@@ -53,7 +53,7 @@ cairnml-agent daemon --docker
 
 In every new terminal on that machine, go to the repository root and run `source .venv/bin/activate` again before using `cairnml-agent`.
 
-`init` opens the sign-in page. Sign in with your own account. `daemon` must keep running. `--docker` runs every job in its own container. Add `--gpus 0` to use the first GPU.
+`init` opens the sign-in page. Sign in with your own account. `daemon` must keep running. `--docker` runs every job in its own container. Without `--gpus` the jobs see every GPU of the machine; `--gpus 0` limits them to the first (`--gpus 0,1` the first two), and `--cpu-only` uses none.
 
 Enrolling also made a queue for this machine, and `daemon` without `--queue` serves it. An agent serves only its own queue, so jobs for this agent go there. The queue is named after the machine **plus a short suffix**, for example `parg-nb-b59488` for the machine `parg-nb`. `init` prints it (`queue of this machine: ...`) and **Agents & Queues → Queues** lists it. Note that exact name as `<queue>` for the next steps: the bare machine name does not work. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
 
@@ -117,9 +117,9 @@ A task can be copied and started with other settings without touching your machi
 
 This works only when the script takes its settings from `task.connect`: `train.py` assigns its result to `settings` and copies it back into the arguments. The `train.py` in your `cairnml-private-demo` has to do the same. If it does not, commit the change from [Example 2](../02-cifar10-classification/train.py) to that repository and push it, as in step 2, before you clone.
 
-1. Open the task and click **Clone**. In the **Clone Task** dialog keep the project **examples** and click **Clone**. The copy has the status **Draft**.
-2. Open the copy and change `epochs` to `5` under **Configuration**. The image is under **Execution → Container**, and can be changed there too.
-3. Click **Enqueue**, choose the queue of your agent and confirm.
+1. Open the task, click **Task actions** (the three-line icon in the task header) and choose **Clone**. In the dialog keep the project **examples** and click **Clone**. The copy has the status **Draft**.
+2. Open the copy and change `epochs` to `5` under **Configuration**, in the section **General**: that is where `train.py` reads its settings. The image is under **Execution → Container**, and can be changed there too.
+3. Open **Task actions** again and choose **Enqueue**. It asks for the queue of your agent; choose it and confirm.
 
 The copy runs like the first one, from the same repository and commit, with your new settings. Because the commit is kept, a clone is also how you rerun exactly the same code later.
 

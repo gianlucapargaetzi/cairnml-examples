@@ -146,7 +146,12 @@ cairnml dataset push --path "$WORK/greenhouse-data"
 > [!NOTE]
 > `cairnml dataset create` does all of this in one call and creates the repository for you. The commands are separate here so that each step is visible.
 
-After the first push, protect the default branch so that changes come in as pull requests: `cairnml dataset doctor --path "$WORK/greenhouse-data"` shows what is missing.
+After the first push, `cairnml dataset doctor --path "$WORK/greenhouse-data"` checks the repository. Until two GitHub settings are on, it ends with `error: 2 check(s) failed`:
+
+- `FAIL auto-merge`: on the repository's **Settings → General**, under **Pull Requests**, switch on **Allow auto-merge**.
+- `FAIL branch protection`: on **Settings → Branches**, protect the default branch: require a pull request, block force pushes and deletions.
+
+Both matter only for changing the dataset later, where a push opens a pull request that is merged by itself. Examples 7 to 11 read the first commit and do not need them. After the settings, run `doctor` again: it prints `No problems found`.
 
 ### 6. See what git holds and what it does not
 

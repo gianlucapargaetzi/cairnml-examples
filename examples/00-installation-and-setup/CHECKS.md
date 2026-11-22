@@ -7,8 +7,8 @@
 - [ ] `cairnml repository list` prints "No repositories yet" (nothing was run).
 
 ## UI
-- [ ] Sign-in with the new user opens **Projects**, empty.
-- [ ] Side bar: Projects, Pipelines, **Repositories & Datasets**, Agents & Queues (no "Datasets" tab of the old design).
+- [ ] Sign-in with the new user opens the **Dashboard** (heading **Projects**): **Recent projects**, **Recent reports**, **Recent tasks** empty; **Welcome to CairnML** and **What's new** dialogs close with the **X** and **Dismiss**.
+- [ ] Side bar: icons only, top to bottom Agents & Queues, Datasets, Projects, Pipelines; the names are tooltips; the **Datasets** icon opens **Repositories & Datasets**.
 - [ ] **Repositories & Datasets** shows the empty state "No repositories or datasets yet".
 - [ ] **Settings → Access** is empty. **Settings → Devices** lists this machine, kind **Client**.
 

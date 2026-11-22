@@ -84,8 +84,9 @@ It holds `cairnml-import.yaml` (the manifest, with the project and task name), `
 
 ### 4. Import it in the web app
 
-1. Choose **Import run** and upload the ZIP.
-2. Open the new task in the project **examples**: the settings are under **Configuration**, the three curves under **Scalars**, and the checkpoints under **Artifacts**.
+1. Open the project **examples**, its **Tasks** tab, and click **Import run**.
+2. In the dialog click **Choose ZIP**, pick the ZIP, and click **Import**.
+3. Open the new task in the project **examples**: the settings are under **Configuration**, the three curves under **Scalars**, and the checkpoints under **Artifacts**.
 
 Each import creates a new task, so importing the same ZIP twice gives two tasks.
 
