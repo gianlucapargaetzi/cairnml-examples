@@ -30,6 +30,8 @@ test_r2 = evaluate(data_dir, weights)
 
 The pipeline function trains nothing itself. Each return value is recorded and handed to the next step. Because every step runs separately, possibly on another machine, a step must import what it needs inside its own function and may only use its arguments, not variables of the others.
 
+Each step also records the packages it needs, and the agent installs them in the container before the step starts. `pipeline.py` lists them in `packages=` on each component, so the steps do not depend on what is installed on the machine that starts the workflow. Step 5 explains why.
+
 ## Prerequisites
 
 - About 10 minutes.
@@ -88,6 +90,9 @@ python pipeline.py --repo https://github.com/<your-user>/greenhouse-data.git --c
 ```
 
 The steps go to `--queue`, while the controller that connects them keeps running in your terminal and waits for them (an agent runs one task at a time, so a controller on the same agent would block its own steps). `--queue` is the queue of your agent from [Example 4](../04-run-on-an-agent), for example `parg-nb-b59488`. An agent serves only its own queue, so a queue nobody listens to (such as `default`, which is the value without `--queue`) leaves the steps waiting. The agent reads the private dataset repository the same way your machine does, with the credential and the App installed in Example 6 (the one assigned to you, the owner of the project), and the server gives each job a short-lived read token for it.
+
+> [!NOTE]
+> Each step records the packages it needs, and the agent installs them in the container before the step starts. The example lists them in `packages=` on each component. Without `packages=`, CairnML reads the imports inside the step function on the machine where you start the workflow, and records the ones installed there: that works only if torch and pandas are installed there too, and it cannot name an extra such as `cairnml[dataset]`.
 
 > [!NOTE]
 > Agent execution is containerized and takes longer than a local run, at least the first time an agent is used: the base image has to be pulled and the environment installed in it before the first step starts. See [Example 4](../04-run-on-an-agent).

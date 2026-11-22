@@ -24,9 +24,14 @@ _early = argparse.ArgumentParser(add_help=False)
 _early.add_argument("--queue", default="default")
 # The queue whose agent runs the steps: the queue of your agent (Example 4), or one with a GPU agent to train on the GPU.
 DEFAULT_QUEUE = _early.parse_known_args()[0].queue
+# A step runs on the agent, not here, so the example says what each step installs instead of relying on detection from
+# the imports on this machine. Detection cannot name the cairnml[dataset] extra that Dataset.get needs.
+DATA_PACKAGES = ["cairnml[dataset]"]
+MODEL_PACKAGES = ["torch", "pandas"]
 
 
-@PipelineDecorator.component(return_values=["data_dir"], execution_queue=DEFAULT_QUEUE)
+@PipelineDecorator.component(return_values=["data_dir"], execution_queue=DEFAULT_QUEUE,
+                             packages=DATA_PACKAGES)
 def prepare_data(dataset_repo: str, dataset_commit: str) -> str:
     """Read the dataset version with the SDK. The files are downloaded once into the cache, and the run records the
     repository, the commit and the content hash."""
@@ -36,7 +41,8 @@ def prepare_data(dataset_repo: str, dataset_commit: str) -> str:
     return str(data.path)
 
 
-@PipelineDecorator.component(return_values=["weights", "val_mse"], execution_queue=DEFAULT_QUEUE)
+@PipelineDecorator.component(return_values=["weights", "val_mse"], execution_queue=DEFAULT_QUEUE,
+                             packages=MODEL_PACKAGES)
 def train(data_dir: str, lr: float, hidden: int, epochs: int):
     """Train a small network. The return values are its weights, which the next step receives, and the last validation
     mean squared error."""
@@ -79,7 +85,8 @@ def train(data_dir: str, lr: float, hidden: int, epochs: int):
     return weights, val_mse
 
 
-@PipelineDecorator.component(return_values=["test_r2"], execution_queue=DEFAULT_QUEUE)
+@PipelineDecorator.component(return_values=["test_r2"], execution_queue=DEFAULT_QUEUE,
+                             packages=MODEL_PACKAGES)
 def evaluate(data_dir: str, weights: dict) -> float:
     """Load the saved weights and score them on the test file with the R² score: 1.0 is a perfect fit."""
     import torch
