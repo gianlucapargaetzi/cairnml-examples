@@ -25,7 +25,7 @@ _early.add_argument("--queue", default="default")
 # The queue whose agent runs the steps: the queue of your agent (Example 4), or one with a GPU agent to train on the GPU.
 DEFAULT_QUEUE = _early.parse_known_args()[0].queue
 # A step runs on the agent, not here, so the example says what each step installs instead of relying on detection from
-# the imports on this machine. Detection cannot name the cairnml[dataset] extra that Dataset.get needs.
+# the imports on this machine. Detection did not find the imports inside the steps in our runs, and it cannot name the cairnml[dataset] extra that Dataset.get needs.
 DATA_PACKAGES = ["cairnml[dataset]"]
 MODEL_PACKAGES = ["torch", "pandas"]
 
