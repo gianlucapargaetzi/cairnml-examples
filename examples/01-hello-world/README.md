@@ -49,7 +49,7 @@ In every new terminal, go to the repository root and run `source .venv/bin/activ
 python hello_world.py
 ```
 
-The script finishes in a few seconds. It adds a small random noise to the curve, so two runs differ. Pass `--seed 7` to repeat a run exactly.
+The script finishes in a few seconds. It picks a random seed, adds a small noise to the curve from it and prints the seed it used at the end, so two runs differ. Pass `--seed 7` to repeat a run exactly.
 
 ### 3. Look at the run
 
@@ -59,7 +59,7 @@ While the script runs, the task is listed as **Running** with a small progress b
 - **Scalars:** the `loss` curve, one point per step.
 - **Artifacts:** `hello.txt`.
 
-Run the script again and compare the two experiments: only the noise differs.
+Run the script again and compare the two experiments: only the `seed` (see **Configuration**) and the noise it produces differ.
 
 ### 4. Change the seed and the code
 
