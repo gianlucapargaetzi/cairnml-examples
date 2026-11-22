@@ -15,7 +15,8 @@ args = parser.parse_args()
 
 task = Task.init(project_name="examples", task_name="hello world")
 
-seed = args.seed if args.seed is not None else random.randrange(2**31)
+# Task.init seeds the global generator with a fixed value, so draw from the operating system instead
+seed = args.seed if args.seed is not None else random.SystemRandom().randrange(2**31)
 settings = task.connect({"greeting": "Hello, CairnML!", "steps": 10, "seed": seed})
 seed = settings["seed"]
 
