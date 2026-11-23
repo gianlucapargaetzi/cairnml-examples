@@ -52,6 +52,8 @@ python reports.py --repo https://github.com/<your-user>/greenhouse-data.git --co
 
 It trains for 30 epochs and then records the reports. Add `--epochs 5` to make it faster.
 
+The run may print `plotly is not installed, matplotlib figures are sent as images`. Without the `plot` extra the figures are images; with `pip install "cairnml[plot]"` they are interactive plots. Both work.
+
 ### 3. Look at the reports
 
 In the project **examples**, open the task **reports and plots**:
