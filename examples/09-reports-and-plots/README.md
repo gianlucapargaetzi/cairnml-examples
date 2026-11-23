@@ -21,7 +21,7 @@ The script trains the greenhouse model of [Example 6](../06-regression-dataset) 
 | Histogram **residuals** | Are the errors centred on zero, or do they lean one way? | Plots |
 | Table **error by hour** | At which hours is the model weakest? | Plots, as a table with one row per hour |
 | Confusion matrix **expensive hour** | Asked "is this hour above the median energy?", how often is the answer right? | Plots, a 2 by 2 grid |
-| Image **residuals vs temperature** | Does the error depend on the outside temperature? | Images |
+| Image **residuals vs temperature** | Does the error depend on the outside temperature? | Debug samples |
 | Text summary | What is the short summary of the run? | Console |
 
 ## Prerequisites
@@ -59,7 +59,7 @@ The run may print `plotly is not installed, matplotlib figures are sent as image
 In the project **examples**, open the task **reports and plots**:
 
 - **Plots:** the scatter plot should lie close to a line from bottom left to top right, and the residual histogram should peak near zero. In the confusion matrix, the diagonal counts the right answers. The median splits the test rows in half, so a random guess would put about half of its answers on the diagonal. The table **error by hour** is listed under Plots too: sort it by its error column to see the worst hours first.
-- **Images:** in **residuals vs temperature**, a shapeless cloud around zero is what you want. A pattern means the model misses an effect of the temperature.
+- **Debug samples:** in **residuals vs temperature**, a shapeless cloud around zero is what you want. A pattern means the model misses an effect of the temperature.
 - **Console:** the text summary, with the mean absolute error and the mean residual. A mean residual far from zero means the model is systematically too high or too low.
 
 ### 4. Compare two runs
