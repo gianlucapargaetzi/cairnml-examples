@@ -6,18 +6,17 @@ Run the examples in order: each one builds on the state of the one before.
 
 ## Install from this checkout, not from PyPI
 
-The newest SDK and agent are not on PyPI yet. Install both **editable from the checkouts** into the examples' virtual environment, instead of `pip install cairnml`:
+The newest SDK and agent are not on PyPI yet. Install the SDK **editable from the checkout** into the examples' virtual environment, instead of `pip install cairnml`. The agent is part of the same checkout: its extra brings the agent's dependencies.
 
 ```bash
 source .venv/bin/activate
-pip install -e /path/to/cairnml -e /path/to/cairnml-agent      # the checkouts of the branch that is being tested
-pip install "cairnml[dataset]"                                  # the extras; the editable install already satisfies the package
-pip show cairnml cairnml-agent | grep -E "^(Name|Version|Editable)"
+pip install -e "/path/to/cairnml[agent,dataset]"                # the checkout of the branch that is being tested, with the agent and dataset extras
+pip show cairnml | grep -E "^(Name|Version|Editable)"
 ```
 
 PASS: `Editable project location` points at the checkouts, and `cairnml repository --help` lists `list, add, assign, unassign, check, delete, unshare, share, link, unlink`.
 
-An editable (source-tree) install is also what makes **agent jobs use the same code**: the agent builds a wheel of the SDK and of itself from those source trees and installs them in every job container, never from PyPI. A copy installed into `site-packages` (a normal `pip install` of a wheel) makes the daemon fail with "is not a source tree of cairnml-agent". Check in the job's console that `/tmp/cairnml-0.0.5-py3-none-any.whl` and `/tmp/cairnml_agent-0.0.5-py3-none-any.whl` are installed (they are built from the checkouts), not downloaded.
+An editable (source-tree) install is also what makes **agent jobs use the same code**: the agent builds one wheel of the SDK, which contains the agent, from that source tree and installs it in every job container, never from PyPI. A copy installed into `site-packages` (a normal `pip install` of a wheel) is repacked from its installed files instead, so the jobs still get the code the host runs; the daemon fails with "is not a source tree of cairnml" only when it finds neither. Check in the job's console that `/tmp/cairnml-0.0.9-py3-none-any.whl` is installed (it is built from the checkout), not downloaded.
 
 ## Looking at the database
 

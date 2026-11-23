@@ -1,7 +1,7 @@
 # Checks: Example 0, installation and setup
 
 ## Terminal
-- [ ] `pip show cairnml cairnml-agent` shows the **editable local checkouts** (see `../CHECKS.md`), not PyPI.
+- [ ] `pip show cairnml` shows the **editable local checkouts** (see `../CHECKS.md`), not PyPI.
 - [ ] `cairnml --help` lists `repository`, `dataset`, `credential`, `devices`; `cairnml repository --help` lists `list, add, assign, unassign, check, delete, unshare, share, link, unlink`.
 - [ ] `cairnml init http://<server>` and the enrolment finish without an error; `cairnml devices list` shows this machine, kind client, not revoked.
 - [ ] `cairnml repository list` prints "No repositories yet" (nothing was run).
