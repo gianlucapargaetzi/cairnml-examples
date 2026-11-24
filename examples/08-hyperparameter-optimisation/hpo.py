@@ -22,6 +22,10 @@ from cairnml.automation import (
 from cairnml.automation.optuna import OptimizerOptuna
 
 EPOCHS_PER_TRIAL = 30
+# Check the trials every 6 seconds, not every 2 minutes (the SDK default).
+POLL_PERIOD_MIN = 0.1
+# Send the progress report every 15 seconds, so stop() waits at most that long.
+REPORT_PERIOD_MIN = 0.25
 
 
 def parse_args() -> argparse.Namespace:
@@ -56,7 +60,9 @@ def main() -> None:
         # Passed on to Optuna: each trial may run EPOCHS_PER_TRIAL reports, and the search stops after --trials trials.
         max_iteration_per_job=EPOCHS_PER_TRIAL,
         total_max_jobs=args.trials,
+        pool_period_min=POLL_PERIOD_MIN,
     )
+    optimizer.set_report_period(REPORT_PERIOD_MIN)
 
     if args.local:
         optimizer.start_locally()
