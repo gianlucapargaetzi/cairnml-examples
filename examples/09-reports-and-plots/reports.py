@@ -28,6 +28,7 @@ from cairnml.datasets import Dataset
 
 FEATURES = ["outside_temp", "light", "humidity", "co2", "hour"]
 TARGET = "energy"
+RESIDUAL_BINS = 20  # the number of bars of the residuals histogram (the README and CHECKS.md say 20)
 
 
 def parse_args() -> argparse.Namespace:
@@ -78,9 +79,16 @@ def report_scatter(logger, actual: np.ndarray, predicted: np.ndarray) -> None:
 
 
 def report_residuals(logger, residuals: np.ndarray) -> None:
-    """The residuals of all test rows. A good model has residuals centred on zero, with no pattern."""
+    """A histogram of the residuals of all test rows. A good model has residuals centred on zero.
+
+    report_histogram does not count anything: its values are the bar heights. The residuals are counted into
+    RESIDUAL_BINS equal-width bins here, and each bar is labelled with the centre of its bin.
+    """
+    counts, edges = np.histogram(residuals, bins=RESIDUAL_BINS)
+    centres = (edges[:-1] + edges[1:]) / 2
+    labels = [f"{centre:.2f}" for centre in centres]
     logger.report_histogram(
-        "residuals", "test", values=residuals.tolist(), iteration=0,
+        "residuals", "test", values=counts.tolist(), iteration=0, xlabels=labels,
         xaxis="actual minus predicted (kWh)", yaxis="count",
     )
 
