@@ -55,7 +55,7 @@ The script finishes in a few seconds. It picks a random seed, adds a small noise
 
 While the script runs, the task is listed as **Running** with a small progress bar: the `tqdm` bar `steps` is found automatically, nothing is logged for it. In the web app open the project **examples**, task **hello world**:
 
-- **Configuration:** the settings `greeting`, `steps` and `seed`.
+- **Configuration:** `greeting` and `steps` are under **General**; `seed` is under **General** and under **Args** (the `--seed` option).
 - **Scalars:** the `loss` curve, one point per step.
 - **Artifacts:** `hello.txt`.
 

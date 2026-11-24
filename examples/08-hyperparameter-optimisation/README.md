@@ -72,7 +72,7 @@ Each trial runs `EPOCHS_PER_TRIAL` epochs. The search minimises the validation `
 python hpo.py --base-task-id <task-id> --local --trials 4
 ```
 
-`--local` runs the trials as processes on this machine, so no agent is needed. In the web app you get the task **hyperparameter search**, of type *optimizer*, which holds the search, and four tasks named after the base task, one per trial.
+`--local` runs the trials as processes on this machine, so no agent is needed. In the web app you get the task **hyperparameter search**, of type *optimizer*, which holds the search, and four tasks named after the base task, one per trial. A local search of a few short trials ends within about a minute. How often the trials are checked and how often the progress is reported are set by `POLL_PERIOD_MIN` and `REPORT_PERIOD_MIN` at the top of `hpo.py`; the rest is the training of the trials.
 
 ### 5. Run the trials on an agent
 

@@ -119,7 +119,7 @@ This works only when the script takes its settings from `task.connect`: `train.p
 
 1. Open the task, click **Task actions** (the three-line icon in the task header) and choose **Clone**. In the dialog keep the project **examples** and click **Clone**. The copy has the status **Draft**.
 2. Open the copy and change `epochs` to `5` under **Configuration**, in the section **General**: that is where `train.py` reads its settings. The image is under **Execution → Container**, and can be changed there too.
-3. Open **Task actions** again and choose **Enqueue**. It asks for the queue of your agent; choose it and confirm.
+3. Open **Task actions** again and choose **Enqueue**. It asks for a queue: choose the queue of your agent in the **Queue** field and confirm. A preselected queue may be a different one, so check the field before you confirm.
 
 The copy runs like the first one, from the same repository and commit, with your new settings. Because the commit is kept, a clone is also how you rerun exactly the same code later.
 
