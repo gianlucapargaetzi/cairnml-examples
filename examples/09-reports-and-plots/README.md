@@ -58,7 +58,7 @@ The run may print `plotly is not installed, matplotlib figures are sent as image
 
 In the project **examples**, open the task **reports and plots**:
 
-- **Plots:** the scatter plot should lie close to a line from bottom left to top right, and the residual histogram should peak near zero (the label under a bar is the centre of its bin, in kWh, and the heights add up to the number of test rows). In the confusion matrix, the diagonal counts the right answers. The median splits the test rows in half, so a random guess would put about half of its answers on the diagonal. The table **error by hour** is listed under Plots too: sort it by its error column to see the worst hours first.
+- **Plots:** the scatter plot should lie close to a line from bottom left to top right, and the residual histogram should peak near zero (the label under a bar is the centre of its bin, in kWh, and the heights add up to the number of test rows). In the confusion matrix, the diagonal counts the right answers. The median splits the test rows in half, so a random guess would put about half of its answers on the diagonal. The table **error by hour** is listed under Plots too: read down its error column to find the worst hours (its rows cannot be sorted).
 - **Debug samples:** in **residuals vs temperature**, a shapeless cloud around zero is what you want. A pattern means the model misses an effect of the temperature.
 - **Console:** the text summary, with the mean absolute error and the mean residual. A mean residual far from zero means the model is systematically too high or too low.
 

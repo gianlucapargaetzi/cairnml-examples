@@ -5,7 +5,7 @@
 
 ## UI
 - [ ] Project **examples**: the run **greenhouse workflow** with a graph `prepare_data → train → evaluate`; each box opens its own task; all **Completed**.
-- [ ] `train` shows the validation error, `evaluate` the R²; a second run with another `--lr` gives a second pair of `train` tasks to compare.
+- [ ] `train` shows the validation error and `evaluate` the R², as `val_mse` and `test_r2` under **Configuration → return**; a second run with another `--lr` gives a second pair of `train` tasks to compare.
 - [ ] **Repositories & Datasets**: `greenhouse-data` lists a second run in its **Runs** tab; the credentials table still has your App, now with `examples` and a newer **Last used** after the agent ran the steps.
 - [ ] On an agent: steps show their queue, run on this machine, and clone the private dataset repository with a read token (green lock, no extra credential).
 - [ ] On an agent: each step's **Configuration → Installed packages** lists what `pipeline.py` names in `packages=`: `prepare_data` lists `cairnml[dataset]`; `train` and `evaluate` list `torch` and `pandas`.

@@ -6,13 +6,15 @@ Go through the states of a task and the actions you can take on it, and learn wh
 
 What you will learn:
 
-- How a task moves between **Draft**, **Queued**, **Running**, **Completed** and **Published**.
+- How a task moves between **Draft**, **Pending**, **Running**, **Completed** and **Published**.
 - How to clone a task and change its settings before it runs.
 - Which actions are reversible, and which are not.
 
 ## Background
 
 A finished run is not the end of a task. You can copy it to run again with other settings, hide it, move it, or freeze it as final. Knowing what each action does, and whether it can be undone, keeps you from losing results by accident.
+
+The statuses in this table are the API's words; the web app calls `queued` **Pending** and `created` **Draft**.
 
 | Action | Status before | Status after | Can it be undone? |
 |---|---|---|---|
@@ -69,7 +71,7 @@ A clone has the same code and settings as the original, except the ones you chan
 python lifecycle.py enqueue
 ```
 
-The status becomes **Queued**. The task waits in the `default` queue. No agent serves that queue, because an agent serves only its own ([Example 4](../04-run-on-an-agent)), so it stays queued, which is what this walk through needs. Take it off the queue again with:
+The status becomes **Pending** (the web app's word; the script and the API call this state `queued`). The task waits in the `default` queue. No agent serves that queue, because an agent serves only its own ([Example 4](../04-run-on-an-agent)), so it stays Pending, which is what this walk through needs. Take it off the queue again with:
 
 ```bash
 python lifecycle.py dequeue
