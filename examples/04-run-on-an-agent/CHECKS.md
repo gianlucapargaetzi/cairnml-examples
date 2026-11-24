@@ -3,7 +3,7 @@
 The agent runs on **this machine**, installed from the local checkout (see `../CHECKS.md`).
 
 ## Terminal
-- [ ] `cairnml-agent` is the editable local checkout; enrolment as an agent succeeds; `cairnml-agent daemon` stays running and prints that it serves its own queue.
+- [ ] `cairnml` is the editable local checkout, with the agent extra; enrolment as an agent succeeds; `cairnml-agent daemon` stays running and prints that it serves its own queue.
 - [ ] `python train.py --epochs 3 --queue <queue>` queues the run and ends; the daemon logs that it took the job, cloned the repository and ran it.
 - [ ] The daemon needed **no Git credential of its own** (no prompt, no token in its config).
 

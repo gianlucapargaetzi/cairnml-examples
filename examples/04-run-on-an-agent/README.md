@@ -46,7 +46,7 @@ On the machine that will run the jobs, in the environment from Example 0. If tha
 
 ```bash
 source .venv/bin/activate
-pip install cairnml-agent
+pip install "cairnml[agent]"
 cairnml-agent init http://<server-ip>
 cairnml-agent daemon --docker
 ```
