@@ -6,7 +6,7 @@ Needs the GitHub App installed on the **new** repository `greenhouse-data` (step
 - [ ] Before the push: the App has Contents and Workflows **write** and the installation accepted them. With a read-only App the push is refused with the reason (FAIL of the example, not of CairnML: fix the App and repeat).
 - [ ] `cairnml dataset --help` lists `init, remote, clone, status, add, check, commit, doctor, push, get, create, list, cache`.
 - [ ] `cairnml dataset remote add <url> --credential <id>` sets origin and the storage, lists the dataset and does **not** warn about reachability.
-- [ ] `cairnml dataset add`, `commit` and `push` succeed; `cairnml dataset doctor` reports nothing missing (after "Allow auto-merge" and branch protection on `main` are on; the first push goes straight to `main`); `cairnml dataset check` passes.
+- [ ] `cairnml dataset add`, `commit` and `push` succeed; `cairnml dataset doctor` (with a git sign-in) reports nothing missing (after "Allow auto-merge" and branch protection on `main` are on; the first push goes straight to `main`); `cairnml dataset check` passes.
 - [ ] `cairnml dataset list` and `cairnml repository list --type dataset` show `greenhouse-data`, READ AS `credential`.
 - [ ] `REPO` and `COMMIT` are noted for Examples 7 to 11.
 

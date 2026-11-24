@@ -43,7 +43,7 @@ This is the right tool for data you own and must be able to reproduce. For publi
 ## Prerequisites
 
 - About 20 minutes.
-- Python 3.9 or newer and [git](https://git-scm.com).
+- Python 3.9 or newer and [git](https://git-scm.com), with your name and email address set: `git config --global user.name "Your Name"` and `git config --global user.email "you@example.com"`. Without them `cairnml dataset commit` in step 5 fails with git's own message that it does not know who you are (`Author identity unknown`, or `unable to auto-detect email address`, depending on the machine).
 - The [SDK connected to your server](../00-installation-and-setup).
 - The GitHub App credential from [Example 3](../03-private-code-and-credentials), listed under **Settings → Access**.
 - The App installed on the new `greenhouse-data` repository (step 4). If it is not installed yet, nothing can be pushed or read.
@@ -146,12 +146,14 @@ cairnml dataset push --path "$WORK/greenhouse-data"
 > [!NOTE]
 > `cairnml dataset create` does all of this in one call and creates the repository for you. The commands are separate here so that each step is visible.
 
-After the first push, `cairnml dataset doctor --path "$WORK/greenhouse-data"` checks the repository. Until two GitHub settings are on, it ends with `error: 2 check(s) failed`:
+After the first push, `cairnml dataset doctor --path "$WORK/greenhouse-data"` checks the repository. It reads the repository with your own git sign-in, so make sure plain git can read it without asking for a password: sign in with `gh auth login`, or use your usual git credential helper. Signed in, and until two GitHub settings are on, it prints `error: 2 check(s) failed: fix them, then run cairnml dataset doctor again`:
 
 - `FAIL auto-merge`: on the repository's **Settings → General**, under **Pull Requests**, switch on **Allow auto-merge**.
 - `FAIL branch protection`: on **Settings → Branches**, protect the default branch: require a pull request, block force pushes and deletions.
 
 Both matter only for changing the dataset later, where a push opens a pull request that is merged by itself. Examples 7 to 11 read the first commit and do not need them. After the settings, run `doctor` again: it prints `No problems found`.
+
+Without the sign-in, `doctor` fails at the default branch check and does not reach the two settings: it prints `FAIL default branch: cannot read origin: ... Next: sign in to git for github.com, for example gh auth login, then run doctor again` and `error: 1 check(s) failed: fix them, then run cairnml dataset doctor again`.
 
 ### 6. See what git holds and what it does not
 

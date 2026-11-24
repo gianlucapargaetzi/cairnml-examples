@@ -105,7 +105,7 @@ The image is stored on the task, so clones of it use the same image. The agent i
 > [!NOTE]
 > The agent runs every job in a container (`--docker`), so a run on an agent takes longer than a local one. The first time an agent is used, the base image has to be pulled and the environment installed in it, which can take several minutes before the first line of training output. Later runs reuse the image and the caches and start faster.
 
-Under **Agents & Queues** the job waits in the agent's queue until the agent takes it, then shows on the agent's machine, in the row of the agent under **Agents** together with its progress. In the project **examples** the task **CIFAR-10 classification** goes from **Queued** to **Running** to **Completed**. While it runs, it has the same progress bar as a local run, with the epochs and the batches of the current epoch in the task. On the task:
+Under **Agents & Queues** the job waits in the agent's queue until the agent takes it, then shows on the agent's machine, in the row of the agent under **Agents** together with its progress. In the project **examples** the task **CIFAR-10 classification** goes from **Pending** to **Running** to **Completed**. While it runs, it has the same progress bar as a local run, with the epochs and the batches of the current epoch in the task. On the task:
 
 - **Execution** shows the repository `cairnml-private-demo` and the commit it ran from.
 - **Console** starts with the clone of the private repository, then the training output.
@@ -128,13 +128,13 @@ The copy runs like the first one, from the same repository and commit, with your
 1. In **Repositories & Datasets**, open the row of `cairnml-private-demo` and, in its **Credentials** table, delete your own row (the trash button), or run `cairnml repository unassign https://github.com/<your-user>/cairnml-private-demo`. The **Access** lock turns red and closed.
 2. Clone the task and enqueue it. The web app stops you with **Credentials not assigned**: the repository is private and no credential reaches it.
    From the command line the queue command still returns normally. CairnML records the task as **Failed** at once, with the reason in its status, so look at the task in the web app rather than at the terminal.
-3. Click **Assign credentials**, choose your credential and click **Set credential**. The enqueue then goes on by itself: the task is queued and runs.
+3. Click **Assign credentials**, choose your credential and click **Set credential**. The enqueue then goes on by itself: the task goes to **Pending** and runs.
 
 ## Troubleshooting
 
-- **`Could not find queue named "..."`:** the name is not the exact name of a queue. The message lists the queues you can use and the closest one. An agent's queue is its machine name plus a suffix. The task is shown as **Failed**, with that message as the reason, and is not queued.
+- **`Could not find queue named "..."`:** the name is not the exact name of a queue. The message lists the queues you can use and the closest one. An agent's queue is its machine name plus a suffix. The task is shown as **Failed**, with that message as the reason, and is not put in any queue.
 - **`requires a different Python` while the job starts:** the image has a Python older than 3.9. Use an image with a newer Python, with `--image`.
-- **The task stays Queued:** no agent serves that queue. An agent serves only the queue that was made for it when it was enrolled, so use that name under **Agents & Queues → Queues**, and check that `daemon` is still running.
+- **The task stays Pending:** no agent serves that queue. An agent serves only the queue that was made for it when it was enrolled, so use that name under **Agents & Queues → Queues**, and check that `daemon` is still running.
 - **The task fails at the start with a repository error:** the credential is missing, or the App is no longer installed on the repository. Check the status in **Repositories & Datasets** and the message of the failed task.
 - **The agent cannot find the commit:** it was not pushed. Run `git push`, then run again.
 - **`unrecognized arguments: --queue`:** the folder was made from an older `train.py`. Make it again with Example 3.

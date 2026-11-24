@@ -76,10 +76,10 @@ In the project **examples**, open the run **greenhouse workflow**:
 
 - **The graph** shows `prepare_data`, `train` and `evaluate` in the order they run.
 - **Each box** opens the task of that step, with its own configuration and console output.
-- `train` shows the validation error and `evaluate` the R² score. They measure different things, so compare each across runs: a lower error should come with a higher R².
+- `train` shows the validation error and `evaluate` the R² score, as parameters under **Configuration → return** (`val_mse` and `test_r2`; these two steps log no scalars). They measure different things, so compare each across runs: a lower error should come with a higher R².
 
 > [!TIP]
-> Run step 3 again with another `--lr` and compare the two `train` tasks, as you compared runs in Example 1.
+> Run step 3 again with another `--lr` and compare the `return` values of the two `train` tasks (**Configuration → return**), as you compared runs in Example 1.
 
 ### 5. Let an agent run the steps
 
