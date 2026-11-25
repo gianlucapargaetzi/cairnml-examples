@@ -48,12 +48,12 @@ On the machine that will run the jobs, in the environment from Example 0. If tha
 source .venv/bin/activate
 pip install "cairnml[agent]"
 cairnml-agent init http://<server-ip>
-cairnml-agent daemon --docker
+cairnml-agent daemon --docker --foreground
 ```
 
 In every new terminal on that machine, go to the repository root and run `source .venv/bin/activate` again before using `cairnml-agent`.
 
-`init` opens the sign-in page. Sign in with your own account. `daemon` must keep running. `--docker` runs every job in its own container. Without `--gpus` the jobs see every GPU of the machine; `--gpus 0` limits them to the first (`--gpus 0,1` the first two), and `--cpu-only` uses none.
+`init` opens the sign-in page. Sign in with your own account. `daemon` must keep running. `--foreground` prints the daemon's log in this terminal; without it the daemon runs in the background and writes its log to a temporary file. `--docker` runs every job in its own container. Without `--gpus` the jobs see every GPU of the machine; `--gpus 0` limits them to the first (`--gpus 0,1` the first two), and `--cpu-only` uses none.
 
 Enrolling also made a queue for this machine, and `daemon` without `--queue` serves it. An agent serves only its own queue, so jobs for this agent go there. The queue is named after the machine **plus a short suffix**, for example `parg-nb-b59488` for the machine `parg-nb`. `init` prints it (`queue of this machine: ...`) and **Agents & Queues → Queues** lists it. Note that exact name as `<queue>` for the next steps: the bare machine name does not work. The agent's own key is in `~/.cairnml/agent/`, apart from the SDK's.
 
