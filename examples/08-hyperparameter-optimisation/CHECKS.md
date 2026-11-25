@@ -1,7 +1,7 @@
 # Checks: Example 8, hyperparameter optimisation
 
 ## Terminal
-- [ ] `python baseline.py ...` prints `done: validation mse ...`; `python search.py --local ...` runs the trials and prints the best value; the `--queue` variant with `--concurrent 2` queues trials for the agent.
+- [ ] `python train_regression.py ...` prints `done: validation mse ...`; `python hpo.py --local ...` runs the trials and prints the best value; the `--queue` variant with `--concurrent 2` queues trials for the agent.
 
 ## UI
 - [ ] Task **regression baseline** (Completed): **Configuration** lists `lr`, `hidden`, `batch_size`, `epochs`; its `mse` curve is there.
