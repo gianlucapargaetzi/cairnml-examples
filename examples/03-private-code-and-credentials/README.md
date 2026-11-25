@@ -114,7 +114,7 @@ Check: the credential is listed with a working status. In the terminal, `cairnml
 The App is installed on the repository, but CairnML does not yet know which credential to read it with. That is the assignment.
 
 1. Open **Datasets** in the side bar (its page is titled **Repositories & Datasets**) and click the round **+** button at the top right (tooltip **Add**). It opens **Add repository or dataset**.
-2. Choose the type **Code**, enter `https://github.com/<your-user>/cairnml-private-demo`, choose the project **examples**, and choose your credential (or assign it in the next steps). Click **Add**.
+2. Choose the type **Code repository**, enter `https://github.com/<your-user>/cairnml-private-demo`, choose the project **examples**, and choose your credential (or assign it in the next steps). Click **Add**.
 3. The new row has a red closed lock in the **Access** column while no credential is assigned: CairnML cannot read a private repository without one. Open its row and, in the **Credentials** table of the side panel, click the lock button **Assign credentials** (the **Project** column already lists `examples`).
 4. Choose your credential and click **Set credential**.
 

@@ -14,7 +14,7 @@ Needs your GitHub account and the GitHub App steps by hand (steps 3 and 4).
 
 ## UI
 - [ ] **Settings → Access**: the App is listed, state OK. Adding it with a wrong key is refused with a reason, and nothing is saved.
-- [ ] **Repositories & Datasets → Add repository or dataset**: type Code, the address, project examples. The new row has the type **Code**, **Added by** you, **Visibility** one person, an 8-character **ID**, and a **red closed** Access lock while nothing is assigned.
+- [ ] **Repositories & Datasets → Add repository or dataset**: type **Code repository**, the address, project examples. The new row has the type **Code**, **Added by** you, **Visibility** one person, an 8-character **ID**, and a **red closed** Access lock while nothing is assigned.
 - [ ] Side panel → **Credentials**: one **empty** row (App "–", Owner you, Project `examples`, red lock) with only the lock button.
 - [ ] Assign your credential: the Access lock turns **green open**; the Credentials table has one row (your App, you, `examples`, green lock, **Last used** filled after **Check now**).
 - [ ] **Check now** reports the repository as readable. Assigning a credential that cannot read it is refused with the reason.
