@@ -72,7 +72,7 @@ The script trains on the greenhouse data of that dataset version and prints the 
 python export_to_cairnml.py legacy_project/runs/greenhouse_mlp_20261101_120000 --project examples
 ```
 
-The adapter renames the columns as in the table above, copies the results into a scratch folder in the import layout together with a copy of the training script, runs `cairnml import prepare` to pack it with a manifest, and writes the ZIP to `exports/`. Pass `--task "greenhouse MLP (legacy)"` to choose the task name.
+The adapter renames the columns as in the table above, copies the results into a scratch folder in the import layout, puts a copy of the training script next to it so that `cairnml import prepare` finds it and does not warn, packs the folder with a manifest, and writes the ZIP to `exports/`. The script itself is not packed: the imported task has no source code. Pass `--task "greenhouse MLP (legacy)"` to choose the task name.
 
 Look inside:
 
@@ -80,7 +80,7 @@ Look inside:
 unzip -l exports/greenhouse_mlp_20261101_120000.zip
 ```
 
-It holds `cairnml-import.yaml` (the manifest, with the project and task name), `args.yaml`, `results.csv` with one row per epoch, and `weights/` with both checkpoints.
+It holds, in one folder named after the run, `cairnml-import.yaml` (the manifest, with the project and task name), `args.yaml`, `results.csv` with one row per epoch, and `weights/` with both checkpoints.
 
 ### 4. Import it in the web app
 

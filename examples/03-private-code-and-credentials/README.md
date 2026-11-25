@@ -45,7 +45,7 @@ From the root of the examples repository:
 python examples/03-private-code-and-credentials/make_private_repo.py ../cairnml-private-demo
 ```
 
-The script copies `train.py` and `requirements.txt` from Example 2 into a new folder outside this repository and makes the first commit. That folder is the repository you publish next. It needs only git.
+The script copies `train.py` and `requirements.txt` from Example 2 into a new folder outside this repository and makes the first commit. That folder is the repository you publish next. It needs only git, with your name and email address set (`git config --global user.name "Your Name"` and `git config --global user.email "you@example.com"`): without them the first commit is refused.
 
 The copied `train.py` is the code the agent runs in [Example 4](../04-run-on-an-agent). It already holds the two options for that: `--queue` names the queue, and `--image` chooses the container image of the job. That choice is made in the code, with `task.set_base_docker(docker_image=...)` before `task.execute_remotely(...)`, so it is recorded with the run and applies to every clone of it.
 
