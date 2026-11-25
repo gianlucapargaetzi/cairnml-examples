@@ -72,7 +72,7 @@ With `--local` every step runs as a separate task on this machine, one after the
 
 ### 4. Look at the run
 
-In the project **examples**, open the run **greenhouse workflow**:
+Open **Pipelines** in the side bar (the fourth icon), click the card **greenhouse workflow** and double-click its newest run in the list, **greenhouse workflow #N**. The runs are stored in a hidden project, `examples/.pipelines`, so you do not find them under **Projects**. In the run:
 
 - **The graph** shows `prepare_data`, `train` and `evaluate` in the order they run.
 - **Each box** opens the task of that step, with its own configuration and console output.

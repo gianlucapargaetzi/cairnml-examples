@@ -1,12 +1,12 @@
 # Checks: Example 8, hyperparameter optimisation
 
 ## Terminal
-- [ ] `python baseline.py ...` prints `done: validation mse ...`; `python search.py --local ...` runs the trials and prints the best value; the `--queue` variant with `--concurrent 2` queues trials for the agent.
+- [ ] `python train_regression.py ...` prints `done: validation mse ...`; `python hpo.py --local ...` runs the trials and prints the best value; the `--queue` variant with `--concurrent 2` queues trials for the agent.
 
 ## UI
 - [ ] Task **regression baseline** (Completed): **Configuration** lists `lr`, `hidden`, `batch_size`, `epochs`; its `mse` curve is there.
 - [ ] Task **hyperparameter search**, type **optimizer**: lists the objective of every trial, best first; four trial tasks named after the base task, each with different parameters and a curve.
-- [ ] On an agent: the trials run in the agent's queue, two at a time, and their source is the private repository with a green lock.
+- [ ] On an agent: the trials run in the agent's queue, one after another with one worker and two at a time with a second worker (`CAIRNML_WORKER_ID=<machine>:1 cairnml-agent daemon --docker`), and their source is the private repository with a green lock.
 - [ ] Comparing the best and the worst trial shows different parameters (a very high learning rate makes the curve jump).
 
 ## Database

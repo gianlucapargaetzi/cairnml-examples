@@ -85,7 +85,11 @@ python hpo.py --base-task-id <task-id> --queue <queue> --trials 20 --concurrent 
 > [!NOTE]
 > Agent execution is containerized and takes longer than a local run, at least the first time an agent is used: the base image has to be pulled and the environment installed in it before the first step starts. See [Example 4](../04-run-on-an-agent).
 
-`--concurrent 2` runs two trials at a time. Optuna waits for results before it proposes new values, so more concurrent trials are faster but learn a little less from each result. The agents read the private dataset repository with the credential you assigned to it in Example 6.
+`--concurrent 2` asks for two trials at a time. Optuna waits for results before it proposes new values, so more concurrent trials are faster (when that many jobs can run at once) but learn a little less from each result. An agent takes one job at a time from its queue, so with the one agent of this example the trials run one after another and the second one waits in the queue. For two at once, start a second worker on the same queue in another terminal: `CAIRNML_WORKER_ID=<machine>:1 cairnml-agent daemon --docker`, with `<machine>` the machine name in the worker id the first daemon prints.
+
+Some trials end early. Optuna stops a trial that is clearly worse than the others (the search prints `Trial N pruned.`), and the task list shows that trial as **Aborted**. That is expected: the search stopped it on purpose, and its curve is shorter than the others'.
+
+The agents read the private dataset repository with the credential you assigned to it in Example 6.
 
 ### 6. Compare the results
 
