@@ -161,7 +161,7 @@ Without the sign-in, `doctor` fails at the default branch check and does not rea
 git -C "$WORK/greenhouse-data" show --stat HEAD
 ```
 
-The commit has `adapter.py`, `dataset.yaml`, `dataset.lock.json`, `manifest.json`, `data.dvc`, `.gitignore` and the verify workflow. The CSV files are not there: `.gitignore` excludes `data/`, and `data.dvc` holds their hashes. Look inside:
+The commit has `adapter.py`, `dataset.yaml`, `dataset.lock.json`, `manifest.json`, `data.dvc`, `.gitignore`, the DVC settings (`.dvc/`, `.dvcignore`) and the verify workflow (`.github/workflows/dataset.yml`) with the script it runs (`.cairnml/verify.py`). The CSV files are not there: `.gitignore` excludes `data/`, and `data.dvc` holds their hashes. Look inside:
 
 ```bash
 cat "$WORK/greenhouse-data/data.dvc"
