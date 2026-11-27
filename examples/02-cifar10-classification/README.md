@@ -27,7 +27,7 @@ This is the code that [Example 3](../03-private-code-and-credentials) moves into
 
 - Several minutes on a CPU, much less on a GPU.
 - The [SDK connected to your server](../00-installation-and-setup).
-- Optional: a GPU. Install the PyTorch build for your CUDA version first if the default one does not match it. See [pytorch.org](https://pytorch.org). On a machine with an NVIDIA GPU, the line `CairnML Monitor: GPU monitoring is not available` means the GPU curves are missing; training is unaffected. Install the extra with `pip install "cairnml[gpu]"` to see them.
+- Optional: a GPU. Install the PyTorch build for your CUDA version first if the default one does not match it. See [pytorch.org](https://pytorch.org). On a machine with an NVIDIA GPU the run reports its GPU curves. If it prints `CairnML Monitor: GPU monitoring is not available`, the curves are missing; training is unaffected.
 
 ## Steps
 
